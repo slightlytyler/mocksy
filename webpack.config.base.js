@@ -17,6 +17,16 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   resolve: {
+    alias: {
+      app: path.join(__dirname, "app"),
+      pods: path.join(__dirname, "app/pods"),
+      containers: path.join(__dirname, "app/containers"),
+      components: path.join(__dirname, "app/components"),
+      reducers: path.join(__dirname, "app/reducers"),
+      utils: path.join(__dirname, "app/utils"),
+      extensions: path.join(__dirname, "app/helpers/extensions"),
+      styles: path.join(__dirname, "app/styles")
+    },
     extensions: ['', '.js', '.jsx'],
     packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
   },
