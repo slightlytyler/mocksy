@@ -91,6 +91,8 @@
   "dependencies": {
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
+    "fs": "0.0.2",
+    "gm": "git+https://github.com/slightlytyler/gm.git",
     "history": "^1.13.0",
     "radium": "^0.15.3",
     "react": "^0.14.2",

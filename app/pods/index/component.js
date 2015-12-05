@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Radium from 'radium';
 
 import fs from 'fs';
-import path from 'path';
+import gm from 'gm';
 
 @Radium
 export default class IndexComponent extends Component {
@@ -12,11 +12,11 @@ export default class IndexComponent extends Component {
     let stats = fs.lstatSync('./app/pods/index/input.jpg');
     console.log(stats.isFile());
 
-    fs.writeFile('./app/pods/index/test.txt', 'Hello World!', function (err) {
-      if (err) return console.log(err);
-      console.log('Hello World > helloworld.txt');
-    });
-
+    gm('./app/pods/index/input.jpg')
+      .resizeExact(240, 240)
+      .write('./app/pods/index/output.jpg', function (err) {
+        if (!err) console.log('done');
+      });
   }
 
   render() {
