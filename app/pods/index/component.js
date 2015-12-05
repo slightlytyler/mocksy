@@ -8,15 +8,19 @@ import gm from 'gm';
 @Radium
 export default class IndexComponent extends Component {
   test() {
-    //var stats = fs.statSync("/pods/index/input.jpg");
-    let stats = fs.lstatSync('./app/pods/index/input.jpg');
-    console.log(stats.isFile());
+    const baseImage = gm('./app/pods/index/input.jpg');
+    const overlayImage = gm('./app/pods/index/overlay.png').geometry(100, 100);
 
-    gm('./app/pods/index/input.jpg')
-      .resizeExact(240, 240)
-      .write('./app/pods/index/output.jpg', function (err) {
-        if (!err) console.log('done');
-      });
+    gm()
+    .in('-page', '+0+0')
+    .in('./app/pods/index/input.png')
+    .in('-geometry','420x748')
+    .in('-page', '+28+117')
+    .in('./app/pods/index/overlay.png')
+    .mosaic()
+    .write('./app/pods/index/output.png', function(err) {
+      if(!err) console.log("Written composite image.");
+    });
   }
 
   render() {
