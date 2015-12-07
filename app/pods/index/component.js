@@ -148,13 +148,43 @@ export default class IndexComponent extends Component {
 
         <section
           className="preview"
-          style={styles.content.base}
+          style={styles.preview.base}
         >
-          <div>
-            <img />
-            <span>Add a screenshot</span>
+          <div
+            className="template"
+            style={styles.preview.template}
+          >
+
+           <img
+              src="assets/base-templates/iphone-6/template.png"
+              style={styles.preview.template.background}
+            />
+            <div
+              className="foreground"
+              style={[
+                styles.preview.template.foreground.base,
+                {
+                  width: '88%',
+                  height: '75.5%',
+                  left: '6%',
+                  top: '12%'
+                }
+              ]}
+            >
+              <div style={styles.preview.template.addScreenshotPrompt.base}>
+                <img
+                  src="assets/icons/add-screenshot.svg"
+                  style={styles.preview.template.addScreenshotPrompt.icon}
+                />
+
+                <span
+                  style={styles.preview.template.addScreenshotPrompt.text}
+                >
+                  Add a screenshot
+                </span>
+              </div>
+            </div>
           </div>
-          <img />
         </section>
       </div>
     );
@@ -163,7 +193,8 @@ export default class IndexComponent extends Component {
 
 const styles={
   base: {
-    display: 'flex'
+    display: 'flex',
+    overflow: 'hidden'
   },
 
   sidebar: {
@@ -171,7 +202,7 @@ const styles={
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      flex: 3,
+      flex: 4,
       height: '100vh',
       backgroundColor: '#CFD8DC',
       borderLeft: '1px solid rgba(0, 0, 0, 0.15)',
@@ -185,7 +216,8 @@ const styles={
     templateItem: {
       base: {
         display: 'flex',
-        borderBottom: '1px solid #EDF3F5'
+        borderBottom: '1px solid #EDF3F5',
+        cursor: 'pointer',
       },
 
       preview: {
@@ -256,8 +288,8 @@ const styles={
         base: {
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: '.5em',
-          paddingBottom: '.5em',
+          paddingTop: '.75em',
+          paddingBottom: '.75em',
         },
 
         item: {
@@ -268,7 +300,8 @@ const styles={
           input: {
             base: {
               width: '100%',
-              marginBottom: '.25em'
+              marginBottom: '.3em',
+              border: '1px solid #CFD8DC'
             },
 
             container: {
@@ -279,7 +312,9 @@ const styles={
             },
 
             label: {
-              fontSize: '.8em'
+              fontSize: '.8em',
+              color: '#607D8B',
+              fontWeight: 200
             }
           },
 
@@ -324,12 +359,65 @@ const styles={
     },
   },
 
-  content: {
+  preview: {
     base: {
+      display: 'flex',
+      position: 'relative',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 10,
+      height: '100vh',
+      padding: '7.5em',
+    },
+
+    template: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      flex: 10
+      position: 'relative',
+      height: '100%',
+
+      background: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+        objectFit: 'contain'
+      },
+
+      foreground: {
+        base: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          backgroundColor: '#38B8E2',
+          cursor: 'pointer'
+        },
+
+        image: {
+
+        }
+      },
+
+      addScreenshotPrompt: {
+        base: {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%'
+        },
+
+        icon: {
+          marginBottom: '1em',
+        },
+
+        text: {
+          fontSize: '2em',
+          fontWeight: 100,
+          color: '#EDF3F5',
+          textAlign: 'center'
+        }
+      }
     }
   }
 }
