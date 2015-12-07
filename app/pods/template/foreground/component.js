@@ -8,6 +8,7 @@ import EmptyState from 'pods/template/foreground/empty/component';
 @Radium
 export default class TemplateForeground extends Component {
   static propTypes = {
+
   };
 
   constructor(props) {
@@ -28,17 +29,29 @@ export default class TemplateForeground extends Component {
   }
 
   render() {
-    const { screenshotURL } = this.state
+    const { screenshotURL } = this.state;
+    const {
+      foregroundDimensions,
+      containerDimensions
+    } = this.props;
+
+    const toPercent = (num) => `${num * 100}%`;
+
+    const width = toPercent(foregroundDimensions.width / containerDimensions.width);
+    const height = toPercent(foregroundDimensions.height / containerDimensions.height);
+    const left = toPercent(foregroundDimensions.left / containerDimensions.width);
+    const top = toPercent(foregroundDimensions.top / containerDimensions.height);
+
     return (
       <div
         className="foreground"
         style={[
           styles.base,
           {
-            width: '88.4%',
-            height: '75.7%',
-            left: '5.8%',
-            top: '12%'
+            width: width,
+            height: height,
+            left: left,
+            top: top
           }
         ]}
       >

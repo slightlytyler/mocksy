@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import counter from 'pods/counter/reducers';
+import templates from 'pods/templates/reducers';
 
 const rootReducer = combineReducers({
-  counter
+  templates
 });
 
 export default rootReducer;

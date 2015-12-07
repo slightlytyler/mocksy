@@ -23,11 +23,8 @@ export default class Index extends Component {
     });
   }
 
-  handleFile(event) {
-    this.test(event.target.files[0].path);
-  }
-
   render() {
+    console.log(this.props.templates);
     return (
       <div
         className="index"

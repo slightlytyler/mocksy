@@ -16,7 +16,19 @@ export default class IndexPreview extends Component {
         className="preview"
         style={styles.base}
       >
-        <Template />
+        <Template
+          dimensions={{
+            width: 768,
+            height: 1596,
+
+            foreground: {
+              width: 678,
+              height: 1204,
+              left: 45,
+              top: 193
+            }
+          }}
+        />
       </section>
     );
   }

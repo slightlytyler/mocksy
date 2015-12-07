@@ -6,7 +6,19 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.css';
 
-const store = configureStore();
+import baseTemplates from 'constants/base-templates';
+
+const store = configureStore({
+  templates: {
+    condition: {
+
+    },
+
+    entities: {
+      ...baseTemplates
+    }
+  }
+});
 
 render(
   <Provider store={store}>

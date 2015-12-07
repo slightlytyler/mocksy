@@ -23,8 +23,8 @@ module.exports = {
       containers: path.join(__dirname, "app/containers"),
       components: path.join(__dirname, "app/components"),
       reducers: path.join(__dirname, "app/reducers"),
+      constants: path.join(__dirname, "app/constants"),
       utils: path.join(__dirname, "app/utils"),
-      extensions: path.join(__dirname, "app/helpers/extensions"),
       styles: path.join(__dirname, "app/styles")
     },
     extensions: ['', '.js', '.jsx'],

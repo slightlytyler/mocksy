@@ -11,6 +11,8 @@ export default class Template extends Component {
   };
 
   render() {
+    const { dimensions } = this.props;
+
     return (
       <div
         className="template"
@@ -21,7 +23,13 @@ export default class Template extends Component {
           style={styles.background}
         />
 
-        <Foreground />
+        <Foreground
+          foregroundDimensions={dimensions.foreground}
+          containerDimensions={{
+            width: dimensions.width,
+            height: dimensions.height
+          }}
+        />
       </div>
     );
   }
