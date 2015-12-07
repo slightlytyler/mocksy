@@ -10,9 +10,6 @@ import FileInput from 'react-file-input';
 @Radium
 export default class IndexComponent extends Component {
   test(path) {
-    console.log(process.cwd());
-    let stats = fs.lstatSync(path);
-    console.log(stats.isFile());
     gm()
     .in('-page', '+0+0')
     .in('./app/pods/index/input.png')
@@ -26,38 +23,149 @@ export default class IndexComponent extends Component {
   }
 
   handleFile(event) {
-    console.log(event.target.files[0]);
     this.test(event.target.files[0].path);
   }
 
   render() {
     return (
-      <div style={styles.container}>
-        <h1>Index</h1>
+      <div
+        className="index"
+        style={styles.base}
+      >
+        <section
+          className="sidebar"
+          style={styles.sidebar.base}
+        >
+          <ul
+            className="template-list"
+            style={styles.sidebar.templateList}
+          >
+            <li style={styles.sidebar.templateItem.base}>
+              <div style={styles.sidebar.templateItem.preview.container}>
+                <img
+                  src="assets/base-templates/iphone-6/thumbnail.png"
+                  style={styles.sidebar.templateItem.preview.image}
+                />
+              </div>
 
-        <span onClick={this.test}>Click Me</span>
+              <div style={styles.sidebar.templateItem.name.container}>
+                <span style={styles.sidebar.templateItem.name.text}>
+                  iPhone 6
+                </span>
+              </div>
+            </li>
+          </ul>
 
-        <FileInput name="screenshot"
-                   placeholder="Select Screenshot"
-                   onChange={(e) => this.handleFile(e)} />
+          <section
+            className="export-panel"
+            style={styles.sidebar.exportPanel}
+          >
+            <header>
+              <span>
+                Export
+              </span>
+
+              <img />
+            </header>
+
+            <ul>
+              <li>
+                <input />
+                <input />
+                <input />
+                <img />
+              </li>
+            </ul>
+
+            <div>
+              <button>
+                Export Screenshot
+              </button>
+            </div>
+          </section>
+        </section>
+
+        <section
+          className="preview"
+          style={styles.content.base}
+        >
+          <div>
+            <img />
+            <span>Add a screenshot</span>
+          </div>
+          <img />
+        </section>
       </div>
     );
   }
 }
 
 const styles={
-  container: {
-    position: 'absolute',
-    top: '30%',
-    left: '10px',
-    textAlign: 'center'
+  base: {
+    display: 'flex'
   },
 
-  header: {
-    fontSize: '5rem'
+  sidebar: {
+    base: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      flex: 3,
+      height: '100vh',
+      backgroundColor: '#CFD8DC',
+      borderLeft: '1px solid rgba(0, 0, 0, 0.15)',
+      boxShadow: 'rgba(0, 0, 0, 0.25) 2px 0 4px'
+    },
+
+    templateList: {
+
+    },
+
+    templateItem: {
+      base: {
+        display: 'flex',
+        borderBottom: '1px solid #EDF3F5'
+      },
+
+      preview: {
+        container: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+          padding: '1em'
+        },
+
+        image: {
+          maxWidth: '100%',
+          maxHeight: '7.5em'
+        }
+      },
+
+      name: {
+        container: {
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          flex: 2
+        },
+
+        text: {
+          fontSize: '2em',
+          fontWeight: 100,
+          color: '#607D8B'
+        }
+      }
+    },
+
+    exportPanel: {
+
+    },
   },
 
-  link: {
-    fontSize: '1.4rem'
+  content: {
+    base: {
+      flex: 10
+    }
   }
 }
