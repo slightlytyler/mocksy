@@ -1,20 +1,25 @@
 'use strict'
 
 import React from 'react';
-import { connect } from 'react-redux'
-import { bindActionCreators, compose } from 'redux'
+import { connect } from 'react-redux';
+import { bindActionCreators, compose } from 'redux';
 
-import IndexComponent from './component'
+import { setCurrentScreenshot } from 'pods/screenshots/actions';
+import IndexComponent from './component';
 
 function mapStateToProps(state) {
+  const { entities, condition } = state.templates;
+
   return {
-    templates: state.templates.entities
+    templates: entities,
+    currentTemplate: entities[condition.currentTemplate],
+    currentScreenshot: state.screenshots.condition.currentScreenshot
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-
+    setCurrentScreenshot
   }, dispatch);
 }
 

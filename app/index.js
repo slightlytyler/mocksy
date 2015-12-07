@@ -11,11 +11,21 @@ import baseTemplates from 'constants/base-templates';
 const store = configureStore({
   templates: {
     condition: {
-
+      currentTemplate: 'iPhone-6'
     },
 
     entities: {
       ...baseTemplates
+    }
+  },
+
+  screenshots: {
+    condition: {
+      currentScreenshot: null
+    },
+
+    entities: {
+
     }
   }
 });

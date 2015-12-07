@@ -8,10 +8,21 @@ import Foreground from 'pods/template/foreground/component';
 @Radium
 export default class Template extends Component {
   static propTypes = {
+    dimensions: PropTypes.object.isRequired,
+    setCurrentScreenshot: PropTypes.func.isRequired
   };
 
   render() {
-    const { dimensions } = this.props;
+    const {
+      dimensions,
+      screenshot,
+      setCurrentScreenshot
+    } = this.props;
+    const {
+      width,
+      height,
+      foreground
+    } = dimensions;
 
     return (
       <div
@@ -24,10 +35,12 @@ export default class Template extends Component {
         />
 
         <Foreground
-          foregroundDimensions={dimensions.foreground}
+          screenshot={screenshot}
+          setCurrentScreenshot={setCurrentScreenshot}
+          foregroundDimensions={foreground}
           containerDimensions={{
-            width: dimensions.width,
-            height: dimensions.height
+            width,
+            height
           }}
         />
       </div>

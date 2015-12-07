@@ -8,26 +8,26 @@ import Template from 'pods/template/component';
 @Radium
 export default class IndexPreview extends Component {
   static propTypes = {
+    template: PropTypes.object.isRequired,
+    setCurrentScreenshot: PropTypes.func.isRequired
   };
 
   render() {
+    const {
+      template,
+      screenshot,
+      setCurrentScreenshot
+    } = this.props;
+
     return (
       <section
         className="preview"
         style={styles.base}
       >
         <Template
-          dimensions={{
-            width: 768,
-            height: 1596,
-
-            foreground: {
-              width: 678,
-              height: 1204,
-              left: 45,
-              top: 193
-            }
-          }}
+          dimensions={template.dimensions}
+          screenshot={screenshot}
+          setCurrentScreenshot={setCurrentScreenshot}
         />
       </section>
     );

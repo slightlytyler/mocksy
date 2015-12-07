@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Radium from 'radium';
 
@@ -10,6 +10,14 @@ import Preview from './preview/component';
 
 @Radium
 export default class Index extends Component {
+  static propTypes = {
+    templates: PropTypes.object.isRequired,
+    currentTemplate: PropTypes.object.isRequired,
+    actions: PropTypes.shape({
+      setCurrentScreenshot: PropTypes.func.isRequired
+    })
+  };
+
   test(path) {
     gm()
     .in('-page', '+0+0')
@@ -24,14 +32,27 @@ export default class Index extends Component {
   }
 
   render() {
-    console.log(this.props.templates);
+    const {
+      templates,
+      currentTemplate,
+      currentScreenshot,
+      actions
+    } = this.props;
+    const { setCurrentScreenshot } = actions;
+
     return (
       <div
         className="index"
         style={styles.base}
       >
-        <SideBar />
-        <Preview />
+        <SideBar
+          templates={templates}
+        />
+        <Preview
+          template={currentTemplate}
+          screenshot={currentScreenshot}
+          setCurrentScreenshot={setCurrentScreenshot}
+        />
       </div>
     );
   }

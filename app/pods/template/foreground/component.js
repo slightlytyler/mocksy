@@ -8,27 +8,18 @@ import EmptyState from 'pods/template/foreground/empty/component';
 @Radium
 export default class TemplateForeground extends Component {
   static propTypes = {
-
+    screenshot: PropTypes.string,
+    setCurrentScreenshot: PropTypes.func.isRequired,
+    foregroundDimensions: PropTypes.object.isRequired,
+    containerDimensions: PropTypes.object.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      screenshotURL: ""
-    };
-  }
-
   fileSelected(file) {
-    var reader = new FileReader();
-
-    reader.onload = (e) =>
-        this.setState({ screenshotURL: e.target.result });
-
-    reader.readAsDataURL(file);
+    this.props.setCurrentScreenshot(file.path);
   }
 
   render() {
+    const { screenshot } = this.props;
     const { screenshotURL } = this.state;
     const {
       foregroundDimensions,
@@ -55,9 +46,9 @@ export default class TemplateForeground extends Component {
           }
         ]}
       >
-        {screenshotURL ?
+        {screenshot ?
           <img
-            src={screenshotURL}
+            src={screenshot}
             style={styles.image}
           /> :
           <EmptyState

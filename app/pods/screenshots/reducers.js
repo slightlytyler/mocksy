@@ -4,10 +4,11 @@ import { combineReducers } from 'redux'
 import { actionTypes } from './constants'
 
 const {
-
+  SET_CURRENT_SCREENSHOT
 } = actionTypes;
 
-const <% TEMPLATE_TOKEN camelCase %>Reducer = combineReducers({
+
+const screenshotsReducer = combineReducers({
   entities: entitiesReducer,
   condition: conditionReducer
 });
@@ -21,9 +22,13 @@ function entitiesReducer(state={}, action) {
 
 function conditionReducer(state={}, action) {
   switch (action.type) {
+    case SET_CURRENT_SCREENSHOT:
+      return Object.assign({}, state, {
+        currentScreenshot: action.path
+      });
   }
 
   return state;
 }
 
-export default <% TEMPLATE_TOKEN camelCase %>Reducer;
+export default screenshotsReducer;
