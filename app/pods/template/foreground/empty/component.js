@@ -6,7 +6,12 @@ import Radium from 'radium';
 @Radium
 export default class TemplateForegroundEmpty extends Component {
   static propTypes = {
+    fileSelected: PropTypes.func.isRequired
   };
+
+  handleFile(e) {
+    this.props.fileSelected(e.target.files[0])
+  }
 
   render() {
     return (
