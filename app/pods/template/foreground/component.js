@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import { dialog } from 'remote';
+
 import EmptyState from 'pods/template/foreground/empty/component';
 
 @Radium
@@ -14,9 +16,12 @@ export default class TemplateForeground extends Component {
     containerDimensions: PropTypes.object.isRequired
   };
 
-  handleFile(e) {
-    this.props.setCurrentScreenshot(e.target.files[0].path);
-    this.refs.input.value = "";
+  openFile() {
+    const { setCurrentScreenshot } = this.props;
+
+    dialog.showOpenDialog({ multiSelections: false }, fileNames =>
+      setCurrentScreenshot(fileNames[0])
+    )
   }
 
   render() {
@@ -37,7 +42,7 @@ export default class TemplateForeground extends Component {
     return (
       <div
         className="foreground"
-        onClick={() => this.refs.input.click()}
+        onClick={() => this.openFile()}
         style={[
           styles.base,
           {
@@ -57,13 +62,6 @@ export default class TemplateForeground extends Component {
             fileSelected={(file) => this.fileSelected(file)}
           />
         }
-
-        <input
-          ref="input"
-          type="file"
-          onChange={(e) => this.handleFile(e)}
-          style={styles.input}
-        />
       </div>
     );
   }
@@ -82,9 +80,5 @@ const styles = {
   image: {
     width: '100%',
     height: '100%'
-  },
-
-  input: {
-    display: 'none'
-  },
+  }
 };
