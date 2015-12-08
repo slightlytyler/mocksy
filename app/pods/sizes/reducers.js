@@ -45,7 +45,7 @@ const nextId = (set) =>
 
 const addSize = (state) => {
   const id = nextId(state);
-  console.log(id);
+
   return {
     ...state,
     [id]: {

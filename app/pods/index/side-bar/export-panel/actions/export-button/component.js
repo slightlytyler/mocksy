@@ -21,27 +21,55 @@ export default class IndexSideBarExportPanelExportButton extends Component {
       sizes
     } = this.props;
     const { foreground } = currentTemplate.dimensions;
-    const {
-      width,
-      height,
-      left,
-      top
-    } = foreground;
 
-    const composite =
-      gm()
-        .in('-page', '+0+0')
-        .in(`./app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`)
-        .in('-geometry',`${width}x${height}`)
-        .in('-page', `+${left}+${top}`)
-        .in(screenshot)
-        .mosaic();
+    const template = `./app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`;
+    gm(template).size((err, templateSize) => {
+      const { width, height } = templateSize;
 
-    forEach(sizes, size =>
-      composite.write(`/Users/Tmart/Desktop/test${size.suffix}.${size.format}`, (err) => {
-        if (!err) console.log(`Written composite image for size:${size.id}.`);
-      })
-    );
+      forEach(sizes, size => {
+        const {
+          id,
+          multiplier,
+          suffix,
+          format
+        } = size;
+
+        let composite = this.buildComposite(
+          template,
+          templateSize,
+          screenshot,
+          foreground,
+          multiplier
+        )
+
+        this.writeFile(
+          composite,
+          suffix,
+          format,
+          id
+        );
+      });
+    });
+  }
+
+  buildComposite(template, templateSize, screenshot, screenshotDimensions, multiplier) {
+    const { width, height } = templateSize;
+
+    return gm()
+      .in('-geometry',`${width * multiplier}x${height * multiplier}`)
+      .in('-page', '+0+0')
+      .in(template)
+      .in('-geometry',`${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}`)
+      .in('-page', `+${screenshotDimensions.left * multiplier}+${screenshotDimensions.top * multiplier}`)
+      .in(screenshot)
+      .mosaic()
+      .in('-background', 'transparent');
+  }
+
+  writeFile(graphic, suffix, format, id) {
+    graphic.write(`/Users/Tmart/Desktop/test${suffix}.${format}`, (err) => {
+      if (!err) console.log(`Written composite image for size:${id}.`);
+    })
   }
 
   render() {
