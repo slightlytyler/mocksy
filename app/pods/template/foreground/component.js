@@ -14,8 +14,9 @@ export default class TemplateForeground extends Component {
     containerDimensions: PropTypes.object.isRequired
   };
 
-  fileSelected(file) {
-    this.props.setCurrentScreenshot(file.path);
+  handleFile(e) {
+    this.props.setCurrentScreenshot(e.target.files[0].path);
+    this.refs.input.value = "";
   }
 
   render() {
@@ -36,6 +37,7 @@ export default class TemplateForeground extends Component {
     return (
       <div
         className="foreground"
+        onClick={() => this.refs.input.click()}
         style={[
           styles.base,
           {
@@ -56,6 +58,12 @@ export default class TemplateForeground extends Component {
           />
         }
 
+        <input
+          ref="input"
+          type="file"
+          onChange={(e) => this.handleFile(e)}
+          style={styles.input}
+        />
       </div>
     );
   }
@@ -67,11 +75,16 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    backgroundColor: '#38B8E2'
+    backgroundColor: '#38B8E2',
+    cursor: 'pointer'
   },
 
   image: {
     width: '100%',
     height: '100%'
-  }
+  },
+
+  input: {
+    display: 'none'
+  },
 };

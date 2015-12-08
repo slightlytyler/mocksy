@@ -6,25 +6,13 @@ import Radium from 'radium';
 @Radium
 export default class TemplateForegroundEmpty extends Component {
   static propTypes = {
-    fileSelected: PropTypes.func.isRequired
   };
-
-  handleFile(e) {
-    this.props.fileSelected(e.target.files[0])
-  }
 
   render() {
     return (
        <div
-        onClick={() => this.refs.input.click()}
         style={styles.base}
       >
-        <input
-          ref="input"
-          type="file"
-          onChange={(e) => this.handleFile(e)}
-          style={styles.input}
-        />
         <img
           src="assets/icons/add-screenshot.svg"
           style={styles.icon}
@@ -47,12 +35,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    height: '100%',
-    cursor: 'pointer'
-  },
-
-  input: {
-    display: 'none'
+    height: '100%'
   },
 
   icon: {
