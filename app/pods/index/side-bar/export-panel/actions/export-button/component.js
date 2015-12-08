@@ -3,6 +3,9 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import path from 'path';
+import { dialog } from 'remote';
+
 import gm from 'gm';
 import { forEach } from 'lodash';
 
@@ -24,38 +27,47 @@ export default class IndexSideBarExportPanelExportButton extends Component {
 
     const template = `./app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`;
 
-    gm(template).size((err, templateSize) => {
-      const { width, height } = templateSize;
+    // Get destination
+    dialog.showSaveDialog(fullDestination => {
+      const parsedDestination = path.parse(fullDestination);
+      const destination = path.join(parsedDestination.dir, parsedDestination.name);
 
-      forEach(sizes, size => {
-        let {
-          id,
-          multiplier,
-          suffix,
-          format
-        } = size;
+      // Build composites
+      gm(template).size((err, templateSize) => {
+        const { width, height } = templateSize;
 
-        let composite = this.buildComposite(
-          template,
-          templateSize,
-          screenshot,
-          foreground,
-          multiplier
-        )
+        forEach(sizes, size => {
+          let {
+            id,
+            multiplier,
+            suffix,
+            format
+          } = size;
 
-        this.writeFile(
-          composite,
-          suffix,
-          format,
-          id
-        );
+          let composite = this.buildComposite(
+            template,
+            templateSize,
+            screenshot,
+            foreground,
+            multiplier
+          )
+
+          // Write file
+          this.writeFile(
+            composite,
+            destination,
+            suffix,
+            format,
+            id
+          );
+        });
       });
     });
   }
 
   buildComposite(template, templateSize, screenshot, screenshotDimensions, multiplier = 1) {
     const { width, height } = templateSize;
-    console.log(multiplier);
+
     return gm()
       .in('-geometry',`${width * multiplier}x${height * multiplier}`)
       .in('-page', '+0+0')
@@ -67,9 +79,9 @@ export default class IndexSideBarExportPanelExportButton extends Component {
       .in('-background', 'transparent');
   }
 
-  writeFile(graphic, suffix, format, id) {
-    graphic.write(`/Users/Tmart/Desktop/test${suffix}.${format}`, (err) => {
-      if (!err) console.log(`Written composite image for size:${id}.`);
+  writeFile(graphic, destination, suffix, format, id) {
+    graphic.write(`${destination}${suffix}.${format}`, (err) => {
+      if (!err) console.log(`Written composite image for size:${id} to ${destination}.`);
     })
   }
 
