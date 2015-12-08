@@ -11,7 +11,7 @@ export default {
         width: 676,
         height: 1202,
         left: 46,
-        top: 193
+        top: 194
       }
     },
   }

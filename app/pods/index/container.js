@@ -5,21 +5,34 @@ import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
 
 import { setCurrentScreenshot } from 'pods/screenshots/actions';
+import {
+  addSize,
+  removeSize,
+  updateSize
+} from 'pods/sizes/actions';
 import IndexComponent from './component';
 
 function mapStateToProps(state) {
-  const { entities, condition } = state.templates;
+  const {
+    templates,
+    screenshots,
+    sizes
+  } = state;
 
   return {
-    templates: entities,
-    currentTemplate: entities[condition.currentTemplate],
-    currentScreenshot: state.screenshots.condition.currentScreenshot
+    templates: templates.entities,
+    currentTemplate: templates.entities[templates.condition.currentTemplate],
+    currentScreenshot: screenshots.condition.currentScreenshot,
+    sizes: sizes.entities
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    setCurrentScreenshot
+    setCurrentScreenshot,
+    addSize,
+    removeSize,
+    updateSize
   }, dispatch);
 }
 

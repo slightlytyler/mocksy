@@ -27,6 +27,21 @@ const store = configureStore({
     entities: {
 
     }
+  },
+
+  sizes: {
+    condition: {
+
+    },
+
+    entities: {
+      0: {
+        id: 0,
+        multiplier: 1,
+        suffix: '',
+        format: 'png'
+      }
+    }
   }
 });
 

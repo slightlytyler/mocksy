@@ -8,12 +8,15 @@ import Foreground from 'pods/template/foreground/component';
 @Radium
 export default class Template extends Component {
   static propTypes = {
+    id: PropTypes.string.isRequired,
     dimensions: PropTypes.object.isRequired,
+    screenshot: PropTypes.string,
     setCurrentScreenshot: PropTypes.func.isRequired
   };
 
   render() {
     const {
+      id,
       dimensions,
       screenshot,
       setCurrentScreenshot
@@ -30,7 +33,7 @@ export default class Template extends Component {
         style={styles.base}
       >
         <img
-          src="assets/base-templates/iphone-6/template.png"
+          src={`assets/base-templates/${id.toLowerCase()}/template.png`}
           style={styles.background}
         />
 

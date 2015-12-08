@@ -25,6 +25,7 @@ export default class IndexPreview extends Component {
         style={styles.base}
       >
         <Template
+          id={template.id}
           dimensions={template.dimensions}
           screenshot={screenshot}
           setCurrentScreenshot={setCurrentScreenshot}

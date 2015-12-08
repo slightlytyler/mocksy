@@ -94,6 +94,7 @@
     "fs": "0.0.2",
     "gm": "git+https://github.com/slightlytyler/gm.git",
     "history": "^1.13.0",
+    "lodash": "^3.10.1",
     "radium": "^0.15.3",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
