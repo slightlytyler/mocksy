@@ -31,10 +31,9 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
           styles.size
         ]}>
           <input
-            type="number"
             value={multiplier}
             onChange={(e) => updateSize(id, {
-              multiplier: Number(e.target.value)
+              multiplier: e.target.value ? Number(e.target.value) : undefined
             })}
             style={styles.input.base}
           />

@@ -23,11 +23,12 @@ export default class IndexSideBarExportPanelExportButton extends Component {
     const { foreground } = currentTemplate.dimensions;
 
     const template = `./app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`;
+
     gm(template).size((err, templateSize) => {
       const { width, height } = templateSize;
 
       forEach(sizes, size => {
-        const {
+        let {
           id,
           multiplier,
           suffix,
@@ -52,9 +53,9 @@ export default class IndexSideBarExportPanelExportButton extends Component {
     });
   }
 
-  buildComposite(template, templateSize, screenshot, screenshotDimensions, multiplier) {
+  buildComposite(template, templateSize, screenshot, screenshotDimensions, multiplier = 1) {
     const { width, height } = templateSize;
-
+    console.log(multiplier);
     return gm()
       .in('-geometry',`${width * multiplier}x${height * multiplier}`)
       .in('-page', '+0+0')
