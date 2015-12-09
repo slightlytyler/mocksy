@@ -57,7 +57,5 @@ const styles = {
     flexDirection: 'column',
     paddingTop: '.75em',
     paddingBottom: '.75em',
-    maxHeight: '20vh',
-    overflow: 'scroll'
   }
 };

@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import Dropdown from 'components/Dropdown';
+
 @Radium
 export default class IndexSideBarExportPanelSizesItem extends Component {
   static propTypes = {
@@ -15,6 +17,18 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
     updateSize: PropTypes.func.isRequired
   };
 
+  sizeOptions = [
+    { value: '1', label: '1x' },
+    { value: '2', label: '2x' },
+    { value: '3', label: '3x' },
+  ];
+
+  formatOptions = [
+    { value: 'png', label: 'PNG' },
+    { value: 'jpg', label: 'JPG' },
+    { value: 'tiff', label: 'TIFF' },
+  ];
+
   render() {
     const {
       id,
@@ -25,6 +39,10 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
       removeSize,
       updateSize
     } = this.props;
+    const {
+      sizeOptions,
+      formatOptions
+    } = this;
 
     return (
       <li style={styles.base}>
@@ -37,7 +55,10 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
             onChange={(e) => updateSize(id, {
               multiplier: e.target.value ? Number(e.target.value) : undefined
             })}
-            style={styles.input.base}
+            style={[
+              styles.input.base,
+              styles.input.paddingOverride
+            ]}
           />
 
           <label style={styles.input.label}>
@@ -54,7 +75,10 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
             onChange={(e) => updateSize(id, {
               suffix: e.target.value
             })}
-            style={styles.input.base}
+            style={[
+              styles.input.base,
+              styles.input.paddingOverride
+            ]}
           />
 
           <label style={styles.input.label}>
@@ -66,12 +90,14 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
           styles.input.container,
           styles.format
         ]}>
-          <input
+          <Dropdown
+            name={`size:${id}-format`}
             value={format}
-            onChange={(e) => updateSize(id, {
-              format: e.target.value
+            options={formatOptions}
+            onChange={(val) => updateSize(id, {
+              format: val
             })}
-            style={styles.input.base}
+            baseStyle={styles.input.base}
           />
 
           <label style={styles.input.label}>
@@ -107,7 +133,12 @@ const styles = {
     base: {
       width: '100%',
       marginBottom: '.3em',
-      border: '1px solid #CFD8DC'
+      fontSize: '.8em',
+      border: '1px solid #CFD8DC',
+    },
+
+    paddingOverride: {
+      padding: '1px 1px 1px .25em',
     },
 
     container: {

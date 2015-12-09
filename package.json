@@ -102,6 +102,7 @@
     "react-file-input": "^0.2.5",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
+    "react-select": "^0.9.1",
     "redux": "^3.0.4",
     "redux-promise": "^0.5.0",
     "redux-thunk": "^1.0.0"
