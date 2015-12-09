@@ -58,9 +58,7 @@ export default class TemplateForeground extends Component {
             src={screenshot}
             style={styles.image}
           /> :
-          <EmptyState
-            fileSelected={(file) => this.fileSelected(file)}
-          />
+          <EmptyState />
         }
       </div>
     );

@@ -29,6 +29,7 @@ export default class Index extends Component {
       actions
     } = this.props;
     const {
+      setCurrentTemplate,
       setCurrentScreenshot,
       addSize,
       removeSize,
@@ -42,6 +43,7 @@ export default class Index extends Component {
       >
         <SideBar
           templates={templates}
+          setCurrentTemplate={setCurrentTemplate}
           currentTemplate={currentTemplate}
           screenshot={currentScreenshot}
           sizes={sizes}

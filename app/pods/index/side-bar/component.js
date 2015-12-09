@@ -13,6 +13,7 @@ export default class IndexSideBar extends Component {
     currentTemplate: PropTypes.object.isRequired,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
+    setCurrentTemplate: PropTypes.func.isRequired,
     addSize: PropTypes.func.isRequired,
     removeSize: PropTypes.func.isRequired,
     updateSize: PropTypes.func.isRequired
@@ -24,6 +25,7 @@ export default class IndexSideBar extends Component {
       currentTemplate,
       screenshot,
       sizes,
+      setCurrentTemplate,
       addSize,
       removeSize,
       updateSize
@@ -37,6 +39,7 @@ export default class IndexSideBar extends Component {
         <TemplateList
           templates={templates}
           currentTemplate={currentTemplate}
+          setCurrentTemplate={setCurrentTemplate}
         />
         <ExportPanel
           currentTemplate={currentTemplate}

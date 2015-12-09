@@ -23,12 +23,16 @@ function entitiesReducer(state={}, action) {
 function conditionReducer(state={}, action) {
   switch (action.type) {
     case SET_CURRENT_SCREENSHOT:
-      return Object.assign({}, state, {
-        currentScreenshot: action.path
-      });
+      return setCurrentScreenshot(state, action.path)
   }
 
   return state;
+}
+
+function setCurrentScreenshot(state, path) {
+  return Object.assign({}, state, {
+    currentScreenshot: path
+  });
 }
 
 export default screenshotsReducer;

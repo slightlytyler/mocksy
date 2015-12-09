@@ -1,7 +1,7 @@
 'use strict'
 
-import { combineReducers } from 'redux'
-import { actionTypes } from './constants'
+import { combineReducers } from 'redux';
+import { actionTypes } from './constants';
 
 const {
 

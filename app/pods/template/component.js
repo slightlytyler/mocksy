@@ -10,9 +10,22 @@ export default class Template extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     dimensions: PropTypes.object.isRequired,
+    canvasDimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired
+    }),
     screenshot: PropTypes.string,
     setCurrentScreenshot: PropTypes.func.isRequired
   };
+
+  isHigherAspect() {
+    const {
+      dimensions,
+      canvasDimensions
+    } = this.props;
+
+    return (dimensions.width / dimensions.height)  >= (canvasDimensions.width / canvasDimensions.height);
+  }
 
   render() {
     const {
@@ -26,11 +39,17 @@ export default class Template extends Component {
       height,
       foreground
     } = dimensions;
+    const isHigherAspect = this.isHigherAspect();
 
     return (
       <div
         className="template"
-        style={styles.base}
+        style={[
+          styles.base,
+          isHigherAspect ?
+          { width: '100%' } :
+          { height: '100%' }
+        ]}
       >
         <img
           src={`assets/base-templates/${id.toLowerCase()}/template.png`}
@@ -56,8 +75,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
-    height: '100%',
+    position: 'relative'
   },
 
   background: {

@@ -12,21 +12,63 @@ export default class IndexPreview extends Component {
     setCurrentScreenshot: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      canvasDimensions: {
+        width: 1,
+        height: 1
+      }
+    }
+  }
+
+  handleResize(el) {
+    const style = window.getComputedStyle(el, null);
+
+    const width = style.getPropertyValue('width').slice(0, -2),
+          height = style.getPropertyValue('height').slice(0, -2),
+          paddingLeft = style.getPropertyValue('padding-left').slice(0, -2),
+          paddingTop = style.getPropertyValue('padding-top').slice(0, -2);
+
+    const innerWidth = width - (paddingLeft * 2),
+          innerHeight = height - (paddingTop * 2);
+
+    this.setState({
+      canvasDimensions: {
+        width: innerWidth,
+        height: innerHeight
+      }
+    });
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize(this.refs.preview));
+    this.handleResize(this.refs.preview)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
   render() {
     const {
       template,
       screenshot,
       setCurrentScreenshot
     } = this.props;
+    const { canvasDimensions } = this.state
 
     return (
       <section
+        ref="preview"
         className="preview"
         style={styles.base}
       >
         <Template
           id={template.id}
           dimensions={template.dimensions}
+          canvasDimensions={canvasDimensions}
           screenshot={screenshot}
           setCurrentScreenshot={setCurrentScreenshot}
         />

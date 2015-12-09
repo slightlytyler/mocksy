@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
 
+import { setCurrentTemplate } from 'pods/templates/actions';
 import { setCurrentScreenshot } from 'pods/screenshots/actions';
 import {
   addSize,
@@ -29,6 +30,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    setCurrentTemplate,
     setCurrentScreenshot,
     addSize,
     removeSize,
