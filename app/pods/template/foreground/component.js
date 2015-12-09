@@ -58,7 +58,10 @@ export default class TemplateForeground extends Component {
             src={screenshot}
             style={styles.image}
           /> :
-          <EmptyState />
+          <EmptyState
+            screenshotWidth={foregroundDimensions.width}
+            screenshotHeight={foregroundDimensions.height}
+          />
         }
       </div>
     );
