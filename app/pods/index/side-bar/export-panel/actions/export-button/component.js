@@ -52,6 +52,7 @@ export default class IndexSideBarExportPanelExportButton extends Component {
             templateSize,
             screenshot,
             foreground,
+            format,
             !isNaN(computedMultipler) && computedMultipler
           )
 
@@ -68,18 +69,19 @@ export default class IndexSideBarExportPanelExportButton extends Component {
     });
   }
 
-  buildComposite(template, templateSize, screenshot, screenshotDimensions, multiplier = 1) {
+  buildComposite(template, templateSize, screenshot, screenshotDimensions, format, multiplier = 1) {
     const { width, height } = templateSize;
 
     return gm()
       .in('-geometry',`${width * multiplier}x${height * multiplier}`)
       .in('-page', '+0+0')
       .in(template)
-      .in('-geometry',`${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}`)
+      .in('-geometry',`${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}^`)
+      .in('-crop', `${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}+0+0`)
       .in('-page', `+${screenshotDimensions.left * multiplier}+${screenshotDimensions.top * multiplier}`)
       .in(screenshot)
       .mosaic()
-      .in('-background', 'transparent');
+      .in('-background', format === 'png' ? 'transparent' : 'white');
   }
 
   writeFile(graphic, destination, suffix, format, id) {
