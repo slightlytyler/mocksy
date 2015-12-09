@@ -11,7 +11,7 @@ export default {
         width: 750,
         height: 1334,
         left: 166,
-        top: 215
+        top: 221
       }
     },
   },
@@ -35,7 +35,7 @@ export default {
 
   'Macbook': {
     id: 'Macbook',
-    position: 1,
+    position: 3,
 
     dimensions: {
       width: 2204,
@@ -52,7 +52,7 @@ export default {
 
   'Macbook-Pro': {
     id: 'Macbook-Pro',
-    position: 1,
+    position: 4,
 
     dimensions: {
       width: 1897,
@@ -63,6 +63,23 @@ export default {
         height: 900,
         left: 229,
         top: 63
+      }
+    },
+  },
+
+  'iMac-Cinema': {
+    id: 'iMac-Cinema',
+    position: 5,
+
+    dimensions: {
+      width: 1899,
+      height: 1298,
+
+      foreground: {
+        width: 1440,
+        height: 900,
+        left: 231,
+        top: 74
       }
     },
   },
