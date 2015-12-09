@@ -10,6 +10,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
     multiplier: PropTypes.number,
     suffix: PropTypes.string,
     format: PropTypes.string.isRequired,
+    isLastSize: PropTypes.bool.isRequired,
     removeSize: PropTypes.func.isRequired,
     updateSize: PropTypes.func.isRequired
   };
@@ -20,6 +21,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
       multiplier,
       suffix,
       format,
+      isLastSize,
       removeSize,
       updateSize
     } = this.props;
@@ -78,11 +80,14 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
         </div>
 
         <div
-          style={styles.remove}
+          style={[
+            styles.remove.base,
+            isLastSize && styles.remove.disabled
+          ]}
         >
           <img
             src="assets/icons/remove-size.svg"
-            onClick={() => removeSize(id)}
+            onClick={() => !isLastSize && removeSize(id)}
             style={styles.remove.icon}
           />
         </div>
@@ -132,10 +137,18 @@ const styles = {
   },
 
   remove: {
-    alignSelf: 'flex-start',
+    base: {
+      alignSelf: 'flex-start',
+    },
+
+    disabled: {
+      opacity: '.45',
+      pointerEvents: 'none'
+    },
 
     icon: {
-      width: '1.25em'
+      width: '1.25em',
+      cursor: 'pointer',
     }
   }
 };

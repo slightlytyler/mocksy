@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import { map } from 'lodash';
+import { map, size as _size } from 'lodash';
 
 import SizeItem from '../item/component';
 
@@ -15,6 +15,11 @@ export default class IndexSideBarExportPanelSizesList extends Component {
     updateSize: PropTypes.func.isRequired
   };
 
+  scrollBottom() {
+    const el = this.refs.list;
+    el.scrollTop = el.scrollHeight;
+  }
+
   render() {
     const {
       sizes,
@@ -22,9 +27,11 @@ export default class IndexSideBarExportPanelSizesList extends Component {
       updateSize,
       sectionStyle
     } = this.props;
+    const singleSize = _size(sizes) === 1;
 
     return (
       <ul
+        ref="list"
         style={[
           sectionStyle,
           styles.base,
@@ -34,6 +41,7 @@ export default class IndexSideBarExportPanelSizesList extends Component {
           <SizeItem
             key={`size:${size.id}`}
             { ...size }
+            isLastSize={singleSize}
             removeSize={removeSize}
             updateSize={updateSize}
           />
@@ -49,5 +57,7 @@ const styles = {
     flexDirection: 'column',
     paddingTop: '.75em',
     paddingBottom: '.75em',
+    maxHeight: '20vh',
+    overflow: 'scroll'
   }
 };
