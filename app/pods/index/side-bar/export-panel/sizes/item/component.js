@@ -17,7 +17,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
     updateSize: PropTypes.func.isRequired
   };
 
-  sizeOptions = [
+  multiplierOptions = [
     { value: '1', label: '1x' },
     { value: '2', label: '2x' },
     { value: '3', label: '3x' },
@@ -40,7 +40,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
       updateSize
     } = this.props;
     const {
-      sizeOptions,
+      multiplierOptions,
       formatOptions
     } = this;
 
@@ -50,15 +50,15 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
           styles.input.container,
           styles.size
         ]}>
-          <input
+          <Dropdown
+            name={`size:${id}-multiplier`}
             value={multiplier}
-            onChange={(e) => updateSize(id, {
-              multiplier: e.target.value ? Number(e.target.value) : undefined
+            options={multiplierOptions}
+            editable={true}
+            onChange={(val) => updateSize(id, {
+              multiplier: val ? Number(val) : undefined
             })}
-            style={[
-              styles.input.base,
-              styles.input.paddingOverride
-            ]}
+            baseStyle={styles.input.base}
           />
 
           <label style={styles.input.label}>

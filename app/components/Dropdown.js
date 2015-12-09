@@ -3,8 +3,10 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import listensToClickOutside from 'react-onclickoutside/decorator';
 import { map, reduce } from 'lodash';
 
+@listensToClickOutside
 @Radium
 export default class Dropdown extends Component {
   static propTypes = {
@@ -31,9 +33,18 @@ export default class Dropdown extends Component {
     });
   }
 
+  handleClickOutside() {
+    this.setState({
+      isActive: false
+    });
+  }
+
   selectOption(val) {
-    const { onChange } = this.props;
-    onChange(val);
+    const {
+      value,
+      onChange
+    } = this.props;
+    if (val !== value) onChange(val);
   }
 
   currentOption() {
@@ -48,6 +59,8 @@ export default class Dropdown extends Component {
       name,
       value,
       options,
+      editable,
+      onChange,
       baseStyle
     } = this.props;
     const { isActive } = this.state;
@@ -55,7 +68,7 @@ export default class Dropdown extends Component {
 
     return (
       <div
-        onClick={() => this.toggleActive()}
+        onClick={() => !editable && this.toggleActive()}
         className="dropdown"
         style={[
           styles.base,
@@ -64,20 +77,39 @@ export default class Dropdown extends Component {
       >
         <section
           className="placeholder"
-          style={styles.placeholder.base}
+          style={[
+            styles.placeholder.base,
+            isActive && styles.placeholder.active,
+          ]}
         >
+          {editable ?
+            (
+              <input
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                style={[
+                  styles.placeholder.text,
+                  styles.placeholder.input
+                ]}
+              />
+            ) :
+            (
+              <div
+                style={styles.placeholder.text}
+              >
+                {currentOption.label}
+              </div>
+            )
+          }
           <div
-            style={styles.placeholder.text}
-          >
-            {currentOption.label}
-          </div>
-          <div
+            onClick={() => editable && this.toggleActive()}
             style={styles.placeholder.arrow}
           >
             <span style={styles.placeholder.icon}>&rsaquo;</span>
           </div>
         </section>
         <ul
+          onClick={() => editable && this.toggleActive()}
           className="menu"
           style={[
             styles.menu.base,
@@ -111,7 +143,11 @@ const styles = {
     position: 'relative',
     lineHeight: 'normal',
     backgroundColor: 'white',
-    cursor: 'pointer'
+    cursor: 'pointer',
+
+    ':focus': {
+      outline: '-webkit-focus-ring-color auto 5px'
+    }
   },
 
   placeholder: {
@@ -119,21 +155,33 @@ const styles = {
       display: 'flex'
     },
 
+    active: {
+      outline: '-webkit-focus-ring-color auto 5px'
+    },
+
     text: {
       flex: 1,
       padding: '1px 1px 1px .25em',
     },
 
+    input: {
+      width: '0',
+      fontSize: '1em',
+      border: 'none',
+      outline: 'none'
+    },
+
     arrow: {
       position: 'relative',
       width: '1.5em',
+      overflow: 'hidden',
       backgroundColor: '#CFD8DC',
     },
 
     icon: {
       position: 'absolute',
-      left: 'calc(50% + .0675em)',
-      top: 'calc(50% + .023em)',
+      left: 'calc(50% + .1em)',
+      top: 'calc(50% + .03em)',
       transform: 'translate(-50%, -50%) rotate(90deg)',
       fontSize: '2em',
       fontWeight: 'bold',
@@ -169,10 +217,6 @@ const styles = {
     text: {
       display: 'block',
       padding: '.25em',
-    }
+    },
   },
-
-  input: {
-
-  }
 };
