@@ -37,7 +37,7 @@ const store = configureStore({
     entities: {
       0: {
         id: 0,
-        multiplier: 1,
+        multiplier: '1x',
         suffix: '',
         format: 'png'
       }

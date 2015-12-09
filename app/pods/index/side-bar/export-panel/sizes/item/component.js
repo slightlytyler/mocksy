@@ -9,7 +9,7 @@ import Dropdown from 'components/Dropdown';
 export default class IndexSideBarExportPanelSizesItem extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
-    multiplier: PropTypes.number,
+    multiplier: PropTypes.string,
     suffix: PropTypes.string,
     format: PropTypes.string.isRequired,
     isLastSize: PropTypes.bool.isRequired,
@@ -18,9 +18,9 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
   };
 
   multiplierOptions = [
-    { value: '1', label: '1x' },
-    { value: '2', label: '2x' },
-    { value: '3', label: '3x' },
+    { value: '1x', label: '1x' },
+    { value: '2x', label: '2x' },
+    { value: '3x', label: '3x' },
   ];
 
   formatOptions = [
@@ -56,7 +56,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
             options={multiplierOptions}
             editable={true}
             onChange={(val) => updateSize(id, {
-              multiplier: val ? Number(val) : undefined
+              multiplier: val
             })}
             baseStyle={styles.input.base}
           />

@@ -50,7 +50,7 @@ const addSize = (state) => {
     ...state,
     [id]: {
       id,
-      multiplier: 1,
+      multiplier: '1x',
       suffix: '',
       format: 'png'
     }

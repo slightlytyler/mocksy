@@ -43,13 +43,16 @@ export default class IndexSideBarExportPanelExportButton extends Component {
             suffix,
             format
           } = size;
+          let computedMultipler = multiplier.slice(-1).toLowerCase() === 'x' ?
+              Number(multiplier.slice(0, -1)) :
+              Number(multiplier);
 
           let composite = this.buildComposite(
             template,
             templateSize,
             screenshot,
             foreground,
-            multiplier
+            !isNaN(computedMultipler) && computedMultipler
           )
 
           // Write file
