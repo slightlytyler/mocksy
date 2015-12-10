@@ -5,6 +5,7 @@ import Radium from 'radium';
 
 import { dialog } from 'remote';
 
+import colors from 'constants/colors';
 import EmptyState from 'pods/template/foreground/empty/component';
 
 @Radium
@@ -74,7 +75,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    backgroundColor: '#38B8E2',
+    background: colors.featureGradient,
     cursor: 'pointer',
     overflow: 'hidden',
   },

@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
 import TemplateList from './template-list/component';
 import ExportPanel from './export-panel/component';
 
@@ -60,9 +61,9 @@ const styles = {
       flexDirection: 'column',
       justifyContent: 'space-between',
       flex: 4,
+      position: 'relative',
       height: '100vh',
-      backgroundColor: '#CFD8DC',
-      borderLeft: '1px solid rgba(0, 0, 0, 0.15)',
+      background: colors.featureGradient,
       boxShadow: 'rgba(0, 0, 0, 0.25) 2px 0 4px'
     }
   };

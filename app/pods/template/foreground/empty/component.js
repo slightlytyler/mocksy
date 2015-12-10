@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
+
 @Radium
 export default class TemplateForegroundEmpty extends Component {
   static propTypes = {
@@ -45,7 +47,7 @@ const styles = {
     alignItems: 'center',
     flex: 1,
     height: '100%',
-    color: '#EDF3F5',
+    color: 'white',
     textAlign: 'center'
   },
 

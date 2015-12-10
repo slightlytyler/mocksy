@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
 import Header from './header/component';
 import SizeList from './sizes/list/component';
 import Actions from './actions/component';
@@ -56,9 +57,9 @@ export default class IndexSideBarExportPanel extends Component {
 
 const styles = {
   base: {
-    dispay: 'flex',
+    display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#EDF3F5',
+    backgroundColor: colors.overlay,
   },
 
   section: {
@@ -67,6 +68,6 @@ const styles = {
     alignItems: 'center',
     paddingLeft: '.75em',
     paddingRight: '.75em',
-    borderBottom: '1px solid #CFD8DC',
+    borderBottom: `1px solid ${colors.pink}`,
   },
 };

@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
+
 @Radium
 export default class IndexSideBarTemplateListItem extends Component {
   static propTypes = {
@@ -47,14 +49,16 @@ const styles = {
   base: {
     display: 'flex',
     height: '15vh',
-    borderBottom: '1px solid #EDF3F5',
+    borderBottom: `1px solid white`,
     cursor: 'pointer',
-    color: '#607D8B'
+    color: 'white',
+    borderRightWidth: '1.5em',
+    borderRightStyle: 'solid',
+    borderRightColor: 'transparent',
   },
 
   active: {
-    backgroundColor: '#607D8B',
-    color: '#CFD8DC'
+    borderRightColor: 'white'
   },
 
   preview: {
@@ -77,12 +81,14 @@ const styles = {
       display: 'flex',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      flex: 2
+      flex: 2,
     },
 
     text: {
-      fontSize: '2em',
+      marginRight: '1em',
+      fontSize: '1.6em',
       fontWeight: 100,
+
     }
   }
 };

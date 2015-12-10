@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
 import Dropdown from 'components/Dropdown';
 
 @Radium
@@ -12,6 +13,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
     multiplier: PropTypes.string,
     suffix: PropTypes.string,
     format: PropTypes.string.isRequired,
+    isOnlySize: PropTypes.bool.isRequired,
     isLastSize: PropTypes.bool.isRequired,
     removeSize: PropTypes.func.isRequired,
     updateSize: PropTypes.func.isRequired
@@ -35,6 +37,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
       multiplier,
       suffix,
       format,
+      isOnlySize,
       isLastSize,
       removeSize,
       updateSize
@@ -45,7 +48,12 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
     } = this;
 
     return (
-      <li style={styles.base}>
+      <li
+        style={[
+          styles.base,
+          isLastSize && styles.last
+        ]}
+      >
         <div style={[
           styles.input.container,
           styles.size
@@ -108,12 +116,12 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
         <div
           style={[
             styles.remove.base,
-            isLastSize && styles.remove.disabled
+            isOnlySize && styles.remove.disabled
           ]}
         >
           <img
             src="assets/icons/remove-size.svg"
-            onClick={() => !isLastSize && removeSize(id)}
+            onClick={() => !isOnlySize && removeSize(id)}
             style={styles.remove.icon}
           />
         </div>
@@ -127,14 +135,20 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: '.75em'
+  },
+
+  last: {
+    marginBottom: 0,
   },
 
   input: {
     base: {
       width: '100%',
       marginBottom: '.3em',
-      fontSize: '.8em',
-      border: '1px solid #CFD8DC',
+      fontSize: '.9em',
+      color: colors.black,
+      border: `1px solid ${colors.pink}`,
     },
 
     paddingOverride: {
@@ -145,12 +159,12 @@ const styles = {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      marginRight: '2em'
+      marginRight: '1.5em'
     },
 
     label: {
       fontSize: '.8em',
-      color: '#607D8B',
+      color: colors.black,
       fontWeight: 200
     }
   },
@@ -170,6 +184,7 @@ const styles = {
   remove: {
     base: {
       alignSelf: 'flex-start',
+      marginTop: '.1em'
     },
 
     disabled: {

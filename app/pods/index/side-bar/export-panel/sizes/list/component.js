@@ -27,7 +27,8 @@ export default class IndexSideBarExportPanelSizesList extends Component {
       updateSize,
       sectionStyle
     } = this.props;
-    const singleSize = _size(sizes) === 1;
+    const sizesLength = _size(sizes);
+    const singleSize = sizesLength === 1;
 
     return (
       <ul
@@ -37,11 +38,12 @@ export default class IndexSideBarExportPanelSizesList extends Component {
           styles.base,
         ]}
       >
-        {map(sizes, size =>
+        {map(sizes, (size, i) =>
           <SizeItem
             key={`size:${size.id}`}
             { ...size }
-            isLastSize={singleSize}
+            isOnlySize={singleSize}
+            isLastSize={sizesLength === Number(i) + 1}
             removeSize={removeSize}
             updateSize={updateSize}
           />

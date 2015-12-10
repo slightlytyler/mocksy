@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
+
 @Radium
 export default class IndexSideBarExportPanelHeader extends Component {
   static propTypes = {
@@ -45,7 +47,7 @@ const styles = {
   text: {
     fontSize: '1.25em',
     fontWeight: 400,
-    color: '#263238'
+    color: colors.black
   },
 
   addSizeIcon: {

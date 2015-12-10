@@ -5,9 +5,10 @@ import Radium from 'radium';
 
 import path from 'path';
 import { dialog } from 'remote';
-
 import gm from 'gm';
 import { forEach } from 'lodash';
+
+import colors from 'constants/colors';
 
 @Radium
 export default class IndexSideBarExportPanelExportButton extends Component {
@@ -111,15 +112,15 @@ export default class IndexSideBarExportPanelExportButton extends Component {
 const styles = {
   base: {
     flex: 1,
-    color: '#607D8B',
-    border: '1px solid #607D8B',
+    color: colors.pink,
+    border: `1px solid ${colors.pink}`,
     borderRadius: '4px',
     backgroundColor: 'transparent',
     cursor: 'pointer',
 
     ':hover': {
-      color: '#EDF3F5',
-      backgroundColor: '#607D8B'
+      color: 'white',
+      backgroundColor: colors.pink
     }
   },
 

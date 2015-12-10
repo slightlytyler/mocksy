@@ -6,6 +6,8 @@ import Radium from 'radium';
 import listensToClickOutside from 'react-onclickoutside/decorator';
 import { map, reduce } from 'lodash';
 
+import colors from 'constants/colors';
+
 @listensToClickOutside
 @Radium
 export default class Dropdown extends Component {
@@ -72,7 +74,9 @@ export default class Dropdown extends Component {
         className="dropdown"
         style={[
           styles.base,
-          baseStyle
+          baseStyle,
+          !editable && styles.notEditable,
+          isActive && styles.active
         ]}
       >
         <section
@@ -122,7 +126,7 @@ export default class Dropdown extends Component {
               onClick={() => this.selectOption(option.value)}
               style={[
                 styles.menu.item,
-                (options.length === i +1) && {
+                (options.length === i + 1) && {
                   borderBottom: 'none'
                 }
               ]}
@@ -150,6 +154,15 @@ const styles = {
     }
   },
 
+  notEditable: {
+    borderTopLeftRadius: '.4em',
+    borderBottomLeftRadius: '.4em'
+  },
+
+  active: {
+    borderTopLeftRadius: '0',
+  },
+
   placeholder: {
     base: {
       display: 'flex'
@@ -175,7 +188,7 @@ const styles = {
       position: 'relative',
       width: '1.5em',
       overflow: 'hidden',
-      backgroundColor: '#CFD8DC',
+      backgroundColor: colors.pink,
     },
 
     icon: {
@@ -198,7 +211,7 @@ const styles = {
       bottom: '100%',
       width: 'calc(100%  + 2px)',
       backgroundColor: 'white',
-      border: '1px solid #CFD8DC',
+      border: `1px solid ${colors.pink}`,
     },
 
     visible: {
@@ -206,11 +219,10 @@ const styles = {
     },
 
     item: {
-      borderBottom: '1px solid #EDF3F5',
+      borderBottom: `1px solid ${colors.grey}`,
 
       ':hover': {
-        backgroundColor: '#607D8B',
-        color: 'white'
+        color: colors.orange,
       }
     },
 
