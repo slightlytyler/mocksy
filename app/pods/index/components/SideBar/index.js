@@ -4,8 +4,8 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import colors from 'constants/colors';
-import TemplateList from './template-list/component';
-import ExportPanel from './export-panel/component';
+import TemplateList from 'pods/template/components/List';
+import ExportPanel from './ExportPanel';
 
 @Radium
 export default class IndexSideBar extends Component {

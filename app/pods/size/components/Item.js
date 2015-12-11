@@ -7,7 +7,7 @@ import colors from 'constants/colors';
 import Dropdown from 'components/Dropdown';
 
 @Radium
-export default class IndexSideBarExportPanelSizesItem extends Component {
+export default class SizeItem extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
     multiplier: PropTypes.string,

@@ -5,10 +5,10 @@ import Radium from 'radium';
 
 import { map, size as _size } from 'lodash';
 
-import SizeItem from '../item/component';
+import SizeItem from './Item';
 
 @Radium
-export default class IndexSideBarExportPanelSizesList extends Component {
+export default class SizeList extends Component {
   static propTypes = {
     sizes: PropTypes.object.isRequired,
     removeSize: PropTypes.func.isRequired,

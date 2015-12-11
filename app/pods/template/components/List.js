@@ -5,10 +5,10 @@ import Radium from 'radium';
 
 import { map } from 'lodash';
 
-import TemplateItem from './item/component';
+import TemplateItem from './Item';
 
 @Radium
-export default class IndexSideBarTemplateList extends Component {
+export default class TemplateList extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,

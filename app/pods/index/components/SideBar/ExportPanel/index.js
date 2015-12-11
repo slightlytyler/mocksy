@@ -4,9 +4,9 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import colors from 'constants/colors';
-import Header from './header/component';
-import SizeList from './sizes/list/component';
-import Actions from './actions/component';
+import Header from './Header';
+import SizeList from 'pods/size/components/List';
+import Actions from './Actions';
 
 @Radium
 export default class IndexSideBarExportPanel extends Component {

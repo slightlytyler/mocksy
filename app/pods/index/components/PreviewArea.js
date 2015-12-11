@@ -3,10 +3,10 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Template from 'pods/template/component';
+import TemplatePreview from 'pods/template/components/Preview';
 
 @Radium
-export default class IndexPreview extends Component {
+export default class IndexPreviewArea extends Component {
   static propTypes = {
     template: PropTypes.object.isRequired,
     setCurrentScreenshot: PropTypes.func.isRequired
@@ -65,7 +65,7 @@ export default class IndexPreview extends Component {
         className="preview"
         style={styles.base}
       >
-        <Template
+        <TemplatePreview
           id={template.id}
           dimensions={template.dimensions}
           canvasDimensions={canvasDimensions}

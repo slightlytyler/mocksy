@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import ExportButton from './export-button/component';
+import ExportButton from './ExportButton';
 
 @Radium
 export default class IndexSideBarExportPanelActions extends Component {

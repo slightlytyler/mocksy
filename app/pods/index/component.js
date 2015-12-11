@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Radium from 'radium';
 
-import SideBar from './side-bar/component';
-import Preview from './preview/component';
+import SideBar from './components/SideBar';
+import PreviewArea from './components/PreviewArea';
 
 @Radium
 export default class Index extends Component {
@@ -51,7 +51,7 @@ export default class Index extends Component {
           removeSize={removeSize}
           updateSize={updateSize}
         />
-        <Preview
+        <PreviewArea
           template={currentTemplate}
           screenshot={currentScreenshot}
           setCurrentScreenshot={setCurrentScreenshot}

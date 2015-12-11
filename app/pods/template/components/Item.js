@@ -6,7 +6,7 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 
 @Radium
-export default class IndexSideBarTemplateListItem extends Component {
+export default class TemplateItem extends Component {
   static propTypes = {
     templateId: PropTypes.string.isRequired,
     isActive: PropTypes.bool.isRequired,

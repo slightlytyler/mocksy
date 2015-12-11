@@ -3,10 +3,10 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Foreground from 'pods/template/foreground/component';
+import Foreground from './Foreground';
 
 @Radium
-export default class Template extends Component {
+export default class TemplatePreview extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     dimensions: PropTypes.object.isRequired,

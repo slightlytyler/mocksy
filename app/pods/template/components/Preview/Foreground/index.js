@@ -6,10 +6,10 @@ import Radium from 'radium';
 import { dialog } from 'remote';
 
 import colors from 'constants/colors';
-import EmptyState from 'pods/template/foreground/empty/component';
+import EmptyState from './Empty';
 
 @Radium
-export default class TemplateForeground extends Component {
+export default class TemplatePreviewForeground extends Component {
   static propTypes = {
     screenshot: PropTypes.string,
     setCurrentScreenshot: PropTypes.func.isRequired,

@@ -6,7 +6,7 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 
 @Radium
-export default class TemplateForegroundEmpty extends Component {
+export default class TemplatePreviewForegroundEmpty extends Component {
   static propTypes = {
     screenshotWidth: PropTypes.number.isRequired,
     screenshotHeight: PropTypes.number.isRequired
