@@ -2,13 +2,15 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-
 import path from 'path';
-import { dialog } from 'remote';
-import gm from 'gm';
+
+import { app, dialog } from 'remote';
+import gmNode  from 'gm';
+const gm = gmNode.subClass({appPath: path.join(app.getAppPath(), 'app/assets/gm/bin/')});
 import { forEach } from 'lodash';
 
 import colors from 'constants/colors';
+
 
 @Radium
 export default class IndexSideBarExportPanelExportButton extends Component {
@@ -26,7 +28,7 @@ export default class IndexSideBarExportPanelExportButton extends Component {
     } = this.props;
     const { foreground } = currentTemplate.dimensions;
 
-    const template = `./app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`;
+    const template = path.join(app.getAppPath(), `app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`);
 
     // Get destination
     dialog.showSaveDialog(fullDestination => {
@@ -35,6 +37,7 @@ export default class IndexSideBarExportPanelExportButton extends Component {
 
       // Build composites
       gm(template).size((err, templateSize) => {
+        console.log(err);
         const { width, height } = templateSize;
 
         forEach(sizes, size => {
