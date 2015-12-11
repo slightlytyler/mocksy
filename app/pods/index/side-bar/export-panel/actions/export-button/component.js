@@ -35,40 +35,39 @@ export default class IndexSideBarExportPanelExportButton extends Component {
       const parsedDestination = path.parse(fullDestination);
       const destination = path.join(parsedDestination.dir, parsedDestination.name);
 
-      // Build composites
-      gm(template).size((err, templateSize) => {
-        console.log(err);
-        const { width, height } = templateSize;
+      // Build composites for each size
+      forEach(sizes, size => {
+        let {
+          id,
+          multiplier,
+          suffix,
+          format
+        } = size;
 
-        forEach(sizes, size => {
-          let {
-            id,
-            multiplier,
-            suffix,
-            format
-          } = size;
-          let computedMultipler = multiplier.slice(-1).toLowerCase() === 'x' ?
-              Number(multiplier.slice(0, -1)) :
-              Number(multiplier);
+        // Remove 'x' from multiplier and convert to number
+        let computedMultipler = multiplier.slice(-1).toLowerCase() === 'x' ?
+            Number(multiplier.slice(0, -1)) :
+            Number(multiplier);
 
-          let composite = this.buildComposite(
-            template,
-            templateSize,
-            screenshot,
-            foreground,
-            format,
-            !isNaN(computedMultipler) && computedMultipler
-          )
+        // We don't pass the multiplier if it's NaN
+        // so it defaults to 1
+        let composite = this.buildComposite(
+          template,
+          currentTemplate.dimensions,
+          screenshot,
+          foreground,
+          format,
+          !isNaN(computedMultipler) && computedMultipler
+        )
 
-          // Write file
-          this.writeFile(
-            composite,
-            destination,
-            suffix,
-            format,
-            id
-          );
-        });
+        // Write file
+        this.writeFile(
+          composite,
+          destination,
+          suffix,
+          format,
+          id
+        );
       });
     });
   }

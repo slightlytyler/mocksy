@@ -21,7 +21,7 @@ export default class TemplateForeground extends Component {
     const { setCurrentScreenshot } = this.props;
 
     dialog.showOpenDialog({ multiSelections: false }, fileNames =>
-      setCurrentScreenshot(fileNames[0])
+      fileNames && setCurrentScreenshot(fileNames[0])
     )
   }
 
