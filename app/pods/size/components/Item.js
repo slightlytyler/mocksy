@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import formatOptions from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
 import Dropdown from 'components/Dropdown';
 
@@ -25,12 +26,6 @@ export default class SizeItem extends Component {
     { value: '3x', label: '3x' },
   ];
 
-  formatOptions = [
-    { value: 'png', label: 'PNG' },
-    { value: 'jpg', label: 'JPG' },
-    { value: 'tiff', label: 'TIFF' },
-  ];
-
   render() {
     const {
       id,
@@ -43,8 +38,7 @@ export default class SizeItem extends Component {
       updateSize
     } = this.props;
     const {
-      multiplierOptions,
-      formatOptions
+      multiplierOptions
     } = this;
 
     return (

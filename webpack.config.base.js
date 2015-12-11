@@ -24,6 +24,7 @@ module.exports = {
       components: path.join(__dirname, "app/components"),
       reducers: path.join(__dirname, "app/reducers"),
       constants: path.join(__dirname, "app/constants"),
+      api: path.join(__dirname, "app/api"),
       utils: path.join(__dirname, "app/utils"),
       styles: path.join(__dirname, "app/styles")
     },

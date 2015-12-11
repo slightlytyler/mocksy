@@ -5,11 +5,11 @@ import Radium from 'radium';
 import path from 'path';
 
 import { app, dialog } from 'remote';
-import gmNode  from 'gm';
-const gm = gmNode.subClass({appPath: path.join(app.getAppPath(), 'app/assets/gm/bin/')});
 import { forEach } from 'lodash';
 
 import colors from 'constants/colors';
+import compositeImages from 'api/composite-images';
+import writeFile from 'api/write-file.js'
 
 
 @Radium
@@ -51,7 +51,7 @@ export default class IndexSideBarExportPanelExportButton extends Component {
 
         // We don't pass the multiplier if it's NaN
         // so it defaults to 1
-        let composite = this.buildComposite(
+        let composite = compositeImages(
           template,
           currentTemplate.dimensions,
           screenshot,
@@ -61,7 +61,7 @@ export default class IndexSideBarExportPanelExportButton extends Component {
         )
 
         // Write file
-        this.writeFile(
+        writeFile(
           composite,
           destination,
           suffix,
@@ -70,27 +70,6 @@ export default class IndexSideBarExportPanelExportButton extends Component {
         );
       });
     });
-  }
-
-  buildComposite(template, templateSize, screenshot, screenshotDimensions, format, multiplier = 1) {
-    const { width, height } = templateSize;
-
-    return gm()
-      .in('-geometry',`${width * multiplier}x${height * multiplier}`)
-      .in('-page', '+0+0')
-      .in(template)
-      .in('-geometry',`${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}^`)
-      .in('-crop', `${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}+0+0`)
-      .in('-page', `+${screenshotDimensions.left * multiplier}+${screenshotDimensions.top * multiplier}`)
-      .in(screenshot)
-      .mosaic()
-      .in('-background', format === 'png' ? 'transparent' : 'white');
-  }
-
-  writeFile(graphic, destination, suffix, format, id) {
-    graphic.write(`${destination}${suffix}.${format}`, (err) => {
-      if (!err) console.log(`Written composite image for size:${id} to ${destination}.`);
-    })
   }
 
   render() {
