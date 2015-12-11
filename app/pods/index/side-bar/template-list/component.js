@@ -42,6 +42,7 @@ export default class IndexSideBarTemplateList extends Component {
 
 const styles = {
   base: {
-
+    flex: 1,
+    overflow: 'scroll'
   }
 };
