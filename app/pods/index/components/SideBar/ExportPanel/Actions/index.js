@@ -43,5 +43,6 @@ const styles = {
     display: 'flex',
     paddingTop: '.5em',
     paddingBottom: '.5em',
+    borderBottom: 'none'
   },
 };

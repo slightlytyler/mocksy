@@ -55,6 +55,10 @@ const styles = {
     borderRightWidth: '1.5em',
     borderRightStyle: 'solid',
     borderRightColor: 'transparent',
+
+    ':hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.1)'
+    }
   },
 
   active: {

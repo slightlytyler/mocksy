@@ -58,7 +58,7 @@ const styles = {
 
   text: {
     marginBottom: '.25em',
-    fontSize: '2em',
+    fontSize: '1.6em',
     fontWeight: 100,
   }
 };
