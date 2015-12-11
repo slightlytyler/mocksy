@@ -28,7 +28,7 @@ export default class IndexSideBarExportPanelSizesItem extends Component {
   formatOptions = [
     { value: 'png', label: 'PNG' },
     { value: 'jpg', label: 'JPG' },
-    { value: 'pdf', label: 'PDF' },
+    { value: 'tiff', label: 'TIFF' },
   ];
 
   render() {
