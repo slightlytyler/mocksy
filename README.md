@@ -1,6 +1,8 @@
 # Mocsky
 **Mocksy** is an app for easily and quickly creating mockups with your screenshots.
 
+![alt tag](https://raw.github.com/slightlytyler/mocksy/master/screenshot.png)
+
 ## Install
 
 Install dependencies.
