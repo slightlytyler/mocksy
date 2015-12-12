@@ -91,7 +91,7 @@ const styles = {
     text: {
       marginRight: '1em',
       fontSize: '1.6em',
-      fontWeight: 100,
+      fontWeight: 200,
 
     }
   }

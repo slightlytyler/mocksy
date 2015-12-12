@@ -59,6 +59,6 @@ const styles = {
   text: {
     marginBottom: '.25em',
     fontSize: '1.6em',
-    fontWeight: 100,
+    fontWeight: 200,
   }
 };
