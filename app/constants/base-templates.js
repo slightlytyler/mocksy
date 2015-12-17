@@ -83,4 +83,72 @@ export default {
       }
     },
   },
+
+  'Nexus-6': {
+    id: 'Nexus-6',
+    position: 6,
+
+    dimensions: {
+      width: 1589,
+      height: 3019,
+
+      foreground: {
+        width: 1440,
+        height: 2560,
+        left: 78,
+        top: 247
+      }
+    }
+  },
+
+  'Nexus-7': {
+    id: 'Nexus-7',
+    position: 7,
+
+    dimensions: {
+      width: 1506,
+      height: 2500,
+
+      foreground: {
+        width: 1200,
+        height: 1920,
+        left: 153,
+        top: 274
+      }
+    }
+  },
+
+  'Galaxy-S4': {
+    id: 'Galaxy-S4',
+    position: 8,
+
+    dimensions: {
+      width: 1184,
+      height: 2343,
+
+      foreground: {
+        width: 1080,
+        height: 1920,
+        left: 51,
+        top: 194
+      }
+    }
+  },
+
+  'Surface-Pro-3': {
+    id: 'Surface-Pro-3',
+    position: 9,
+
+    dimensions: {
+      width: 2556,
+      height: 1777,
+
+      foreground: {
+        width: 2160,
+        height: 1440,
+        left: 201,
+        top: 173
+      }
+    }
+  },
 }
