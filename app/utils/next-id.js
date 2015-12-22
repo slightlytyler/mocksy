@@ -1,4 +1,4 @@
-import { size } from 'lodash';
+import { size, reduce } from 'lodash';
 
 // Takes a set with sequential numerical ideas
 // and returns the next in the sequence
