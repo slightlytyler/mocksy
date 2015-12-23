@@ -53,7 +53,8 @@ export default class SizeItem extends Component {
           styles.size
         ]}>
           <Dropdown
-            name={`size:${id}-multiplier`}
+            key={`size:${id}-multiplier`}
+            name="multiplier"
             value={multiplier}
             options={multiplierOptions}
             editable={true}
@@ -77,6 +78,7 @@ export default class SizeItem extends Component {
             onChange={(e) => updateSize(id, {
               suffix: e.target.value
             })}
+            className="suffix input"
             style={[
               styles.input.base,
               styles.input.paddingOverride
@@ -93,7 +95,8 @@ export default class SizeItem extends Component {
           styles.format
         ]}>
           <Dropdown
-            name={`size:${id}-format`}
+            key={`size:${id}-format`}
+            name="format"
             value={format}
             options={formatOptions}
             onChange={(val) => updateSize(id, {
@@ -108,6 +111,8 @@ export default class SizeItem extends Component {
         </div>
 
         <div
+          onClick={() => !isOnlySize && removeSize(id)}
+          className="remove button"
           style={[
             styles.remove.base,
             isOnlySize && styles.remove.disabled
@@ -115,7 +120,6 @@ export default class SizeItem extends Component {
         >
           <img
             src="assets/icons/remove-size.svg"
-            onClick={() => !isOnlySize && removeSize(id)}
             style={styles.remove.icon}
           />
         </div>

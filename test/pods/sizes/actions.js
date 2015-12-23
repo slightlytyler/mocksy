@@ -1,6 +1,5 @@
 /* eslint no-unused-expressions: 0 */
 import { expect } from 'chai';
-import { spy } from 'sinon';
 import {
   addSize,
   removeSize,
@@ -14,7 +13,7 @@ const {
 } = actionTypes;
 
 
-describe('actions', () => {
+export default describe('actions', () => {
   it('addSize should create an ADD_SIZE action', () => {
     expect(addSize()).to.deep.equal({ type: ADD_SIZE });
   });

@@ -58,6 +58,7 @@ export default class Dropdown extends Component {
 
   render() {
     const {
+      key,
       name,
       value,
       options,
@@ -71,7 +72,7 @@ export default class Dropdown extends Component {
     return (
       <div
         onClick={() => !editable && this.toggleActive()}
-        className="dropdown"
+        className={`dropdown ${name}`}
         style={[
           styles.base,
           baseStyle,
@@ -91,6 +92,7 @@ export default class Dropdown extends Component {
               <input
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
+                className={`input ${name}`}
                 style={[
                   styles.placeholder.text,
                   styles.placeholder.input
@@ -99,6 +101,7 @@ export default class Dropdown extends Component {
             ) :
             (
               <div
+                className="placeholder text"
                 style={styles.placeholder.text}
               >
                 {currentOption.label}
@@ -122,8 +125,9 @@ export default class Dropdown extends Component {
         >
           {map(options, (option, i) =>(
             <li
-              key={`${name}-option:${option.value}`}
+              key={`${key}-option:${option.value}`}
               onClick={() => this.selectOption(option.value)}
+              className="item"
               style={[
                 styles.menu.item,
                 (options.length === i + 1) && {
