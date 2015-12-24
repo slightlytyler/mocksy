@@ -31,13 +31,23 @@ const props = {
   ...actions
 };
 
-describe('List', () => {
-  const errorStub = stub(console, 'error');
+export default describe('List', () => {
+  let errorStub;
   const tree = sd.shallowRender(React.createElement(SizeList, props));
   const vdom = tree.getRenderOutput();
   const items = vdom.props.children.filter(item => isElementOfType(item, SizeItem));
   const item = items[0];
   const lastItem = items[1];
+
+  beforeEach(function(done) {
+    errorStub = stub(console, 'error');
+    done();
+  });
+
+  afterEach(function(done) {
+     errorStub.restore();
+     done();
+  });
 
   it('should pass propTypes check', () => {
     assert(!errorStub.called, `\n${errorStub.args.join('\n')}`);

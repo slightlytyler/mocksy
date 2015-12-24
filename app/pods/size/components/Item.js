@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import formatOptions from 'constants/accepted-image-formats';
+import acceptedFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
 import Dropdown from 'components/Dropdown';
 
@@ -26,6 +26,8 @@ export default class SizeItem extends Component {
     { value: '3x', label: '3x' },
   ];
 
+  formatOptions = acceptedFormats;
+
   render() {
     const {
       id,
@@ -38,7 +40,8 @@ export default class SizeItem extends Component {
       updateSize
     } = this.props;
     const {
-      multiplierOptions
+      multiplierOptions,
+      formatOptions
     } = this;
 
     return (
@@ -48,10 +51,13 @@ export default class SizeItem extends Component {
           isLastSize && styles.last
         ]}
       >
-        <div style={[
-          styles.input.container,
-          styles.size
-        ]}>
+        <div
+          ref="multiplierDropdownContainer"
+          style={[
+            styles.input.container,
+            styles.size
+          ]}
+        >
           <Dropdown
             key={`size:${id}-multiplier`}
             name="multiplier"
@@ -69,10 +75,13 @@ export default class SizeItem extends Component {
           </label>
         </div>
 
-        <div style={[
-          styles.input.container,
-          styles.suffix
-        ]}>
+        <div
+          ref="suffixInputContainer"
+          style={[
+            styles.input.container,
+            styles.suffix
+          ]}
+        >
           <input
             value={suffix}
             onChange={(e) => updateSize(id, {
@@ -90,10 +99,13 @@ export default class SizeItem extends Component {
           </label>
         </div>
 
-        <div style={[
-          styles.input.container,
-          styles.format
-        ]}>
+        <div
+          ref="formatDropdownContainer"
+          style={[
+            styles.input.container,
+            styles.format
+          ]}
+        >
           <Dropdown
             key={`size:${id}-format`}
             name="format"
@@ -111,6 +123,7 @@ export default class SizeItem extends Component {
         </div>
 
         <div
+          ref="removeButton"
           onClick={() => !isOnlySize && removeSize(id)}
           className="remove button"
           style={[

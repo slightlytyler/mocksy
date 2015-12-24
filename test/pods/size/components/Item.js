@@ -1,138 +1,210 @@
-import { expect } from 'chai';
-import { spy } from 'sinon';
+import { expect, assert } from 'chai';
+import { stub, spy } from 'sinon';
 import React from 'react';
-import {
-  renderIntoDocument,
-  scryRenderedDOMComponentsWithTag,
-  findRenderedDOMComponentWithClass,
-  Simulate
-} from 'react-addons-test-utils';
-import Item from 'pods/size/components/Item';
+import sd from 'skin-deep';
+import assignDeep from 'assign-deep';
+import { isElementOfType } from 'react-addons-test-utils';
 
-require('../../../utils/user-agent');
+import SizeItem from 'pods/size/components/Item';
+import DropdownComponent from 'components/Dropdown';
 
-function setup() {
-  const actions = {
-    removeSize: spy(),
-    updateSize: spy()
-  };
-  const props = {
-    id: 1,
-    multiplier: '1x',
-    suffix: '@1x',
-    format: 'png',
-    isOnlySize: false,
-    isLastSize: false,
-    ...actions
-  };
-  const component = renderIntoDocument(
-    <Item
-      { ...props }
-    />
-  );
-  const onlySizeComponent = renderIntoDocument(
-    <Item
-      { ...props }
-      isOnlySize={true}
-    />
-  );
+const actions = {
+  removeSize: spy(),
+  updateSize: spy()
+};
+const props = {
+  id: 1,
+  multiplier: '1x',
+  suffix: '@1x',
+  format: 'png',
+  isOnlySize: false,
+  isLastSize: false,
+  ...actions
+};
 
-  return {
-    actions,
-    component: {
-      node: component,
-      removeButton: findRenderedDOMComponentWithClass(component, 'remove button')
-    },
-    onlySizeComponent: {
-      node: onlySizeComponent,
-      removeButton: findRenderedDOMComponentWithClass(onlySizeComponent, 'remove button')
-    },
-    multiplier: {
-      input: findRenderedDOMComponentWithClass(component, 'multiplier input'),
-      value: function() { return this.input.value }
-    },
-    suffix: {
-      input: findRenderedDOMComponentWithClass(component, 'suffix input'),
-      value: function() { return this.input.value }
-    },
-    format: {
-      input: findRenderedDOMComponentWithClass(component, 'format dropdown'),
-      menu: function() { return this.input.getElementsByClassName('menu')[0] },
-      value: function() { return this.input.getElementsByClassName('placeholder text')[0].textContent }
-    }
-  };
-}
+export default describe('Item', () => {
+  let errorStub;
+  const tree = sd.shallowRender(React.createElement(SizeItem, props));
+  const instance = tree.getMountedInstance();
+  const vdom = tree.getRenderOutput();
+  const children = vdom.props.children;
 
-describe('Item', () => {
-  const {
-    actions,
-    component,
-    onlySizeComponent,
-    multiplier,
-    suffix,
-    format,
-    removeButton
-  } = setup();
-
-  it('should display multiplier', () => {
-    expect(multiplier.value()).to.equal('1x');
+  beforeEach(function(done) {
+    errorStub = stub(console, 'error');
+    done();
   });
 
-  it('should call updateSize when user edits multiplier', () => {
-    let node = multiplier.input;
-
-    node.value = '2x'
-    Simulate.change(node);
-
-    expect(actions.updateSize.called).to.be.true;
-    actions.updateSize.reset();
+  afterEach(function(done) {
+     errorStub.restore();
+     done();
   });
 
-  it('should display suffix', () => {
-    expect(suffix.value()).to.equal('@1x');
+  it('should pass propTypes check', () => {
+    assert(!errorStub.called, `\n${errorStub.args.join('\n')}`);
   });
 
-  it('should call updateSize when user edits suffix', () => {
-    let node = suffix.input;
+  describe('multiplier dropdown', () => {
+    let container = children.filter(child => child.ref === 'multiplierDropdownContainer')[0];
+    let Dropdowns = container.props.children.filter(child => isElementOfType(child, DropdownComponent));
+    let Dropdown = Dropdowns[0];
+    let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
+    let label = labels[0];
 
-    node.value = '@2x'
-    Simulate.change(node);
+    it('should render a dropdown', () => {
+      expect(Dropdowns.length).to.equal(1);
+    });
 
-    expect(actions.updateSize.called).to.be.true;
-    actions.updateSize.reset();
+    it('should render a label', () => {
+      expect(labels.length).to.equal(1);
+      expect(label.props.children).to.equal('Size');
+    });
+
+    it('should have the multiplier prop as its value', () => {
+      expect(Dropdown.props.value).to.equal(props.multiplier);
+    });
+
+    it('should have class prop multiplierOptions as its options', () => {
+      expect(Dropdown.props.options).to.deep.equal(instance.multiplierOptions);
+    });
+
+    it('should call updateSize onChange', () => {
+      let value = 'test';
+
+      Dropdown.props.onChange(value);
+
+      let action = actions.updateSize;
+      let args = action.args[0];
+
+      expect(action.called).to.be.true;
+      expect(args[0]).to.equal(props.id);
+      expect(args[1]).to.deep.equal({
+        multiplier: value
+      });
+
+      action.reset();
+    });
   });
 
-  it('should display format', () => {
-    expect(format.value().toLowerCase()).to.equal('png');
+  describe('suffix input', () => {
+    let container = children.filter(child => child.ref === 'suffixInputContainer')[0];
+    let inputs = container.props.children.filter(child => isElementOfType(child, 'input'));
+    let input = inputs[0];
+    let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
+    let label = labels[0];
+
+    it('should render an input', () => {
+      expect(inputs.length).to.equal(1);
+    });
+
+    it('should render a label', () => {
+      expect(labels.length).to.equal(1);
+      expect(label.props.children).to.equal('Suffix');
+    });
+
+    it('should have the suffix prop as its value', () => {
+      expect(input.props.value).to.equal(props.suffix);
+    });
+
+    it('should call updateSize onChange', () => {
+      let value = 'test';
+
+      input.props.onChange({
+        target: {
+          value
+        }
+      });
+
+      let action = actions.updateSize;
+      let args = action.args[0];
+
+      expect(action.called).to.be.true;
+      expect(args[0]).to.equal(props.id);
+      expect(args[1]).to.deep.equal({
+        suffix: value
+      });
+
+      action.reset();
+    });
   });
 
-  it('should call updateSize when user edits format', () => {
-    let node = format.input;
-    let menu = format.menu();
-    let secondItem = menu.getElementsByClassName('item')[1];
+  describe('format dropdown', () => {
+    let container = children.filter(child => child.ref === 'formatDropdownContainer')[0];
+    let Dropdowns = container.props.children.filter(child => isElementOfType(child, DropdownComponent));
+    let Dropdown = Dropdowns[0];
+    let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
+    let label = labels[0];
 
-    Simulate.click(node);
-    Simulate.click(secondItem);
+    it('should render a dropdown', () => {
+      expect(Dropdowns.length).to.equal(1);
+    });
 
-    expect(actions.updateSize.called).to.be.true;
-    actions.updateSize.reset();
+    it('should render a label', () => {
+      expect(labels.length).to.equal(1);
+      expect(label.props.children).to.equal('Format');
+    });
+
+    it('should have the format prop as its value', () => {
+      expect(Dropdown.props.value).to.equal(props.format);
+    });
+
+    it('should have class prop formatOptions as its options', () => {
+      expect(Dropdown.props.options).to.deep.equal(instance.formatOptions);
+    });
+
+    it('should call updateSize onChange', () => {
+      let value = 'test';
+
+      Dropdown.props.onChange(value);
+
+      let action = actions.updateSize;
+      let args = action.args[0];
+
+      expect(action.called).to.be.true;
+      expect(args[0]).to.equal(props.id);
+      expect(args[1]).to.deep.equal({
+        format: value
+      });
+
+      action.reset();
+    });
   });
 
-  it('should call removeSize when user clicks remove button', () => {
-    let node = component.removeButton;
+  describe('remove button', () => {
+    let button = children.filter(child => child.ref === 'removeButton')[0];
 
-    Simulate.click(node);
+    it('should render', () => {
+      expect(button).to.be.ok;
+    });
 
-    expect(actions.removeSize.called).to.be.true;
-    actions.removeSize.reset();
-  });
+    it('should call removeSize onClick if it is not the only size', () => {
+      button.props.onClick();
 
-  it('should not call removeSize when user clicks remove button if isOnlySize', () => {
-    let node = onlySizeComponent.removeButton;
+      let action = actions.removeSize;
+      let args = action.args[0];
 
-    Simulate.click(node);
+      expect(action.called).to.be.true;
+      expect(args[0]).to.equal(props.id);
 
-    expect(actions.removeSize.called).to.be.false;
-    actions.removeSize.reset();
+      action.reset();
+    });
+
+    it('should not call removeSize onClick if it is the only size', () => {
+      let onlySizeProps = Object.assign({}, props, {
+        isOnlySize: true
+      });
+      let onlySizeTree = sd.shallowRender(React.createElement(SizeItem, onlySizeProps));
+      const onlySizeVdom = onlySizeTree.getRenderOutput();
+      const onlySizeChildren = onlySizeVdom.props.children;
+      let onlySizeButton = onlySizeChildren.filter(child => child.ref === 'removeButton')[0];
+
+      onlySizeButton.props.onClick();
+
+      let action = actions.removeSize;
+      let args = action.args[0];
+
+      expect(action.called).to.be.false;
+
+      action.reset();
+    });
   });
 });
