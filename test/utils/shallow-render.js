@@ -1,7 +1,7 @@
 import React from 'react';
 import sd from 'skin-deep';
 
-// Saves on boiler plate
+// Saves on boiler plate, returns common use case
 export default function shallowRender(Component, props) {
   const tree = sd.shallowRender(React.createElement(Component, props));
   const instance = tree.getMountedInstance();
