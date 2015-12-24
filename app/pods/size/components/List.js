@@ -33,6 +33,7 @@ export default class SizeList extends Component {
     return (
       <ul
         ref="list"
+        className="list"
         style={[
           sectionStyle,
           styles.base,
