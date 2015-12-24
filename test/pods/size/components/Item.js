@@ -1,9 +1,8 @@
 import { expect, assert } from 'chai';
 import { stub, spy } from 'sinon';
 import React from 'react';
-import sd from 'skin-deep';
-import assignDeep from 'assign-deep';
 import { isElementOfType } from 'react-addons-test-utils';
+import shallowRender from '../../../utils/shallow-render';
 
 import SizeItem from 'pods/size/components/Item';
 import DropdownComponent from 'components/Dropdown';
@@ -24,17 +23,19 @@ const props = {
 
 export default describe('Item', () => {
   let errorStub;
-  const tree = sd.shallowRender(React.createElement(SizeItem, props));
-  const instance = tree.getMountedInstance();
-  const vdom = tree.getRenderOutput();
-  const children = vdom.props.children;
+  const render = shallowRender(SizeItem, props);
+  const onlySizeRender = shallowRender(SizeItem,
+    Object.assign({}, props, {
+      isOnlySize: true
+    })
+  );
 
-  beforeEach(function(done) {
+  beforeEach(done => {
     errorStub = stub(console, 'error');
     done();
   });
 
-  afterEach(function(done) {
+  afterEach(done => {
      errorStub.restore();
      done();
   });
@@ -44,7 +45,7 @@ export default describe('Item', () => {
   });
 
   describe('multiplier dropdown', () => {
-    let container = children.filter(child => child.ref === 'multiplierDropdownContainer')[0];
+    let container = render.children.filter(child => child.ref === 'multiplierDropdownContainer')[0];
     let Dropdowns = container.props.children.filter(child => isElementOfType(child, DropdownComponent));
     let Dropdown = Dropdowns[0];
     let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
@@ -64,7 +65,7 @@ export default describe('Item', () => {
     });
 
     it('should have class prop multiplierOptions as its options', () => {
-      expect(Dropdown.props.options).to.deep.equal(instance.multiplierOptions);
+      expect(Dropdown.props.options).to.deep.equal(render.instance.multiplierOptions);
     });
 
     it('should call updateSize onChange', () => {
@@ -86,7 +87,7 @@ export default describe('Item', () => {
   });
 
   describe('suffix input', () => {
-    let container = children.filter(child => child.ref === 'suffixInputContainer')[0];
+    let container = render.children.filter(child => child.ref === 'suffixInputContainer')[0];
     let inputs = container.props.children.filter(child => isElementOfType(child, 'input'));
     let input = inputs[0];
     let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
@@ -128,7 +129,7 @@ export default describe('Item', () => {
   });
 
   describe('format dropdown', () => {
-    let container = children.filter(child => child.ref === 'formatDropdownContainer')[0];
+    let container = render.children.filter(child => child.ref === 'formatDropdownContainer')[0];
     let Dropdowns = container.props.children.filter(child => isElementOfType(child, DropdownComponent));
     let Dropdown = Dropdowns[0];
     let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
@@ -148,7 +149,7 @@ export default describe('Item', () => {
     });
 
     it('should have class prop formatOptions as its options', () => {
-      expect(Dropdown.props.options).to.deep.equal(instance.formatOptions);
+      expect(Dropdown.props.options).to.deep.equal(render.instance.formatOptions);
     });
 
     it('should call updateSize onChange', () => {
@@ -170,7 +171,7 @@ export default describe('Item', () => {
   });
 
   describe('remove button', () => {
-    let button = children.filter(child => child.ref === 'removeButton')[0];
+    let button = render.children.filter(child => child.ref === 'removeButton')[0];
 
     it('should render', () => {
       expect(button).to.be.ok;
@@ -189,13 +190,7 @@ export default describe('Item', () => {
     });
 
     it('should not call removeSize onClick if it is the only size', () => {
-      let onlySizeProps = Object.assign({}, props, {
-        isOnlySize: true
-      });
-      let onlySizeTree = sd.shallowRender(React.createElement(SizeItem, onlySizeProps));
-      const onlySizeVdom = onlySizeTree.getRenderOutput();
-      const onlySizeChildren = onlySizeVdom.props.children;
-      let onlySizeButton = onlySizeChildren.filter(child => child.ref === 'removeButton')[0];
+      let onlySizeButton = onlySizeRender.children.filter(child => child.ref === 'removeButton')[0];
 
       onlySizeButton.props.onClick();
 

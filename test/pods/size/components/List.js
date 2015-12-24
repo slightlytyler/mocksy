@@ -3,6 +3,7 @@ import { stub } from 'sinon';
 import React from 'react';
 import sd from 'skin-deep';
 import { isElementOfType } from 'react-addons-test-utils';
+import shallowRender from '../../../utils/shallow-render';
 import { size } from 'lodash';
 
 import SizeList from 'pods/size/components/List';
@@ -33,18 +34,24 @@ const props = {
 
 export default describe('List', () => {
   let errorStub;
-  const tree = sd.shallowRender(React.createElement(SizeList, props));
-  const vdom = tree.getRenderOutput();
-  const items = vdom.props.children.filter(item => isElementOfType(item, SizeItem));
+  const render = shallowRender(SizeList, props);
+  const onlySizeRender = shallowRender(SizeList, {
+    sizes: {
+      0: props.sizes[0]
+    },
+
+    ...actions
+  });
+  const items = render.children.filter(item => isElementOfType(item, SizeItem));
   const item = items[0];
   const lastItem = items[1];
 
-  beforeEach(function(done) {
+  beforeEach(done => {
     errorStub = stub(console, 'error');
     done();
   });
 
-  afterEach(function(done) {
+  afterEach(done => {
      errorStub.restore();
      done();
   });
@@ -82,18 +89,9 @@ export default describe('List', () => {
   });
 
   it('should pass isOnlySize and isLastSize as true for only size item', () => {
-    let onlySizeProps = {
-      sizes: {
-        0: props.sizes[0]
-      },
-
-      ...actions
-    };
-    let onlySizeTree = sd.shallowRender(React.createElement(SizeList, onlySizeProps));
-    let onlySizeVdom = onlySizeTree.getRenderOutput();
-    let onlySizeItem = onlySizeVdom.props.children.filter(item => isElementOfType(item, SizeItem))[0];
+    let onlySizeItem = onlySizeRender.children.filter(item => isElementOfType(item, SizeItem))[0];
     let expectedProps = {
-      ...onlySizeProps.sizes[0],
+      ...onlySizeRender.props.sizes[0],
       isOnlySize: true,
       isLastSize: true,
       removeSize: actions.removeSize,
