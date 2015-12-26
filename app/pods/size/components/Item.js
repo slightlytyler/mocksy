@@ -59,6 +59,7 @@ export default class SizeItem extends Component {
           ]}
         >
           <Dropdown
+            ref="multiplierDropdown"
             key={`size:${id}-multiplier`}
             name="multiplier"
             value={multiplier}
@@ -70,7 +71,10 @@ export default class SizeItem extends Component {
             baseStyle={styles.input.base}
           />
 
-          <label style={styles.input.label}>
+          <label
+            ref="multiplierLabel"
+            style={styles.input.label}
+          >
             Size
           </label>
         </div>
@@ -83,6 +87,7 @@ export default class SizeItem extends Component {
           ]}
         >
           <input
+            ref="suffixInput"
             value={suffix}
             onChange={(e) => updateSize(id, {
               suffix: e.target.value
@@ -94,7 +99,10 @@ export default class SizeItem extends Component {
             ]}
           />
 
-          <label style={styles.input.label}>
+          <label
+            ref="suffixLabel"
+            style={styles.input.label}
+          >
             Suffix
           </label>
         </div>
@@ -107,6 +115,7 @@ export default class SizeItem extends Component {
           ]}
         >
           <Dropdown
+            ref="formatDropdown"
             key={`size:${id}-format`}
             name="format"
             value={format}
@@ -117,7 +126,10 @@ export default class SizeItem extends Component {
             baseStyle={styles.input.base}
           />
 
-          <label style={styles.input.label}>
+          <label
+            ref="formatLabel"
+            style={styles.input.label}
+          >
             Format
           </label>
         </div>

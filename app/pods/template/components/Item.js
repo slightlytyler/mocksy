@@ -30,13 +30,17 @@ export default class TemplateItem extends Component {
       >
         <div style={styles.preview.container}>
           <img
+            ref="thumbnail"
             src={`assets/base-templates/${templateId}/thumbnail.png`}
             style={styles.preview.image}
           />
         </div>
 
         <div style={styles.name.container}>
-          <span style={styles.name.text}>
+          <span
+            ref="name"
+            style={styles.name.text}
+          >
             {templateId.split('-').join(' ')}
           </span>
         </div>

@@ -2,6 +2,7 @@ import { expect, assert } from 'chai';
 import { stub, spy } from 'sinon';
 import React from 'react';
 import { isElementOfType } from 'react-addons-test-utils';
+import { findWithRef } from 'react-shallow-testutils';
 import shallowRender from '../../../utils/shallow-render';
 
 import SizeItem from 'pods/size/components/Item';
@@ -45,18 +46,14 @@ export default describe('Item', () => {
   });
 
   describe('multiplier dropdown', () => {
-    let container = render.children.filter(child => child.ref === 'multiplierDropdownContainer')[0];
-    let Dropdowns = container.props.children.filter(child => isElementOfType(child, DropdownComponent));
-    let Dropdown = Dropdowns[0];
-    let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
-    let label = labels[0];
+    let Dropdown = findWithRef(render.output, 'multiplierDropdown');
+    let label = findWithRef(render.output, 'multiplierLabel');
 
     it('should render a dropdown', () => {
-      expect(Dropdowns.length).to.equal(1);
+      expect(Dropdown).to.be.ok;
     });
 
     it('should render a label', () => {
-      expect(labels.length).to.equal(1);
       expect(label.props.children).to.equal('Size');
     });
 
@@ -87,18 +84,14 @@ export default describe('Item', () => {
   });
 
   describe('suffix input', () => {
-    let container = render.children.filter(child => child.ref === 'suffixInputContainer')[0];
-    let inputs = container.props.children.filter(child => isElementOfType(child, 'input'));
-    let input = inputs[0];
-    let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
-    let label = labels[0];
+    let input = findWithRef(render.output, 'suffixInput');
+    let label = findWithRef(render.output, 'suffixLabel');
 
     it('should render an input', () => {
-      expect(inputs.length).to.equal(1);
+      expect(input).to.be.ok;
     });
 
     it('should render a label', () => {
-      expect(labels.length).to.equal(1);
       expect(label.props.children).to.equal('Suffix');
     });
 
@@ -129,18 +122,14 @@ export default describe('Item', () => {
   });
 
   describe('format dropdown', () => {
-    let container = render.children.filter(child => child.ref === 'formatDropdownContainer')[0];
-    let Dropdowns = container.props.children.filter(child => isElementOfType(child, DropdownComponent));
-    let Dropdown = Dropdowns[0];
-    let labels = container.props.children.filter(child => isElementOfType(child, 'label'));
-    let label = labels[0];
+    let Dropdown = findWithRef(render.output, 'formatDropdown');
+    let label = findWithRef(render.output, 'formatLabel');
 
     it('should render a dropdown', () => {
-      expect(Dropdowns.length).to.equal(1);
+      expect(Dropdown).to.be.ok;
     });
 
     it('should render a label', () => {
-      expect(labels.length).to.equal(1);
       expect(label.props.children).to.equal('Format');
     });
 
@@ -171,7 +160,7 @@ export default describe('Item', () => {
   });
 
   describe('remove button', () => {
-    let button = render.children.filter(child => child.ref === 'removeButton')[0];
+    let button = findWithRef(render.output, 'removeButton');
 
     it('should render', () => {
       expect(button).to.be.ok;
@@ -190,9 +179,9 @@ export default describe('Item', () => {
     });
 
     it('should not call removeSize onClick if it is the only size', () => {
-      let onlySizeButton = onlySizeRender.children.filter(child => child.ref === 'removeButton')[0];
+      let button = findWithRef(onlySizeRender.output, 'removeButton');
 
-      onlySizeButton.props.onClick();
+      button.props.onClick();
 
       let action = actions.removeSize;
       let args = action.args[0];
