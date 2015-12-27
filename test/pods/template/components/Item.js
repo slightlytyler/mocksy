@@ -11,7 +11,7 @@ const actions = {
   activate: spy()
 };
 const props = {
-  templateId: iPhone_6.id,
+  id: iPhone_6.id,
   isActive: false,
   ...actions
 };
@@ -42,7 +42,7 @@ export default describe('Item', () => {
     const thumbnail = findWithRef(render.output, 'thumbnail');
     const path = thumbnail.props.src;
 
-    expect(path).to.equal(`assets/base-templates/${props.templateId}/thumbnail.png`);
+    expect(path).to.equal(`assets/base-templates/${props.id}/thumbnail.png`);
   });
 
   it('should display the correct name', () => {

@@ -16,7 +16,7 @@ export default {
     },
   },
 
-  'iPhone6_Plus': {
+  'iPhone_6_Plus': {
     id: 'iPhone_6_Plus',
     position: 2,
 

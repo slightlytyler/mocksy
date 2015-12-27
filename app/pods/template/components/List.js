@@ -30,7 +30,7 @@ export default class TemplateList extends Component {
         {map(templates, template => (
           <TemplateItem
             key={template.id}
-            templateId={template.id}
+            id={template.id}
             isActive={template.id === currentTemplate.id}
             activate={setCurrentTemplate}
           />

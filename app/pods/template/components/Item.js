@@ -8,21 +8,21 @@ import colors from 'constants/colors';
 @Radium
 export default class TemplateItem extends Component {
   static propTypes = {
-    templateId: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     isActive: PropTypes.bool.isRequired,
     activate: PropTypes.func.isRequired
   };
 
   render() {
     const {
-      templateId,
+      id,
       isActive,
       activate
     } = this.props;
 
     return (
       <li
-        onClick={() => !isActive && activate(templateId)}
+        onClick={() => !isActive && activate(id)}
         style={[
           styles.base,
           isActive && styles.active
@@ -31,7 +31,7 @@ export default class TemplateItem extends Component {
         <div style={styles.preview.container}>
           <img
             ref="thumbnail"
-            src={`assets/base-templates/${templateId}/thumbnail.png`}
+            src={`assets/base-templates/${id}/thumbnail.png`}
             style={styles.preview.image}
           />
         </div>
@@ -41,7 +41,7 @@ export default class TemplateItem extends Component {
             ref="name"
             style={styles.name.text}
           >
-            {templateId.split('_').join(' ')}
+            {id.split('_').join(' ')}
           </span>
         </div>
       </li>
