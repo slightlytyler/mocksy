@@ -41,7 +41,7 @@ export default class TemplateItem extends Component {
             ref="name"
             style={styles.name.text}
           >
-            {templateId.split('-').join(' ')}
+            {templateId.split('_').join(' ')}
           </span>
         </div>
       </li>

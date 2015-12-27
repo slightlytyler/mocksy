@@ -5,12 +5,13 @@ import { findWithRef } from 'react-shallow-testutils';
 import shallowRender from '../../../utils/shallow-render';
 
 import TemplateItem from 'pods/template/components/Item';
+import { iPhone_6 } from 'constants/base-templates';
 
 const actions = {
   activate: spy()
 };
 const props = {
-  templateId: 'some-template',
+  templateId: iPhone_6.id,
   isActive: false,
   ...actions
 };
@@ -48,7 +49,7 @@ export default describe('Item', () => {
     const name = findWithRef(render.output, 'name');
     const text = name.props.children;
 
-    expect(text).to.equal('some template');
+    expect(text).to.equal('iPhone 6');
   });
 
   it('should call activate onClick if not the current active template', () => {

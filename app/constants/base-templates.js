@@ -1,6 +1,6 @@
 export default {
-  'iPhone-6': {
-    id: 'iPhone-6',
+  'iPhone_6': {
+    id: 'iPhone_6',
     position: 1,
 
     dimensions: {
@@ -16,8 +16,8 @@ export default {
     },
   },
 
-  'iPhone-6-Plus': {
-    id: 'iPhone-6-Plus',
+  'iPhone6_Plus': {
+    id: 'iPhone_6_Plus',
     position: 2,
 
     dimensions: {
@@ -50,8 +50,8 @@ export default {
     },
   },
 
-  'Macbook-Pro': {
-    id: 'Macbook-Pro',
+  'Macbook_Pro': {
+    id: 'Macbook_Pro',
     position: 4,
 
     dimensions: {
@@ -67,8 +67,8 @@ export default {
     },
   },
 
-  'iMac-Cinema': {
-    id: 'iMac-Cinema',
+  'iMac_Cinema': {
+    id: 'iMac_Cinema',
     position: 5,
 
     dimensions: {
@@ -84,8 +84,8 @@ export default {
     },
   },
 
-  'Nexus-6': {
-    id: 'Nexus-6',
+  'Nexus_6': {
+    id: 'Nexus_6',
     position: 6,
 
     dimensions: {
@@ -101,8 +101,8 @@ export default {
     }
   },
 
-  'Nexus-7': {
-    id: 'Nexus-7',
+  'Nexus_7': {
+    id: 'Nexus_7',
     position: 7,
 
     dimensions: {
@@ -118,8 +118,8 @@ export default {
     }
   },
 
-  'Galaxy-S4': {
-    id: 'Galaxy-S4',
+  'Galaxy_S4': {
+    id: 'Galaxy_S4',
     position: 8,
 
     dimensions: {
@@ -135,8 +135,8 @@ export default {
     }
   },
 
-  'Surface-Pro-3': {
-    id: 'Surface-Pro-3',
+  'Surface_Pro_3': {
+    id: 'Surface_Pro_3',
     position: 9,
 
     dimensions: {

@@ -11,7 +11,7 @@ import baseTemplates from 'constants/base-templates';
 const store = configureStore({
   templates: {
     condition: {
-      currentTemplate: 'iPhone-6'
+      currentTemplate: 'iPhone_6'
     },
 
     entities: {
