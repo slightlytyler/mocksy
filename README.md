@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/slightlytyler/mocksy.svg?branch=master)](https://travis-ci.org/slightlytyler/mocksy)
-
-# Mocsky
+# Mocsky [![Build Status](https://travis-ci.org/slightlytyler/mocksy.svg?branch=master)](https://travis-ci.org/slightlytyler/mocksy)
 **[Mocksy](https://slightlytyler.github.io/mocksy)** is an app for easily and quickly creating mockups with your screenshots.
 
 ![alt tag](https://raw.github.com/slightlytyler/mocksy/master/screenshot.png)
