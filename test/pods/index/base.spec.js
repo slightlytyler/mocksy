@@ -1,0 +1,3 @@
+describe('index', () => {
+  require('./component');
+});

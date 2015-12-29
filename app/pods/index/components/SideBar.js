@@ -5,7 +5,7 @@ import Radium from 'radium';
 
 import colors from 'constants/colors';
 import TemplateList from 'pods/template/components/List';
-import ExportPanel from './ExportPanel';
+import ExportPanel from 'components/ExportPanel';
 
 @Radium
 export default class IndexSideBar extends Component {

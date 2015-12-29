@@ -56,10 +56,12 @@ export default class TemplatePreviewForeground extends Component {
       >
         {screenshot ?
           <img
+            ref="screenshot"
             src={screenshot}
             style={styles.image}
           /> :
           <EmptyState
+            ref="empty"
             screenshotWidth={foregroundDimensions.width}
             screenshotHeight={foregroundDimensions.height}
           />

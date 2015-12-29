@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 import Radium from 'radium';
 
 import SideBar from './components/SideBar';
@@ -13,6 +12,7 @@ export default class Index extends Component {
     currentScreenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     actions: PropTypes.shape({
+      setCurrentTemplate: PropTypes.func.isRequired,
       setCurrentScreenshot: PropTypes.func.isRequired,
       addSize: PropTypes.func.isRequired,
       removeSize: PropTypes.func.isRequired,
@@ -42,6 +42,7 @@ export default class Index extends Component {
         style={styles.base}
       >
         <SideBar
+          ref="SideBar"
           templates={templates}
           setCurrentTemplate={setCurrentTemplate}
           currentTemplate={currentTemplate}
@@ -52,6 +53,7 @@ export default class Index extends Component {
           updateSize={updateSize}
         />
         <PreviewArea
+          ref="PreviewArea"
           template={currentTemplate}
           screenshot={currentScreenshot}
           setCurrentScreenshot={setCurrentScreenshot}

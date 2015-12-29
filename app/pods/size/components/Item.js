@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import formatOptions from 'constants/accepted-image-formats';
+import acceptedFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
 import Dropdown from 'components/Dropdown';
 
@@ -26,6 +26,8 @@ export default class SizeItem extends Component {
     { value: '3x', label: '3x' },
   ];
 
+  formatOptions = acceptedFormats;
+
   render() {
     const {
       id,
@@ -38,7 +40,8 @@ export default class SizeItem extends Component {
       updateSize
     } = this.props;
     const {
-      multiplierOptions
+      multiplierOptions,
+      formatOptions
     } = this;
 
     return (
@@ -48,12 +51,17 @@ export default class SizeItem extends Component {
           isLastSize && styles.last
         ]}
       >
-        <div style={[
-          styles.input.container,
-          styles.size
-        ]}>
+        <div
+          ref="multiplierDropdownContainer"
+          style={[
+            styles.input.container,
+            styles.size
+          ]}
+        >
           <Dropdown
-            name={`size:${id}-multiplier`}
+            ref="multiplierDropdown"
+            key={`size:${id}-multiplier`}
+            name="multiplier"
             value={multiplier}
             options={multiplierOptions}
             editable={true}
@@ -63,37 +71,53 @@ export default class SizeItem extends Component {
             baseStyle={styles.input.base}
           />
 
-          <label style={styles.input.label}>
+          <label
+            ref="multiplierLabel"
+            style={styles.input.label}
+          >
             Size
           </label>
         </div>
 
-        <div style={[
-          styles.input.container,
-          styles.suffix
-        ]}>
+        <div
+          ref="suffixInputContainer"
+          style={[
+            styles.input.container,
+            styles.suffix
+          ]}
+        >
           <input
+            ref="suffixInput"
             value={suffix}
             onChange={(e) => updateSize(id, {
               suffix: e.target.value
             })}
+            className="suffix input"
             style={[
               styles.input.base,
               styles.input.paddingOverride
             ]}
           />
 
-          <label style={styles.input.label}>
+          <label
+            ref="suffixLabel"
+            style={styles.input.label}
+          >
             Suffix
           </label>
         </div>
 
-        <div style={[
-          styles.input.container,
-          styles.format
-        ]}>
+        <div
+          ref="formatDropdownContainer"
+          style={[
+            styles.input.container,
+            styles.format
+          ]}
+        >
           <Dropdown
-            name={`size:${id}-format`}
+            ref="formatDropdown"
+            key={`size:${id}-format`}
+            name="format"
             value={format}
             options={formatOptions}
             onChange={(val) => updateSize(id, {
@@ -102,12 +126,18 @@ export default class SizeItem extends Component {
             baseStyle={styles.input.base}
           />
 
-          <label style={styles.input.label}>
+          <label
+            ref="formatLabel"
+            style={styles.input.label}
+          >
             Format
           </label>
         </div>
 
         <div
+          ref="removeButton"
+          onClick={() => !isOnlySize && removeSize(id)}
+          className="remove button"
           style={[
             styles.remove.base,
             isOnlySize && styles.remove.disabled
@@ -115,7 +145,6 @@ export default class SizeItem extends Component {
         >
           <img
             src="assets/icons/remove-size.svg"
-            onClick={() => !isOnlySize && removeSize(id)}
             style={styles.remove.icon}
           />
         </div>

@@ -18,19 +18,15 @@ export default class TemplatePreview extends Component {
     setCurrentScreenshot: PropTypes.func.isRequired
   };
 
-  isHigherAspect() {
-    const {
-      dimensions,
-      canvasDimensions
-    } = this.props;
-
-    return (dimensions.width / dimensions.height)  >= (canvasDimensions.width / canvasDimensions.height);
+  isHigherAspect(dimensionsA, dimensionsB) {
+    return (dimensionsA.width / dimensionsA.height)  >= (dimensionsB.width / dimensionsB.height);
   }
 
   render() {
     const {
       id,
       dimensions,
+      canvasDimensions,
       screenshot,
       setCurrentScreenshot
     } = this.props;
@@ -39,7 +35,7 @@ export default class TemplatePreview extends Component {
       height,
       foreground
     } = dimensions;
-    const isHigherAspect = this.isHigherAspect();
+    const isHigherAspect = this.isHigherAspect(dimensions, canvasDimensions);
 
     return (
       <div
@@ -52,11 +48,13 @@ export default class TemplatePreview extends Component {
         ]}
       >
         <img
+          ref="background"
           src={`assets/base-templates/${id.toLowerCase()}/template.png`}
           style={styles.background}
         />
 
         <Foreground
+          ref="foreground"
           screenshot={screenshot}
           setCurrentScreenshot={setCurrentScreenshot}
           foregroundDimensions={foreground}
