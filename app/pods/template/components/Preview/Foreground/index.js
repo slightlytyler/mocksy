@@ -5,7 +5,9 @@ import Radium from 'radium';
 
 import { dialog } from 'remote';
 
+import gm from 'api/gm';
 import colors from 'constants/colors';
+import acceptedImageFormats from 'constants/accepted-image-formats';
 import EmptyState from './Empty';
 
 @Radium
@@ -20,9 +22,28 @@ export default class TemplatePreviewForeground extends Component {
   openFile() {
     const { setCurrentScreenshot } = this.props;
 
-    dialog.showOpenDialog({ multiSelections: false }, fileNames =>
-      fileNames && setCurrentScreenshot(fileNames[0])
-    )
+    dialog.showOpenDialog({ multiSelections: false }, fileNames => {
+      if (fileNames) {
+        let path = fileNames[0];
+
+        gm(path).identify((err, value) => {
+          if (err) {
+            alert('The file you selected is not recognized as an image.')
+          } else {
+            let selectedFileFormat = value.format.toLowerCase();
+            let isAccepted = acceptedImageFormats.some(format =>
+              selectedFileFormat === format.value || selectedFileFormat === format.alias
+            );
+
+            if (isAccepted) {
+              setCurrentScreenshot(path);
+            } else {
+              alert(`Mocksy doesn't currently support that ):`);
+            }
+          }
+        });
+      }
+    })
   }
 
   render() {

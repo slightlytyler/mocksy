@@ -48,17 +48,30 @@ export default describe('Preview', () => {
     mockery.enable();
     mockery.warnOnUnregistered(false);
     mockery.registerMock('remote', remoteMock);
+    mockery.registerMock('api/gm', () => {
+      return {
+        identify: (callback) =>
+          callback(null, {
+            format: 'JPEG'
+          })
+      }
+    });
     errorStub = stub(console, 'error');
+
     component = require('pods/template/components/Preview');
     render = shallowRender(component, props);
     higherAspectRender = shallowRender(component, higherAspectProps);
+
     done();
   });
 
   after(done => {
     mockery.disable();
     mockery.deregisterMock('remote');
+    mockery.deregisterMock('api/gm');
+
     errorStub.restore();
+
     done();
   });
 
