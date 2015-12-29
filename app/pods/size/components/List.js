@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import { map, size as _size } from 'lodash';
+import { map, last, size as _size } from 'lodash';
 
 import SizeItem from './Item';
 
@@ -29,6 +29,7 @@ export default class SizeList extends Component {
     } = this.props;
     const sizesLength = _size(sizes);
     const singleSize = sizesLength === 1;
+    const lastSizeId = sizes[last(Object.keys(sizes))].id;
 
     return (
       <ul
@@ -44,7 +45,7 @@ export default class SizeList extends Component {
             key={`size:${size.id}`}
             { ...size }
             isOnlySize={singleSize}
-            isLastSize={sizesLength === Number(i) + 1}
+            isLastSize={size.id === lastSizeId}
             removeSize={removeSize}
             updateSize={updateSize}
           />
