@@ -3,9 +3,9 @@ import { stub } from 'sinon';
 import React from 'react';
 import sd from 'skin-deep';
 import { isElementOfType } from 'react-addons-test-utils';
+import mockery from 'mockery';
 import shallowRender from '../../../../utils/shallow-render';
 
-import TemplatePreview from 'pods/template/components/Preview';
 import { iPhone_6 } from 'constants/base-templates';
 
 const actions = {
@@ -23,8 +23,19 @@ const props = {
 };
 
 export default describe('Preview', () => {
+
+  before(done => {
+    mockery.enable();
+    done();
+  });
+
+  after(done => {
+    mockery.disable();
+    done();
+  });
+
   let errorStub;
-  const render = shallowRender(TemplatePreview, props);
+  const render = shallowRender(require('pods/template/components/Preview'), props);
 
   beforeEach(done => {
     errorStub = stub(console, 'error');
