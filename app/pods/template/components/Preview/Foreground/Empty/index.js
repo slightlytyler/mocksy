@@ -27,12 +27,13 @@ export default class TemplatePreviewForegroundEmpty extends Component {
           style={styles.icon}
         />
         <span
+          ref="prompt"
           style={styles.text}
         >
           Add a screenshot
         </span>
-        <span>
-        ( {screenshotWidth} x {screenshotHeight} )
+        <span ref="screenshotDimensions">
+          {`( ${screenshotWidth} x ${screenshotHeight} )`}
         </span>
       </div>
     );

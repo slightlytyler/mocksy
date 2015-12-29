@@ -4,5 +4,6 @@ describe('template', () => {
     require('./components/List');
     require('./components/Preview');
     require('./components/Preview/Foreground');
+    require('./components/Preview/Foreground/Empty');
   });
 });
