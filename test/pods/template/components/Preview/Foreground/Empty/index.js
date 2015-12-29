@@ -4,7 +4,7 @@ import React from 'react';
 import sd from 'skin-deep';
 import { isElementOfType } from 'react-addons-test-utils';;
 import { findWithRef } from 'react-shallow-testutils';
-import shallowRender from '../../../../../../utils/shallow-render';
+import shallowRender from '../../../../../../test-utils/shallow-render';
 
 const props = {
   screenshotWidth: 500,

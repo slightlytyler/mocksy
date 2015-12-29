@@ -4,8 +4,8 @@ import React from 'react';
 import { isElementOfType } from 'react-addons-test-utils';
 import mockery from 'mockery';
 import { findWithRef } from 'react-shallow-testutils';
-import remoteMock from '../../../../../utils/remote-mock';
-import shallowRender from '../../../../../utils/shallow-render';
+import remoteMock from '../../../../../test-utils/remote-mock';
+import shallowRender from '../../../../../test-utils/shallow-render';
 
 import { iPhone_6 } from 'constants/base-templates';
 

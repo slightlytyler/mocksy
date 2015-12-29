@@ -3,7 +3,7 @@ import { stub } from 'sinon';
 import React from 'react';
 import sd from 'skin-deep';
 import { isElementOfType } from 'react-addons-test-utils';
-import shallowRender from '../../../utils/shallow-render';
+import shallowRender from '../../../test-utils/shallow-render';
 import { size } from 'lodash';
 
 import TemplateList from 'pods/template/components/List';

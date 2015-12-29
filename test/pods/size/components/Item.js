@@ -3,7 +3,7 @@ import { stub, spy } from 'sinon';
 import React from 'react';
 import { isElementOfType } from 'react-addons-test-utils';
 import { findWithRef } from 'react-shallow-testutils';
-import shallowRender from '../../../utils/shallow-render';
+import shallowRender from '../../../test-utils/shallow-render';
 
 import SizeItem from 'pods/size/components/Item';
 import DropdownComponent from 'components/Dropdown';

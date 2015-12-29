@@ -12,7 +12,7 @@ export default function nextId(set) {
         a.id > b.id ? a : b
       ).id + 1
     } else {
-      return 1;
+      return set[Object.keys(set)[0]].id + 1;
     }
   } else {
     return 0;

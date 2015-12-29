@@ -2,7 +2,7 @@ import { expect, assert } from 'chai';
 import { stub, spy } from 'sinon';
 import React from 'react';
 import { findWithRef } from 'react-shallow-testutils';
-import shallowRender from '../../../utils/shallow-render';
+import shallowRender from '../../../test-utils/shallow-render';
 
 import TemplateItem from 'pods/template/components/Item';
 import { iPhone_6 } from 'constants/base-templates';
