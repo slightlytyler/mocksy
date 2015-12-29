@@ -4,6 +4,7 @@ import React from 'react';
 import { isElementOfType } from 'react-addons-test-utils';
 import mockery from 'mockery';
 import { findWithRef } from 'react-shallow-testutils';
+import remoteMock from '../../../../../utils/remote-mock';
 import shallowRender from '../../../../../utils/shallow-render';
 
 import { iPhone_6 } from 'constants/base-templates';
@@ -11,9 +12,8 @@ import { iPhone_6 } from 'constants/base-templates';
 const actions = {
   setCurrentScreenshot: spy()
 };
-const screenshotPath = 'path/to/screenshot';
 const props = {
- screenshot: screenshotPath,
+ screenshot: 'path/to/screenshot',
  foregroundDimensions: {
   width: 500,
   height: 1000,
@@ -29,13 +29,8 @@ const props = {
 const emptyProps = Object.assign({}, props, {
   screenshot: null
 });
-const remoteMock = {
-  dialog: {
-    showOpenDialog: (props, callback) => callback(screenshotPath)
-  }
-};
 
-export default describe('Foreground', () => {
+export default describe('PreviewForeground', () => {
   let component,
       render,
       emptyRender,
@@ -54,6 +49,7 @@ export default describe('Foreground', () => {
 
   after(done => {
     mockery.disable();
+    mockery.deregisterMock('remote');
     errorStub.restore();
     done();
   });
@@ -107,6 +103,7 @@ export default describe('Foreground', () => {
     dialog.reset();
 
     expect(action.called).to.be.true;
+    expect(action.args[0][0]).to.equal('path/to/file');
     action.reset();
   });
 });
