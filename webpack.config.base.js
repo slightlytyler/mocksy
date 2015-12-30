@@ -26,6 +26,7 @@ module.exports = {
     alias: {
       app: path.join(__dirname, "app"),
       pods: path.join(__dirname, "app/pods"),
+      store: path.join(__dirname, "app/store"),
       containers: path.join(__dirname, "app/containers"),
       components: path.join(__dirname, "app/components"),
       reducers: path.join(__dirname, "app/reducers"),

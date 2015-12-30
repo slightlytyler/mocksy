@@ -2,13 +2,17 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+const remote = require('remote');
+const app = remote.require('app');
+const menu = remote.require('menu');
+import { ActionCreators as undoRedoActions } from 'redux-undo';
 import routes from './routes';
-import configureStore from './store/configureStore';
+import configureStore from 'store/configureStore';
 import './app.css';
 
 import baseTemplates from 'constants/base-templates';
 
-const store = configureStore({
+const store = configureStore({present: {
   templates: {
     condition: {
       currentTemplate: 'iPhone_6'
@@ -43,7 +47,36 @@ const store = configureStore({
       }
     }
   }
-});
+}});
+
+
+function bindStoreToMenu() {
+  let appMenu = menu.getApplicationMenu();
+  let editSubMenu = appMenu.items[1].submenu;
+  let undoRedoMenu = menu.buildFromTemplate([
+    {
+      label: 'Undo',
+      accelerator: 'Command+Z',
+      selector: 'undo:',
+      click() {
+        store.dispatch(undoRedoActions.undo());
+      }
+    },
+    {
+      label: 'Redo',
+      accelerator: 'Shift+Command+Z',
+      selector: 'redo:',
+      click() {
+        store.dispatch(undoRedoActions.redo());
+      }
+    }
+  ]);
+
+  editSubMenu.insert(0, undoRedoMenu.items[0]);
+  editSubMenu.insert(1, undoRedoMenu.items[1]);
+}
+
+bindStoreToMenu();
 
 render(
   <Provider store={store}>
