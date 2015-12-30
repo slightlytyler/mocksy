@@ -1,11 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
-import DevTools from '../containers/DevTools';
+import undoRedoMenuState from 'store/undoRedoMenuState';
+import bindStoreToMenu from 'store/bindStoreToMenu'
+import rootReducer from 'reducers';
+import DevTools from 'containers/DevTools';
 
 const finalCreateStore = compose(
-  applyMiddleware(thunk),
+  applyMiddleware(thunk, undoRedoMenuState),
   DevTools.instrument(),
   persistState(
     window.location.href.match(
@@ -16,6 +18,7 @@ const finalCreateStore = compose(
 
 export default function configureStore(initialState) {
   const store = finalCreateStore(rootReducer, initialState);
+  bindStoreToMenu(store);
 
   if (module.hot) {
     module.hot.accept('../reducers', () =>

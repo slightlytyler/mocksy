@@ -12,4 +12,5 @@ const rootReducer = combineReducers({
 const undoableReducer = undoable(rootReducer, {
   limit: 10,
 });
+
 export default undoableReducer;

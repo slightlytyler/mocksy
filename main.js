@@ -73,8 +73,7 @@ app.on('ready', () => {
       submenu: [{
         label: 'Undo',
         accelerator: 'Command+Z',
-        selector: 'undo:',
-        enabled: false
+        selector: 'undo:'
       }, {
         label: 'Redo',
         accelerator: 'Shift+Command+Z',

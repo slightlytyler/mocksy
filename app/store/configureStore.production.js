@@ -1,11 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
+import undoRedoMenuState from 'store/undoRedoMenuState';
+import bindStoreToMenu from 'store/bindStoreToMenu'
+import rootReducer from 'reducers';
 
 const finalCreateStore = compose(
-  applyMiddleware(thunk)
+  applyMiddleware(thunk, undoRedoMenuState)
 )(createStore);
 
 export default function configureStore(initialState) {
-  return finalCreateStore(rootReducer, initialState);
+  const store = finalCreateStore(rootReducer, initialState);
+  bindStoreToMenu(store);
+
+  return store;
 }
