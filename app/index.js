@@ -2,48 +2,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+
 import routes from './routes';
-import configureStore from './store/configureStore';
+import configureStore from 'store/configureStore';
+import { initialState } from 'config';
 import './app.css';
 
-import baseTemplates from 'constants/base-templates';
-
-const store = configureStore({
-  templates: {
-    condition: {
-      currentTemplate: 'iPhone_6'
-    },
-
-    entities: {
-      ...baseTemplates
-    }
-  },
-
-  screenshots: {
-    condition: {
-      currentScreenshot: null
-    },
-
-    entities: {
-
-    }
-  },
-
-  sizes: {
-    condition: {
-
-    },
-
-    entities: {
-      0: {
-        id: 0,
-        multiplier: '1x',
-        suffix: '',
-        format: 'png'
-      }
-    }
-  }
-});
+const store = configureStore(initialState);
 
 render(
   <Provider store={store}>

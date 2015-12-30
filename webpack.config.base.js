@@ -25,7 +25,9 @@ module.exports = {
   resolve: {
     alias: {
       app: path.join(__dirname, "app"),
+      config: path.join(__dirname, "app/config.js"),
       pods: path.join(__dirname, "app/pods"),
+      store: path.join(__dirname, "app/store"),
       containers: path.join(__dirname, "app/containers"),
       components: path.join(__dirname, "app/components"),
       reducers: path.join(__dirname, "app/reducers"),

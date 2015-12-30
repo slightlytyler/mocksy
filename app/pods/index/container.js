@@ -18,7 +18,7 @@ function mapStateToProps(state) {
     templates,
     screenshots,
     sizes
-  } = state;
+  } = state.present;
 
   return {
     templates: templates.entities,
