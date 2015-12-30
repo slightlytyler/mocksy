@@ -60,6 +60,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: colors.overlay,
+    zIndex: 10,
   },
 
   section: {
