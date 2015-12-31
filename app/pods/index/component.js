@@ -9,10 +9,12 @@ export default class Index extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
+    currentTemplateSetId: PropTypes.string.isRequired,
     currentScreenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     actions: PropTypes.shape({
       setCurrentTemplate: PropTypes.func.isRequired,
+      setCurrentTemplateSet: PropTypes.func.isRequired,
       setCurrentScreenshot: PropTypes.func.isRequired,
       addSize: PropTypes.func.isRequired,
       removeSize: PropTypes.func.isRequired,
@@ -24,12 +26,14 @@ export default class Index extends Component {
     const {
       templates,
       currentTemplate,
+      currentTemplateSetId,
       currentScreenshot,
       sizes,
       actions
     } = this.props;
     const {
       setCurrentTemplate,
+      setCurrentTemplateSet,
       setCurrentScreenshot,
       addSize,
       removeSize,
@@ -45,7 +49,9 @@ export default class Index extends Component {
           ref="SideBar"
           templates={templates}
           setCurrentTemplate={setCurrentTemplate}
+          setCurrentTemplateSet={setCurrentTemplateSet}
           currentTemplate={currentTemplate}
+          currentTemplateSetId={currentTemplateSetId}
           screenshot={currentScreenshot}
           sizes={sizes}
           addSize={addSize}

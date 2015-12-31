@@ -3,34 +3,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
+import { createSelector } from 'reselect'
+import { pick } from 'lodash';
 
-import { setCurrentTemplate } from 'pods/templates/actions';
+import {
+  setCurrentTemplate,
+  setCurrentTemplateSet,
+} from 'pods/templates/actions';
+import {
+  currentTemplateSelector,
+  currentTemplateSetIdSelector,
+  currentTemplateSetSelector
+} from 'pods/templates/selectors';
+
 import { setCurrentScreenshot } from 'pods/screenshots/actions';
+import { currentScreenshotSelector } from 'pods/screenshots/selectors';
+
 import {
   addSize,
   removeSize,
   updateSize
 } from 'pods/sizes/actions';
+import { sizesEntitiesSelector } from 'pods/sizes/selectors';
+
 import IndexComponent from './component';
 
+
 function mapStateToProps(state) {
-  const {
-    templates,
-    screenshots,
-    sizes
-  } = state.present;
+  let { present } = state;
 
   return {
-    templates: templates.entities,
-    currentTemplate: templates.entities[templates.condition.currentTemplate],
-    currentScreenshot: screenshots.condition.currentScreenshot,
-    sizes: sizes.entities
+    templates: currentTemplateSetSelector(present),
+    currentTemplateSetId: currentTemplateSetIdSelector(present),
+    currentTemplate: currentTemplateSelector(present),
+    currentScreenshot: currentScreenshotSelector(present),
+    sizes: sizesEntitiesSelector(present)
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     setCurrentTemplate,
+    setCurrentTemplateSet,
     setCurrentScreenshot,
     addSize,
     removeSize,

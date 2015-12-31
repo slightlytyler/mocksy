@@ -5,6 +5,7 @@ import Radium from 'radium';
 
 import colors from 'constants/colors';
 import TemplateList from 'pods/template/components/List';
+import TemplateTabs from 'pods/template/components/Tabs';
 import ExportPanel from 'components/ExportPanel';
 
 @Radium
@@ -12,9 +13,11 @@ export default class IndexSideBar extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
+    currentTemplateSetId: PropTypes.string.isRequired,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     setCurrentTemplate: PropTypes.func.isRequired,
+    setCurrentTemplateSet: PropTypes.func.isRequired,
     addSize: PropTypes.func.isRequired,
     removeSize: PropTypes.func.isRequired,
     updateSize: PropTypes.func.isRequired
@@ -24,9 +27,11 @@ export default class IndexSideBar extends Component {
     const {
       templates,
       currentTemplate,
+      currentTemplateSetId,
       screenshot,
       sizes,
       setCurrentTemplate,
+      setCurrentTemplateSet,
       addSize,
       removeSize,
       updateSize
@@ -37,6 +42,10 @@ export default class IndexSideBar extends Component {
         className="sidebar"
         style={styles.base}
       >
+        <TemplateTabs
+          currentTemplateSetId={currentTemplateSetId}
+          setCurrentTemplateSet={setCurrentTemplateSet}
+        />
         <TemplateList
           templates={templates}
           currentTemplate={currentTemplate}

@@ -4,7 +4,8 @@ export const initialState = {
   present: {
     templates: {
       condition: {
-        currentTemplate: 'iPhone_6'
+        currentTemplate: 'iPhone_6',
+        currentTemplateSet: 'default'
       },
 
       entities: {

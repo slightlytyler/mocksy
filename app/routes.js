@@ -7,5 +7,6 @@ import Index from './pods/index/container';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Index} />
+    <Route path="/template" component={Index} />
   </Route>
 );
