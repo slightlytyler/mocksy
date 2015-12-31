@@ -10,6 +10,7 @@ import shallowRender from '../../test-utils/shallow-render';
 
 const actions = {
   setCurrentTemplate: () => true,
+  setCurrentTemplateSet: () => true,
   setCurrentScreenshot: () => true,
   addSize: () => true,
   removeSize: () => true,
@@ -18,6 +19,7 @@ const actions = {
 const props = {
   templates: {},
   currentTemplate: {},
+  currentTemplateSetId: 'default',
   currentScreenshot: '/path/to/screenshot',
   sizes: {},
   actions
