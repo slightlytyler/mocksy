@@ -3,9 +3,10 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import { map } from 'lodash';
+import { map, size } from 'lodash';
 
-import TemplateItem from './Item';
+import TemplateItem from '../Item';
+import TemplateListEmpty from './Empty'
 
 @Radium
 export default class TemplateList extends Component {
@@ -21,20 +22,24 @@ export default class TemplateList extends Component {
       currentTemplate,
       setCurrentTemplate
     } = this.props;
+    const hasTemplates = size(templates) !== 0;
 
     return (
       <ul
         className="template-list"
         style={styles.base}
       >
-        {map(templates, template => (
-          <TemplateItem
-            key={template.id}
-            id={template.id}
-            isActive={template.id === currentTemplate.id}
-            activate={setCurrentTemplate}
-          />
-        ))}
+        { hasTemplates ?
+          map(templates, template => (
+            <TemplateItem
+              key={template.id}
+              id={template.id}
+              isActive={template.id === currentTemplate.id}
+              activate={setCurrentTemplate}
+            />
+          )) :
+          <TemplateListEmpty />
+        }
       </ul>
     );
   }
@@ -42,6 +47,7 @@ export default class TemplateList extends Component {
 
 const styles = {
   base: {
+    position: 'relative',
     flex: 1,
     overflow: 'scroll'
   }
