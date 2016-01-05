@@ -28,11 +28,13 @@ export default class TemplatePreview extends Component {
     } = this.props;
     const { foreground } = dimensions;
     const backgroundAspect = dimensions.width / dimensions.height;
-    const canvasAspect = canvasDimensions.width / canvasDimensions.height;
+    const canvasWidth = Math.floor(canvasDimensions.width);
+    const canvasHeight = Math.floor(canvasDimensions.height);
+    const canvasAspect = canvasWidth / canvasHeight;
     const aspectDifference = backgroundAspect / canvasAspect;
     const isHigherAspect = backgroundAspect >= canvasAspect;
-    const width = isHigherAspect ? '100%' : (canvasDimensions.width * aspectDifference);
-    const height = isHigherAspect ? (canvasDimensions.height / aspectDifference) : '100%';
+    const width = isHigherAspect ? canvasWidth : (canvasDimensions.width * aspectDifference);
+    const height = isHigherAspect ? (canvasDimensions.height / aspectDifference) : canvasHeight;
 
     return (
       <div
