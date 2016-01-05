@@ -48,7 +48,7 @@ export default class TemplateList extends Component {
 
 const styles = {
   base: {
-    display: 'flex',
+    display: 'flex'
   },
 
   item: {

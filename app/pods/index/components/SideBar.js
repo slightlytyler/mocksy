@@ -6,6 +6,7 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 import TemplateList from 'pods/template/components/List';
 import TemplateTabs from 'pods/template/components/Tabs';
+import TemplateNewButton from 'pods/template/components/NewButton';
 import ExportPanel from 'components/ExportPanel';
 
 @Radium
@@ -36,6 +37,7 @@ export default class IndexSideBar extends Component {
       removeSize,
       updateSize
     } = this.props;
+    const isCustomTemplateSet = currentTemplateSetId === 'custom';
 
     return (
       <section
@@ -46,6 +48,8 @@ export default class IndexSideBar extends Component {
           currentTemplateSetId={currentTemplateSetId}
           setCurrentTemplateSet={setCurrentTemplateSet}
         />
+        { isCustomTemplateSet &&
+          <TemplateNewButton /> }
         <TemplateList
           templates={templates}
           currentTemplate={currentTemplate}

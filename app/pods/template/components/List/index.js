@@ -38,8 +38,7 @@ export default class TemplateList extends Component {
               activate={setCurrentTemplate}
             />
           )) :
-          <TemplateListEmpty />
-        }
+          <TemplateListEmpty /> }
       </ul>
     );
   }
