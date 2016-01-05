@@ -18,10 +18,6 @@ export default class TemplatePreview extends Component {
     setCurrentScreenshot: PropTypes.func.isRequired
   };
 
-  isHigherAspect(dimensionsA, dimensionsB) {
-    return (dimensionsA.width / dimensionsA.height)  >= (dimensionsB.width / dimensionsB.height);
-  }
-
   render() {
     const {
       id,
@@ -30,37 +26,34 @@ export default class TemplatePreview extends Component {
       screenshot,
       setCurrentScreenshot
     } = this.props;
-    const {
-      width,
-      height,
-      foreground
-    } = dimensions;
-    const isHigherAspect = this.isHigherAspect(dimensions, canvasDimensions);
+    const { foreground } = dimensions;
+    const backgroundAspect = dimensions.width / dimensions.height;
+    const canvasAspect = canvasDimensions.width / canvasDimensions.height;
+    const aspectDifference = backgroundAspect / canvasAspect;
+    const isHigherAspect = backgroundAspect >= canvasAspect;
+    const width = isHigherAspect ? '100%' : (canvasDimensions.width * aspectDifference);
+    const height = isHigherAspect ? (canvasDimensions.height / aspectDifference) : '100%';
 
     return (
       <div
         className="template"
         style={[
           styles.base,
-          isHigherAspect ?
-          { width: '100%' } :
-          { height: '100%' }
+          { backgroundImage: `url('assets/base-templates/${id.toLowerCase()}/template.png')` },
+          {
+            width,
+            height
+          }
         ]}
       >
-        <img
-          ref="background"
-          src={`assets/base-templates/${id.toLowerCase()}/template.png`}
-          style={styles.background}
-        />
-
         <Foreground
           ref="foreground"
           screenshot={screenshot}
           setCurrentScreenshot={setCurrentScreenshot}
           foregroundDimensions={foreground}
           containerDimensions={{
-            width,
-            height
+            width: dimensions.width,
+            height: dimensions.height
           }}
         />
       </div>
@@ -70,15 +63,9 @@ export default class TemplatePreview extends Component {
 
 const styles = {
   base: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative'
-  },
-
-  background: {
-    maxWidth: '100%',
-    maxHeight: '100%',
-    objectFit: 'contain'
+    position: 'relative',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
   }
 };
