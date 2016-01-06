@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
+import remote from 'remote';
 
 import TemplatePreview from 'pods/template/components/Preview';
 
@@ -23,7 +24,8 @@ export default class IndexPreviewArea extends Component {
     }
   }
 
-  handleResize(el) {
+  handleResize() {
+    const el = this.refs.preview;
     const style = window.getComputedStyle(el, null);
 
     const width = style.getPropertyValue('width').slice(0, -2),
@@ -43,12 +45,14 @@ export default class IndexPreviewArea extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize(this.refs.preview));
+    const win = remote.getCurrentWindow();
+
+    win.addListener('resize', this.handleResize.bind(this));
     this.handleResize(this.refs.preview)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    win.removeListener('resize', this.handleResize);
   }
 
   render() {
