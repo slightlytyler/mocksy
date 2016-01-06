@@ -66,10 +66,10 @@ export default describe('PreviewForeground', () => {
       top
     } = render.output.props.style;
 
-    expect(width).to.equal('50%');
-    expect(height).to.equal('100%');
-    expect(left).to.equal('1%');
-    expect(top).to.equal('2%');
+    expect(width).to.equal('calc(50% + 2px)');
+    expect(height).to.equal('calc(100% + 2px)');
+    expect(left).to.equal('calc(1% - 1px)');
+    expect(top).to.equal('calc(2% - 1px)');
   });
 
   it('should render a screenshot if props.screenshot is present', () => {

@@ -69,6 +69,7 @@ export default class TemplatePreview extends Component {
 
     return (
       <div
+        ref="background"
         className="template"
         style={[
           styles.base,

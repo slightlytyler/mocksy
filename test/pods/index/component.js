@@ -31,6 +31,7 @@ export default describe('Preview', () => {
   before(done => {
     mockery.enable();
     mockery.warnOnUnregistered(false);
+    mockery.registerMock('remote', remoteMock);
     mockery.registerMock('pods/template/components/Preview', {});
     mockery.registerMock('components/ExportPanel', {});
     errorStub = stub(console, 'error');
@@ -41,6 +42,7 @@ export default describe('Preview', () => {
 
   after(done => {
     mockery.disable();
+    mockery.deregisterMock('remote');
     mockery.deregisterMock('pods/template/components/Preview');
     mockery.deregisterMock('components/ExportPanel');
     errorStub.restore();
