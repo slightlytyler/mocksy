@@ -18,6 +18,33 @@ export default class TemplatePreview extends Component {
     setCurrentScreenshot: PropTypes.func.isRequired
   };
 
+  // To prevent sub pixel aliasing we attempt to
+  // resize, while maintaining aspect ratio, and
+  // preferring whole number dimensions
+
+  getPixelValues(targetWidth, targetAspect) {
+    const maxWidth = Math.floor(targetWidth);
+    const maxHeight = Math.round(maxWidth / targetAspect);
+    let width = maxWidth,
+        height = maxHeight,
+        i = maxWidth;
+
+    while (i >= (maxWidth - 20)) {
+      if (Number.isInteger(i / targetAspect)) {
+        width = i;
+        height = i / targetAspect;
+        break;
+      } else {
+        i--;
+      }
+    }
+
+    return {
+      width,
+      height
+    };
+  }
+
   render() {
     const {
       id,
@@ -33,8 +60,12 @@ export default class TemplatePreview extends Component {
     const canvasAspect = canvasWidth / canvasHeight;
     const aspectDifference = backgroundAspect / canvasAspect;
     const isHigherAspect = backgroundAspect >= canvasAspect;
-    const width = isHigherAspect ? canvasWidth : (canvasDimensions.width * aspectDifference);
-    const height = isHigherAspect ? (canvasDimensions.height / aspectDifference) : canvasHeight;
+    const targetWidth = isHigherAspect ? canvasWidth : (canvasWidth * aspectDifference);
+
+    const {
+      width,
+      height,
+    } = this.getPixelValues(targetWidth, backgroundAspect);
 
     return (
       <div
@@ -66,7 +97,7 @@ export default class TemplatePreview extends Component {
 const styles = {
   base: {
     position: 'relative',
-    backgroundSize: 'cover',
+    backgroundSize: '100%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'
   }

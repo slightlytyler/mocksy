@@ -68,10 +68,10 @@ export default class TemplatePreviewForeground extends Component {
         style={[
           styles.base,
           {
-            width: width,
-            height: height,
-            left: left,
-            top: top
+            width: `calc(${width} + 2px)`,
+            height: `calc(${height} + 2px)`,
+            left: `calc(${left} - 1px)`,
+            top: `calc(${top} - 1px)`
           }
         ]}
       >
