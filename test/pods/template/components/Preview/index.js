@@ -82,7 +82,7 @@ export default describe('Preview', () => {
   it('should render proper background image', () => {
     let background = findWithRef(render.output, 'background');
 
-    expect(background.props.src).to.equal(`assets/base-templates/${props.id.toLowerCase()}/template.png`)
+    expect(background.props.style.backgroundImage).to.equal(`url('assets/base-templates/${props.id.toLowerCase()}/template.png')`)
   });
 
   it('should render TemplatePreviewForeground component', () => {
@@ -91,32 +91,19 @@ export default describe('Preview', () => {
     expect(Foreground).to.be.ok;
   });
 
-  it('isHigherAspect should return true if props.dimensions ratio is greater than or equal to props.canvasDimensions', () => {
-    let isHigherAspect = render.instance.isHigherAspect;
-    let { dimensions, canvasDimensions } = props;
-
-    expect(isHigherAspect(dimensions, canvasDimensions)).to.be.false;
-    expect(
-      isHigherAspect({
-        width: 1000,
-        height: 1000
-      },
-      canvasDimensions
-    )).to.be.true;
-    expect(
-      isHigherAspect({
-        width: 1001,
-        height: 1000
-      },
-      canvasDimensions
-    )).to.be.true;
+  it('should have 100% width if isHigherAspect', () => {
+    expect(higherAspectRender.output.props.style.width).to.equal(998);
   });
 
-  it('should have 100% width if isHigherAspect', () => {
-    expect(higherAspectRender.output.props.style.width).to.equal('100%');
+  it('should have scaled height if isHigherAspect', () => {
+    expect(higherAspectRender.output.props.style.height).to.equal(999);
   });
 
   it('should have 100% height if not isHigherAspect', () => {
-    expect(render.output.props.style.height).to.equal('100%');
+    expect(render.output.props.style.height).to.equal(1000);
+  });
+
+  it('should have scaled width if not isHigherAspect', () => {
+    expect(higherAspectRender.output.props.style.width).to.equal(998);
   });
 });

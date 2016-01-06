@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import remote from 'remote';
 
 import routes from './routes';
 import configureStore from 'store/configureStore';
@@ -18,6 +19,14 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+
+// Remove all listeners on reload
+window.onbeforeunload = function(e) {
+  const win = remote.getCurrentWindow();
+
+  win.removeAllListeners();
+  e.returnValue = true;
+};
 
 if (process.env.NODE_ENV !== 'production') {
   // Use require because imports can't be conditional.

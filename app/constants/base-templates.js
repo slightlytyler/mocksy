@@ -5,7 +5,7 @@ export default {
 
     dimensions: {
       width: 1106,
-      height: 1941,
+      height: 1947,
 
       foreground: {
         width: 750,

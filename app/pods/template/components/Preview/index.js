@@ -18,8 +18,31 @@ export default class TemplatePreview extends Component {
     setCurrentScreenshot: PropTypes.func.isRequired
   };
 
-  isHigherAspect(dimensionsA, dimensionsB) {
-    return (dimensionsA.width / dimensionsA.height)  >= (dimensionsB.width / dimensionsB.height);
+  // To prevent sub pixel aliasing we attempt to
+  // resize, while maintaining aspect ratio, and
+  // preferring whole number dimensions
+
+  getPixelValues(targetWidth, targetAspect) {
+    const maxWidth = Math.floor(targetWidth);
+    const maxHeight = Math.round(maxWidth / targetAspect);
+    let width = maxWidth,
+        height = maxHeight,
+        i = maxWidth;
+
+    while (i >= (maxWidth - 20)) {
+      if (Number.isInteger(i / targetAspect)) {
+        width = i;
+        height = i / targetAspect;
+        break;
+      } else {
+        i--;
+      }
+    }
+
+    return {
+      width,
+      height
+    };
   }
 
   render() {
@@ -30,37 +53,41 @@ export default class TemplatePreview extends Component {
       screenshot,
       setCurrentScreenshot
     } = this.props;
+    const { foreground } = dimensions;
+    const backgroundAspect = dimensions.width / dimensions.height;
+    const canvasWidth = Math.floor(canvasDimensions.width);
+    const canvasHeight = Math.floor(canvasDimensions.height);
+    const canvasAspect = canvasWidth / canvasHeight;
+    const aspectDifference = backgroundAspect / canvasAspect;
+    const isHigherAspect = backgroundAspect >= canvasAspect;
+    const targetWidth = isHigherAspect ? canvasWidth : (canvasWidth * aspectDifference);
+
     const {
       width,
       height,
-      foreground
-    } = dimensions;
-    const isHigherAspect = this.isHigherAspect(dimensions, canvasDimensions);
+    } = this.getPixelValues(targetWidth, backgroundAspect);
 
     return (
       <div
+        ref="background"
         className="template"
         style={[
           styles.base,
-          isHigherAspect ?
-          { width: '100%' } :
-          { height: '100%' }
+          { backgroundImage: `url('assets/base-templates/${id.toLowerCase()}/template.png')` },
+          {
+            width,
+            height
+          }
         ]}
       >
-        <img
-          ref="background"
-          src={`assets/base-templates/${id.toLowerCase()}/template.png`}
-          style={styles.background}
-        />
-
         <Foreground
           ref="foreground"
           screenshot={screenshot}
           setCurrentScreenshot={setCurrentScreenshot}
           foregroundDimensions={foreground}
           containerDimensions={{
-            width,
-            height
+            width: dimensions.width,
+            height: dimensions.height
           }}
         />
       </div>
@@ -70,15 +97,9 @@ export default class TemplatePreview extends Component {
 
 const styles = {
   base: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative'
-  },
-
-  background: {
-    maxWidth: '100%',
-    maxHeight: '100%',
-    objectFit: 'contain'
+    position: 'relative',
+    backgroundSize: '100%',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
   }
 };
