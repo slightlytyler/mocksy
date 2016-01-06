@@ -52,6 +52,8 @@ export default class IndexPreviewArea extends Component {
   }
 
   componentWillUnmount() {
+    const win = remote.getCurrentWindow();
+
     win.removeListener('resize', this.handleResize);
   }
 
