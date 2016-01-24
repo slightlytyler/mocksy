@@ -4,6 +4,7 @@
 import shortId from 'shortid';
 
 import createTemplate from 'api/create-template';
+import measureImage from 'api/measure-image';
 import { actionTypes } from './constants'
 
 const {
@@ -15,29 +16,45 @@ const {
 } = actionTypes;
 
 export function addTemplate(props) {
-  const {
-    name,
-    backgroundPath,
-    foregroundWidth,
-    foregroundHeight,
-    foregroundLeft,
-    foregroundTop
-  } = props;
-  const id = shortId();
+  return (dispatch, getState) => {
+    const {
+      name,
+      backgroundPath,
+      foregroundWidth,
+      foregroundHeight,
+      foregroundLeft,
+      foregroundTop
+    } = props;
+    const id = shortId();
+    const date = new Date().getTime();
 
-  const entity = {
-    id,
-    name,
-    foreground: {
-      width: foregroundWidth,
-      height: foregroundHeight,
-      left: foregroundLeft,
-      top: foregroundTop
-    }
+    createTemplate(id, backgroundPath);
+
+    measureImage(backgroundPath, size => {
+      const { width, height } = size;
+
+      const entity = {
+        id,
+        name,
+        set: 'user',
+        createdAt: date,
+        updatedAt: date,
+        dimensions: {
+          width,
+          height,
+
+          foreground: {
+            width: Number(foregroundWidth),
+            height: Number(foregroundHeight),
+            left: Number(foregroundLeft),
+            top: Number(foregroundTop)
+          }
+        }
+      };
+
+      dispatch({ type: ADD_TEMPLATE, entity });
+    });
   };
-
-  createTemplate(id, backgroundPath);
-  return { type: ADD_TEMPLATE, entity };
 }
 
 export function updateTemplate(id, props) {

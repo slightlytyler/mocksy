@@ -20,7 +20,7 @@ const templatesReducer = combineReducers({
 function entitiesReducer(state={}, action) {
   switch (action.type) {
       case ADD_TEMPLATE:
-        return addTemplate(state, action.props);
+        return addTemplate(state, action.entity);
 
       case UPDATE_TEMPLATE:
         return updateTemplate(state, action.id, action.props);
@@ -32,10 +32,12 @@ function entitiesReducer(state={}, action) {
   return state;
 }
 
-function addTemplate(state, props) {
-  return Object.assign({
-    id: shortid(),
-  }, state, props)
+function addTemplate(state, entity) {
+  console.log(entity);
+
+  return Object.assign({}, state, {
+    [entity.id]: entity
+  });
 }
 
 function updateTemplate(state, id, props) {
