@@ -38,9 +38,7 @@ export default function configureStore(initialState) {
   const store = finalCreateStore(reducer, initialState);
 
   // Required for replaying actions from devtools to work
-  // Need edit this function to accept a key as a second param
-  // i.e. 'present'
-  // reduxRouterMiddleware.listenForReplays(store);
+  reduxRouterMiddleware.listenForReplays(store, state => state.present.routing.location);
   bindStoreToMenu(store);
   load(store);
 
