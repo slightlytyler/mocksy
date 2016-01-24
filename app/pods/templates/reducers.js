@@ -33,8 +33,6 @@ function entitiesReducer(state={}, action) {
 }
 
 function addTemplate(state, entity) {
-  console.log(entity);
-
   return Object.assign({}, state, {
     [entity.id]: entity
   });

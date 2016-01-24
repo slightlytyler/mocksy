@@ -37,7 +37,7 @@ export default class IndexSideBar extends Component {
       removeSize,
       updateSize
     } = this.props;
-    const isCustomTemplateSet = currentTemplateSetId === 'custom';
+    const isUserTemplateSet = currentTemplateSetId === 'user';
 
     return (
       <section
@@ -48,7 +48,7 @@ export default class IndexSideBar extends Component {
           currentTemplateSetId={currentTemplateSetId}
           setCurrentTemplateSet={setCurrentTemplateSet}
         />
-        { isCustomTemplateSet &&
+        { isUserTemplateSet &&
           <TemplateNewButton /> }
         <TemplateList
           templates={templates}

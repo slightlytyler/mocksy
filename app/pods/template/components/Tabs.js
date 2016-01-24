@@ -32,11 +32,11 @@ export default class TemplateList extends Component {
           Default Templates
         </li>
         <li
-          onClick={() => setCurrentTemplateSet('custom')}
+          onClick={() => setCurrentTemplateSet('user')}
           className="item"
           style={[
             styles.item.base,
-            currentTemplateSetId === 'custom' && styles.item.active
+            currentTemplateSetId === 'user' && styles.item.active
           ]}
         >
           Custom Templates

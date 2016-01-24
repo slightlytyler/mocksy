@@ -2,8 +2,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
+import { app } from 'remote';
 
 import colors from 'constants/colors';
+import { computeTemplateImages } from 'pods/templates/helpers';
 
 @Radium
 export default class TemplateItem extends Component {
@@ -16,6 +18,9 @@ export default class TemplateItem extends Component {
   render() {
     const {
       id,
+      name,
+      set,
+      format,
       isActive,
       activate
     } = this.props;
@@ -31,7 +36,11 @@ export default class TemplateItem extends Component {
         <div style={styles.preview.container}>
           <img
             ref="thumbnail"
-            src={`assets/base-templates/${id}/thumbnail.png`}
+            src={
+              set === 'user' ?
+              computeTemplateImages(id, format).thumbnail :
+              `assets/base-templates/${id}/thumbnail.png`
+            }
             style={styles.preview.image}
           />
         </div>
@@ -41,7 +50,7 @@ export default class TemplateItem extends Component {
             ref="name"
             style={styles.name.text}
           >
-            {id.split('_').join(' ')}
+            {name || id.split('_').join(' ')}
           </span>
         </div>
       </li>

@@ -4,7 +4,7 @@
 import shortId from 'shortid';
 
 import createTemplate from 'api/create-template';
-import measureImage from 'api/measure-image';
+import indentifyImage from 'api/indentify-image';
 import { actionTypes } from './constants'
 
 const {
@@ -30,7 +30,8 @@ export function addTemplate(props) {
 
     createTemplate(id, backgroundPath);
 
-    measureImage(backgroundPath, size => {
+    indentifyImage(backgroundPath, data => {
+      const { format, size } = data;
       const { width, height } = size;
 
       const entity = {
@@ -39,6 +40,8 @@ export function addTemplate(props) {
         set: 'user',
         createdAt: date,
         updatedAt: date,
+        format,
+
         dimensions: {
           width,
           height,

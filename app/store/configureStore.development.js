@@ -12,7 +12,7 @@ import DevTools from 'containers/DevTools';
 const reducer = storage.reducer(rootReducer);
 const engineComposers = [
   (engine) => storage.decorators.filter(engine, [
-    ['templates', 'entities']
+    ['present', 'templates', 'entities']
   ])
 ];
 const engine = compose(...engineComposers)(createEngine('mocksy'));
