@@ -72,8 +72,7 @@ export default class IndexPreviewArea extends Component {
         style={styles.base}
       >
         <TemplatePreview
-          id={template.id}
-          dimensions={template.dimensions}
+          { ...template }
           canvasDimensions={canvasDimensions}
           screenshot={screenshot}
           setCurrentScreenshot={setCurrentScreenshot}
