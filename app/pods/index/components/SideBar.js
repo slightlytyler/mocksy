@@ -14,11 +14,9 @@ export default class IndexSideBar extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
-    currentTemplateSetId: PropTypes.string.isRequired,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     setCurrentTemplate: PropTypes.func.isRequired,
-    setCurrentTemplateSet: PropTypes.func.isRequired,
     addSize: PropTypes.func.isRequired,
     removeSize: PropTypes.func.isRequired,
     updateSize: PropTypes.func.isRequired
@@ -44,10 +42,8 @@ export default class IndexSideBar extends Component {
         className="sidebar"
         style={styles.base}
       >
-        <TemplateTabs
-          currentTemplateSetId={currentTemplateSetId}
-          setCurrentTemplateSet={setCurrentTemplateSet}
-        />
+        <TemplateTabs />
+
         { isUserTemplateSet &&
           <TemplateNewButton /> }
         <TemplateList

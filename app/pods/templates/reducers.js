@@ -8,8 +8,7 @@ const {
   ADD_TEMPLATE,
   UPDATE_TEMPLATE,
   REMOVE_TEMPLATE,
-  SET_CURRENT_TEMPLATE,
-  SET_CURRENT_TEMPLATE_SET
+  SET_CURRENT_TEMPLATE
 } = actionTypes;
 
 const templatesReducer = combineReducers({
@@ -52,8 +51,6 @@ function conditionReducer(state={}, action) {
   switch (action.type) {
     case SET_CURRENT_TEMPLATE:
       return setCurrentTemplate(state, action.id);
-    case SET_CURRENT_TEMPLATE_SET:
-      return setCurrentTemplateSet(state, action.id);
   }
 
   return state;
@@ -62,12 +59,6 @@ function conditionReducer(state={}, action) {
 function setCurrentTemplate(state, id) {
   return Object.assign({}, state, {
     currentTemplate: id
-  });
-}
-
-function setCurrentTemplateSet(state, id) {
-  return Object.assign({}, state, {
-    currentTemplateSet: id
   });
 }
 

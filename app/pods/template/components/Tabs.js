@@ -32,6 +32,7 @@ export default class TemplateList extends Component {
           <Link
             to="templates/default"
             style={styles.item.link}
+            activeStyle={styles.item.link.active}
           >
             Default Templates
           </Link>
@@ -44,8 +45,9 @@ export default class TemplateList extends Component {
           ]}
         >
           <Link
-            style={styles.item.link}
             to="templates/user"
+            style={styles.item.link}
+            activeStyle={styles.item.link.active}
           >
             User Templates
           </Link>
@@ -73,12 +75,12 @@ const styles = {
       alignItems: 'center',
       padding: '1em 0',
       cursor: 'pointer',
-    },
 
-    active: {
-      backgroundColor: 'white',
-      color: colors.pink,
-      cursor: 'default'
+      active: {
+        backgroundColor: 'white',
+        color: colors.pink,
+        cursor: 'default'
+      }
     }
   }
 };

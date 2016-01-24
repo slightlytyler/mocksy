@@ -8,11 +8,11 @@ import TemplatesNew from 'pods/templates/new/container';
 export default (
   <Router history={history}>
     <Route path="/" component={App}>
-      <IndexRoute component={Index} currentTemplateSetId="default" />
+      <IndexRoute component={Index} />
 
       <Route path="templates">
-        <Route path="default" component={Index} currentTemplateSetId="default" />
-        <Route path="user" component={Index} currentTemplateSetId="user" />
+        <Route path="default" component={Index} />
+        <Route path="user" component={Index} />
         <Route path="new" component={TemplatesNew} />
       </Route>
 

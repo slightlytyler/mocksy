@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect'
 import { pick } from 'lodash';
 
+import { basePathSelector } from 'selectors/routing';
+
 export const templatesStateSelector = state => state.templates;
 export const templatesEntitiesSelector = createSelector(
   templatesStateSelector,
@@ -22,8 +24,8 @@ export const currentTemplateSelector = createSelector(
 );
 
 export const currentTemplateSetIdSelector = createSelector(
-  templatesConditionSelector,
-  condition => condition.currentTemplateSet
+  basePathSelector,
+  path => path === 'user' ? 'user' : 'default'
 );
 export const currentTemplateSetSelector = createSelector(
   templatesEntitiesSelector,

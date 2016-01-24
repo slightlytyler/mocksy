@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {
-  setCurrentTemplate,
-  setCurrentTemplateSet,
+  setCurrentTemplate
 } from 'pods/templates/actions';
 import {
   currentTemplateSelector,
@@ -41,7 +40,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     setCurrentTemplate,
-    setCurrentTemplateSet,
     setCurrentScreenshot,
     addSize,
     removeSize,
