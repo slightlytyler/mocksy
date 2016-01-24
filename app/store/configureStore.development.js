@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { hashHistory as history } from 'react-router'
+import { syncHistory } from 'react-router-redux'
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import * as storage from 'redux-storage'
@@ -7,6 +9,9 @@ import undoRedoMenuState from 'store/undoRedoMenuState';
 import bindStoreToMenu from 'store/bindStoreToMenu'
 import rootReducer from 'reducers';
 import DevTools from 'containers/DevTools';
+
+// Redux router setup
+const reduxRouterMiddleware = syncHistory(history)
 
 // Redux storage setup
 const reducer = storage.reducer(rootReducer);
@@ -20,7 +25,7 @@ const storageMiddleware = storage.createMiddleware(engine);
 const load = storage.createLoader(engine);
 
 const finalCreateStore = compose(
-  applyMiddleware(storageMiddleware, thunk, undoRedoMenuState),
+  applyMiddleware(storageMiddleware, thunk, /*undoRedoMenuState,*/ reduxRouterMiddleware),
   DevTools.instrument(),
   persistState(
     window.location.href.match(
@@ -31,7 +36,9 @@ const finalCreateStore = compose(
 
 export default function configureStore(initialState) {
   const store = finalCreateStore(reducer, initialState);
-  bindStoreToMenu(store);
+
+  reduxRouterMiddleware.listenForReplays(store);
+  //bindStoreToMenu(store);
   load(store);
 
   if (module.hot) {
