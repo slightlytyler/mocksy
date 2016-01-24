@@ -8,7 +8,9 @@ import configureStore from 'store/configureStore';
 import { initialState } from 'config';
 import './app.css';
 
-const store = configureStore(initialState);
+const store = configureStore({
+  present: initialState
+});
 
 render(
   <Provider store={store}>

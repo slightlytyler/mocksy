@@ -31,10 +31,10 @@ function mapStateToProps(state) {
   let { present } = state;
 
   return {
-    templates: currentTemplateSetSelector(state),
-    currentTemplate: currentTemplateSelector(state),
-    currentScreenshot: currentScreenshotSelector(state),
-    sizes: sizesEntitiesSelector(state)
+    templates: currentTemplateSetSelector(present),
+    currentTemplate: currentTemplateSelector(present),
+    currentScreenshot: currentScreenshotSelector(present),
+    sizes: sizesEntitiesSelector(present)
   };
 }
 
