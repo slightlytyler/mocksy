@@ -75,8 +75,6 @@ export default class TemplatePreview extends Component {
         `assets/base-templates/${id.toLowerCase()}/template.png` :
         computeTemplateImages(id, format).background;
 
-    console.log(backgroundImage);
-
     return (
       <div
         ref="background"

@@ -1,6 +1,7 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import Radium from 'radium';
 
 import colors from 'constants/colors';
@@ -22,24 +23,32 @@ export default class TemplateList extends Component {
         style={styles.base}
       >
         <li
-          onClick={() => setCurrentTemplateSet('default')}
           className="item"
           style={[
             styles.item.base,
             currentTemplateSetId === 'default' && styles.item.active
           ]}
         >
-          Default Templates
+          <Link
+            to="templates/default"
+            style={styles.item.link}
+          >
+            Default Templates
+          </Link>
         </li>
         <li
-          onClick={() => setCurrentTemplateSet('user')}
           className="item"
           style={[
             styles.item.base,
             currentTemplateSetId === 'user' && styles.item.active
           ]}
         >
-          Custom Templates
+          <Link
+            style={styles.item.link}
+            to="templates/user"
+          >
+            User Templates
+          </Link>
         </li>
       </ul>
     );
@@ -53,13 +62,16 @@ const styles = {
 
   item: {
     base: {
-      display: 'flex',
       flex: 1,
+      color: 'white',
+      borderBottom: '2px solid white',
+    },
+
+    link: {
+      display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       padding: '1em 0',
-      color: 'white',
-      borderBottom: '2px solid white',
       cursor: 'pointer',
     },
 
