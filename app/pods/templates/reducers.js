@@ -1,9 +1,13 @@
 'use strict'
 
 import { combineReducers } from 'redux';
+import shortid from 'shortid';
 import { actionTypes } from './constants';
 
 const {
+  ADD_TEMPLATE,
+  UPDATE_TEMPLATE,
+  REMOVE_TEMPLATE,
   SET_CURRENT_TEMPLATE,
   SET_CURRENT_TEMPLATE_SET
 } = actionTypes;
@@ -15,9 +19,33 @@ const templatesReducer = combineReducers({
 
 function entitiesReducer(state={}, action) {
   switch (action.type) {
+      case ADD_TEMPLATE:
+        return addTemplate(state, action.props);
+
+      case UPDATE_TEMPLATE:
+        return updateTemplate(state, action.id, action.props);
+
+      case REMOVE_TEMPLATE:
+        return removeTemplate(state, action.id);
   }
 
   return state;
+}
+
+function addTemplate(state, props) {
+  return Object.assign({
+    id: shortid(),
+  }, state, props)
+}
+
+function updateTemplate(state, id, props) {
+  return Object.assign({}, state, {
+    [id]: Object.assign({}, state[id], props)
+  });
+}
+
+function removeTemplate(state, id) {
+
 }
 
 function conditionReducer(state={}, action) {

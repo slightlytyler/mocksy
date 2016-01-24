@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators, compose } from 'redux';
-import { createSelector } from 'reselect'
-import { pick } from 'lodash';
+import { bindActionCreators } from 'redux';
 
 import {
   setCurrentTemplate,

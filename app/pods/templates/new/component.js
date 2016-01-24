@@ -1,11 +1,13 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react';
+import update from 'react-addons-update';
 import Radium from 'radium';
 import { Link } from 'react-router'
 import { dialog } from 'remote';
 
 import gm from 'api/gm';
+import acceptedImageFormats from 'constants/accepted-image-formats';
 
 @Radium
 export default class TemplatesNew extends Component {
@@ -16,12 +18,14 @@ export default class TemplatesNew extends Component {
     super(props);
 
     this.state = {
-      name: '',
-      backgroundPath: '',
-      foregroundWidth: '',
-      foregroundHeight: '',
-      foregroundLeft: '',
-      foregroundTop: ''
+      form: {
+        name: '',
+        backgroundPath: '',
+        foregroundWidth: '',
+        foregroundHeight: '',
+        foregroundLeft: '',
+        foregroundTop: ''
+      }
     };
   }
 
@@ -40,8 +44,9 @@ export default class TemplatesNew extends Component {
             );
 
             if (isAccepted) {
-              this.setState({ backgroundPath: path });
-            } else {
+              this.updateForm(this.state, 'backgroundPath', path)
+            }
+            else {
               alert(`Mocksy doesn't currently support that ):`);
             }
           }
@@ -50,17 +55,28 @@ export default class TemplatesNew extends Component {
     });
   }
 
+  updateForm(state, prop, value) {
+    const newState = update(state, {
+      form: {
+        [prop]: { $set: value }
+      }
+    });
+
+    this.setState(newState);
+  }
+
   render() {
     const {
-    } = this.props;
-    let {
+      addTemplate
+    } = this.props.actions;
+    const {
       name,
       backgroundPath,
       foregroundWidth,
       foregroundHeight,
       foregroundLeft,
       foregroundTop
-    } = this.state;
+    } = this.state.form;
 
     return (
       <div style={styles.base}>
@@ -75,12 +91,37 @@ export default class TemplatesNew extends Component {
         </header>
 
         <form style={styles.form}>
-          <input value={name} onChange={e => this.setState({ name: e.value })} />
-          <div onClick={() => this.openFile()}>Pick File</div>
-          <input value={foregroundWidth} onChange={e => this.setState({ foregroundWidth: e.value })} />
-          <input value={foregroundHeight} onChange={e => this.setState({ foregroundHeight: e.value })} />
-          <input value={foregroundLeft} onChange={e => this.setState({ foregroundLeft: e.value })} />
-          <input value={foregroundTop} onChange={e => this.setState({ foregroundTop: e.value })} />
+          <div>
+            <label>Name</label>
+            <input value={name} onChange={e => this.updateForm(this.state, 'name', e.target.value)} />
+          </div>
+
+          <div>
+            <label>Background</label>
+            <div onClick={() => this.openFile()}>Pick File</div>
+          </div>
+
+          <div>
+            <label>Foreground Width</label>
+            <input value={foregroundWidth} onChange={e => this.updateForm(this.state, 'foregroundWidth', e.target.value)} />
+          </div>
+
+          <div>
+            <label>Foreground Height</label>
+            <input value={foregroundHeight} onChange={e => this.updateForm(this.state, 'foregroundHeight', e.target.value)} />
+          </div>
+
+          <div>
+            <label>Foreground Left</label>
+            <input value={foregroundLeft} onChange={e => this.updateForm(this.state, 'foregroundLeft', e.target.value)} />
+          </div>
+
+          <div>
+            <label>Foreground Top</label>
+            <input value={foregroundTop} onChange={e => this.updateForm(this.state, 'foregroundTop', e.target.value)} />
+          </div>
+
+          <button onClick={() => addTemplate(this.state.form)}>Submit</button>
         </form>
       </div>
     );
