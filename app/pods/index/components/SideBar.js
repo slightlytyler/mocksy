@@ -14,6 +14,7 @@ export default class IndexSideBar extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
+    currentTemplateSetId: PropTypes.string.isRequired,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     setCurrentTemplate: PropTypes.func.isRequired,

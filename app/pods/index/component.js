@@ -9,6 +9,7 @@ export default class Index extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
+    currentTemplateSetId: PropTypes.string.isRequired,
     currentScreenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     actions: PropTypes.shape({

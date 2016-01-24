@@ -32,6 +32,7 @@ function mapStateToProps(state) {
   return {
     templates: currentTemplateSetSelector(present),
     currentTemplate: currentTemplateSelector(present),
+    currentTemplateSetId: currentTemplateSetIdSelector(present),
     currentScreenshot: currentScreenshotSelector(present),
     sizes: sizesEntitiesSelector(present)
   };
@@ -48,13 +49,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { currentTemplateSetId  } = ownProps.route;
-
-  const routeProps = {
-    currentTemplateSetId
-  };
-
-  return Object.assign({}, stateProps, routeProps, {
+  return Object.assign({}, stateProps, {
     actions: {
       ...dispatchProps
     }
