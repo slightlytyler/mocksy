@@ -30,7 +30,7 @@ export default class TemplateList extends Component {
           ]}
         >
           <Link
-            to="templates/default"
+            to="/templates/default"
             style={styles.item.link}
             activeStyle={styles.item.link.active}
           >
@@ -45,7 +45,7 @@ export default class TemplateList extends Component {
           ]}
         >
           <Link
-            to="templates/user"
+            to="/templates/user"
             style={styles.item.link}
             activeStyle={styles.item.link.active}
           >
