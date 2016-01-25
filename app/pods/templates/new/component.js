@@ -90,7 +90,7 @@ export default class TemplatesNew extends Component {
           </Link>
         </header>
 
-        <form style={styles.form}>
+        <div style={styles.form}>
           <div>
             <label>Name</label>
             <input value={name} onChange={e => this.updateForm(this.state, 'name', e.target.value)} />
@@ -122,7 +122,7 @@ export default class TemplatesNew extends Component {
           </div>
 
           <button onClick={() => addTemplate(this.state.form)}>Submit</button>
-        </form>
+        </div>
       </div>
     );
   }
