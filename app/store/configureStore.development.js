@@ -1,10 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { hashHistory as history } from 'react-router'
-import { syncHistory } from 'react-router-redux'
+import { syncHistory, UPDATE_LOCATION } from 'react-router-redux'
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import * as storage from 'redux-storage'
 import createEngine from 'redux-storage/engines/localStorage';
+
 import undoRedoMenuState from 'store/undoRedoMenuState';
 import bindStoreToMenu from 'store/bindStoreToMenu'
 import rootReducer from 'reducers';
@@ -21,11 +22,16 @@ const engineComposers = [
   ])
 ];
 const engine = compose(...engineComposers)(createEngine('mocksy'));
-const storageMiddleware = storage.createMiddleware(engine);
+const storageMiddleware = storage.createMiddleware(engine, [
+  UPDATE_LOCATION
+]);
 const load = storage.createLoader(engine);
 
 const finalCreateStore = compose(
-  applyMiddleware(storageMiddleware, thunk, undoRedoMenuState, reduxRouterMiddleware),
+  applyMiddleware(storageMiddleware),
+  applyMiddleware(thunk),
+  applyMiddleware(undoRedoMenuState),
+  applyMiddleware(reduxRouterMiddleware),
   DevTools.instrument(),
   persistState(
     window.location.href.match(
@@ -37,7 +43,6 @@ const finalCreateStore = compose(
 export default function configureStore(initialState) {
   const store = finalCreateStore(reducer, initialState);
 
-  // Required for replaying actions from devtools to work
   reduxRouterMiddleware.listenForReplays(store, state => state.present.routing.location);
   bindStoreToMenu(store);
   load(store);
