@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import SideBar from './components/SideBar';
+import Sidebar from './components/Sidebar';
 import PreviewArea from './components/PreviewArea';
 
 @Radium
-export default class Index extends Component {
+export default class MockupBuilder extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
@@ -43,7 +43,7 @@ export default class Index extends Component {
         className="index"
         style={styles.base}
       >
-        <SideBar
+        <Sidebar
           ref="SideBar"
           templates={templates}
           setCurrentTemplate={setCurrentTemplate}

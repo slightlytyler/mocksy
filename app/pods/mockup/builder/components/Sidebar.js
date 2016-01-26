@@ -10,7 +10,7 @@ import TemplateNewButton from 'pods/template/components/NewButton';
 import ExportPanel from 'components/ExportPanel';
 
 @Radium
-export default class IndexSideBar extends Component {
+export default class MockupBuilderSidebar extends Component {
   static propTypes = {
     templates: PropTypes.object.isRequired,
     currentTemplate: PropTypes.object.isRequired,
@@ -45,13 +45,17 @@ export default class IndexSideBar extends Component {
       >
         <TemplateTabs />
 
-        { isUserTemplateSet &&
-          <TemplateNewButton /> }
+        {
+          isUserTemplateSet &&
+          <TemplateNewButton />
+        }
+
         <TemplateList
           templates={templates}
           currentTemplate={currentTemplate}
           setCurrentTemplate={setCurrentTemplate}
         />
+
         <ExportPanel
           currentTemplate={currentTemplate}
           screenshot={screenshot}

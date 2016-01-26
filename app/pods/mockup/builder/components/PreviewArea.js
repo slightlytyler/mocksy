@@ -7,7 +7,7 @@ import remote from 'remote';
 import TemplatePreview from 'pods/template/components/Preview';
 
 @Radium
-export default class IndexPreviewArea extends Component {
+export default class MockupBuilderPreviewArea extends Component {
   static propTypes = {
     template: PropTypes.object.isRequired,
     setCurrentScreenshot: PropTypes.func.isRequired
