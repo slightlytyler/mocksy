@@ -8,6 +8,8 @@ import { dialog } from 'remote';
 
 import gm from 'api/gm';
 import acceptedImageFormats from 'constants/accepted-image-formats';
+import Sidebar from 'components/Sidebar';
+import PreviewArea from 'components/PreviewArea';
 
 @Radium
 export default class TemplatesNew extends Component {
@@ -80,55 +82,34 @@ export default class TemplatesNew extends Component {
 
     return (
       <div style={styles.base}>
-        <header style={styles.header}>
-          New Template
-           <Link
-            to="/"
-            style={styles.link}
-          >
-            Index
-          </Link>
-        </header>
+        <Sidebar>
+          <header style={styles.header}>
+             <Link
+              to="/"
+              style={styles.link}
+            >
+              Back
+            </Link>
+            Add Background
+          </header>
+        </Sidebar>
 
-        <div style={styles.form}>
-          <div>
-            <label>Name</label>
-            <input value={name} onChange={e => this.updateForm(this.state, 'name', e.target.value)} />
-          </div>
-
+        <PreviewArea>
           <div>
             <label>Background</label>
             <div onClick={() => this.openFile()}>Pick File</div>
           </div>
-
-          <div>
-            <label>Foreground Width</label>
-            <input value={foregroundWidth} onChange={e => this.updateForm(this.state, 'foregroundWidth', e.target.value)} />
-          </div>
-
-          <div>
-            <label>Foreground Height</label>
-            <input value={foregroundHeight} onChange={e => this.updateForm(this.state, 'foregroundHeight', e.target.value)} />
-          </div>
-
-          <div>
-            <label>Foreground Left</label>
-            <input value={foregroundLeft} onChange={e => this.updateForm(this.state, 'foregroundLeft', e.target.value)} />
-          </div>
-
-          <div>
-            <label>Foreground Top</label>
-            <input value={foregroundTop} onChange={e => this.updateForm(this.state, 'foregroundTop', e.target.value)} />
-          </div>
-
-          <button onClick={() => addTemplate(this.state.form)}>Submit</button>
-        </div>
+        </PreviewArea>
       </div>
     );
   }
 }
 
 const styles = {
+  base: {
+    display: 'flex'
+  },
+
   header: {
     display: 'flex'
   }

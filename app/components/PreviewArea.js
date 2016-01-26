@@ -4,13 +4,10 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 import remote from 'remote';
 
-import TemplatePreview from 'pods/template/components/Preview';
-
 @Radium
-export default class MockupBuilderPreviewArea extends Component {
+export default class PreviewArea extends Component {
   static propTypes = {
-    template: PropTypes.object.isRequired,
-    setCurrentScreenshot: PropTypes.func.isRequired
+    children: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -21,7 +18,7 @@ export default class MockupBuilderPreviewArea extends Component {
         width: 1,
         height: 1
       }
-    }
+    };
   }
 
   handleResize() {
@@ -58,11 +55,6 @@ export default class MockupBuilderPreviewArea extends Component {
   }
 
   render() {
-    const {
-      template,
-      screenshot,
-      setCurrentScreenshot
-    } = this.props;
     const { canvasDimensions } = this.state
 
     return (
@@ -71,12 +63,7 @@ export default class MockupBuilderPreviewArea extends Component {
         className="preview"
         style={styles.base}
       >
-        <TemplatePreview
-          { ...template }
-          canvasDimensions={canvasDimensions}
-          screenshot={screenshot}
-          setCurrentScreenshot={setCurrentScreenshot}
-        />
+        {React.cloneElement(this.props.children, { canvasDimensions })}
       </section>
     );
   }

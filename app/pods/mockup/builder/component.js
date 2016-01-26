@@ -1,8 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Sidebar from './components/Sidebar';
-import PreviewArea from './components/PreviewArea';
+import Sidebar from 'components/Sidebar';
+import TemplateList from 'pods/template/components/List';
+import TemplateTabs from 'pods/template/components/Tabs';
+import TemplateNewButton from 'pods/template/components/NewButton';
+import ExportPanel from 'components/ExportPanel';
+
+import PreviewArea from 'components/PreviewArea';
+import TemplatePreview from 'pods/template/components/Preview';
 
 @Radium
 export default class MockupBuilder extends Component {
@@ -37,30 +43,44 @@ export default class MockupBuilder extends Component {
       removeSize,
       updateSize
     } = actions;
+    const isUserTemplateSet = currentTemplateSetId === 'user';
 
     return (
       <div
         className="index"
         style={styles.base}
       >
-        <Sidebar
-          ref="SideBar"
-          templates={templates}
-          setCurrentTemplate={setCurrentTemplate}
-          currentTemplate={currentTemplate}
-          currentTemplateSetId={currentTemplateSetId}
-          screenshot={currentScreenshot}
-          sizes={sizes}
-          addSize={addSize}
-          removeSize={removeSize}
-          updateSize={updateSize}
-        />
-        <PreviewArea
-          ref="PreviewArea"
-          template={currentTemplate}
-          screenshot={currentScreenshot}
-          setCurrentScreenshot={setCurrentScreenshot}
-        />
+        <Sidebar>
+          <TemplateTabs />
+
+          {
+            isUserTemplateSet &&
+            <TemplateNewButton />
+          }
+
+          <TemplateList
+            templates={templates}
+            currentTemplate={currentTemplate}
+            setCurrentTemplate={setCurrentTemplate}
+          />
+
+          <ExportPanel
+            currentTemplate={currentTemplate}
+            screenshot={currentScreenshot}
+            sizes={sizes}
+            addSize={addSize}
+            removeSize={removeSize}
+            updateSize={updateSize}
+          />
+        </Sidebar>
+
+        <PreviewArea>
+          <TemplatePreview
+            { ...currentTemplate }
+            screenshot={currentScreenshot}
+            setCurrentScreenshot={setCurrentScreenshot}
+          />
+        </PreviewArea>
       </div>
     );
   }
