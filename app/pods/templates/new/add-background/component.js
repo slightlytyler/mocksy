@@ -19,26 +19,26 @@ export default class TemplatesNew extends Component {
       height: PropTypes.number.isRequired
     }),
     actions: PropTypes.shape({
-      addTemplate: PropTypes.func.isRequired
+      createTemplateWithBackground: PropTypes.func.isRequired
     })
   };
 
   openFile() {
     dialog.showOpenDialog({ multiSelections: false }, fileNames => {
       if (fileNames) {
-        let path = fileNames[0];
+        const path = fileNames[0];
 
         gm(path).identify((err, value) => {
           if (err) {
             alert('The file you selected is not recognized as an image.')
           } else {
-            let selectedFileFormat = value.format.toLowerCase();
-            let isAccepted = acceptedImageFormats.some(format =>
+            const selectedFileFormat = value.format.toLowerCase();
+            const isAccepted = acceptedImageFormats.some(format =>
               selectedFileFormat === format.value || selectedFileFormat === format.alias
             );
 
             if (isAccepted) {
-              this.updateForm(this.state, 'backgroundPath', path)
+              this.props.actions.createTemplateWithBackground(path)
             }
             else {
               alert(`Mocksy doesn't currently support that ):`);

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {
-  addTemplate
+  createTemplateWithBackground
 } from 'pods/templates/actions';
 
 import Component from './component';
@@ -18,7 +18,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    addTemplate
+    createTemplateWithBackground
   }, dispatch);
 }
 

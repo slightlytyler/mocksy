@@ -28,7 +28,7 @@ export default (
         <Redirect from="new" to="new/add-background" />
         <Route path="new" component={TemplatesNewLayout}>
           <Route path="add-background" component={TemplatesNewAddBackground} />
-          <Route path="set-foreground" component={TemplatesNewSetForeground} />
+          <Route path="set-foreground/:templateId" component={TemplatesNewSetForeground} />
           <Route path="add-details" component={TemplatesNewAddDetails} />
         </Route>
       </Route>

@@ -1,11 +1,12 @@
 'use strict'
 // templates need to fix bluprint...
 
+import { routeActions } from 'react-router-redux';
 import shortId from 'shortid';
 
-import createTemplate from 'api/create-template';
+import createTemplateFiles from 'api/create-template';
 import indentifyImage from 'api/indentify-image';
-import { actionTypes } from './constants'
+import { actionTypes } from './constants';
 
 const {
   ADD_TEMPLATE,
@@ -24,10 +25,10 @@ export function addTemplate(props) {
       foregroundLeft,
       foregroundTop
     } = props;
-    const id = shortId();
+    const id = props.id || shortId();
     const date = new Date().getTime();
 
-    createTemplate(id, backgroundPath);
+    createTemplateFiles(id, backgroundPath);
 
     indentifyImage(backgroundPath, data => {
       const { format, size } = data;
@@ -46,10 +47,10 @@ export function addTemplate(props) {
           height,
 
           foreground: {
-            width: Number(foregroundWidth),
-            height: Number(foregroundHeight),
-            left: Number(foregroundLeft),
-            top: Number(foregroundTop)
+            width: 0,
+            height: 0,
+            left: 0,
+            top: 0
           }
         }
       };
@@ -65,6 +66,19 @@ export function updateTemplate(id, props) {
 
 export function removeTemplate(id) {
   return { type: REMOVE_TEMPLATE, id };
+}
+
+export function createTemplateWithBackground(path) {
+  return (dispatch, getState) => {
+    const id = shortId();
+
+    dispatch(addTemplate({
+      id,
+      backgroundPath: path
+    }));
+
+    dispatch(routeActions.push(`/templates/new/set-foreground/${id}`));
+  }
 }
 
 export function setCurrentTemplate(id) {
