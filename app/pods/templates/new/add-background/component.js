@@ -1,35 +1,27 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react';
-import update from 'react-addons-update';
 import Radium from 'radium';
-import { Link } from 'react-router'
 import { dialog } from 'remote';
 
 import gm from 'api/gm';
 import acceptedImageFormats from 'constants/accepted-image-formats';
-import Sidebar from 'components/Sidebar';
-import PreviewArea from 'components/PreviewArea';
+import colors from 'constants/colors';
+import AspectContainer from 'components/AspectContainer';
+import wireframe from './assets/wireframe.svg';
+import addIcon from 'assets/icons/add-background.svg';
 
 @Radium
 export default class TemplatesNew extends Component {
   static propTypes = {
+    canvasDimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired
+    }),
+    actions: PropTypes.shape({
+      addTemplate: PropTypes.func.isRequired
+    })
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      form: {
-        name: '',
-        backgroundPath: '',
-        foregroundWidth: '',
-        foregroundHeight: '',
-        foregroundLeft: '',
-        foregroundTop: ''
-      }
-    };
-  }
 
   openFile() {
     dialog.showOpenDialog({ multiSelections: false }, fileNames => {
@@ -57,60 +49,78 @@ export default class TemplatesNew extends Component {
     });
   }
 
-  updateForm(state, prop, value) {
-    const newState = update(state, {
-      form: {
-        [prop]: { $set: value }
-      }
-    });
-
-    this.setState(newState);
-  }
-
   render() {
     const {
-      addTemplate
-    } = this.props.actions;
+      canvasDimensions,
+      actions
+    } = this.props;
     const {
-      name,
-      backgroundPath,
-      foregroundWidth,
-      foregroundHeight,
-      foregroundLeft,
-      foregroundTop
-    } = this.state.form;
+      addTemplate
+    } = actions;
 
     return (
-      <div style={styles.base}>
-        <Sidebar>
-          <header style={styles.header}>
-             <Link
-              to="/"
-              style={styles.link}
-            >
-              Back
-            </Link>
-            Add Background
-          </header>
-        </Sidebar>
+      <AspectContainer
+        dimensions={{
+          width: 255,
+          height: 512
+        }}
+        canvasDimensions={{
+          width: canvasDimensions.width,
+          height: canvasDimensions.height
+        }}
+        handleClick={() => this.openFile()}
+      >
+        <section
+          ref="prompt"
+          style={styles.prompt.base}
+        >
+          <img
+            src={addIcon}
+            style={styles.prompt.icon}
+          />
+          <span style={styles.prompt.text}>
+            Add a background
+          </span>
+        </section>
 
-        <PreviewArea>
-          <div>
-            <label>Background</label>
-            <div onClick={() => this.openFile()}>Pick File</div>
-          </div>
-        </PreviewArea>
-      </div>
+        <img
+          ref="wireframe"
+          src={wireframe}
+          style={styles.wireframe.image}
+        />
+      </AspectContainer>
     );
   }
 }
 
 const styles = {
-  base: {
-    display: 'flex'
+  wireframe: {
+    image: {
+      width: '100%',
+    }
   },
 
-  header: {
-    display: 'flex'
+  prompt: {
+    base: {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+
+    icon: {
+      width: '5em',
+      marginBottom: '1em'
+    },
+
+    text: {
+      fontSize: '2em',
+      fontWeight: '200',
+      color: colors.pink,
+      whiteSpace: 'nowrap'
+    }
   }
 };
