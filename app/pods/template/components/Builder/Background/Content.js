@@ -18,8 +18,7 @@ export default class TemplateBuilderBackgroundContent extends Component {
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
-    createTemplate: PropTypes.func.isRequired,
-    transition: PropTypes.func.isRequired
+    setTemplateBackground: PropTypes.func.isRequired
   };
 
   openFile() {
@@ -38,13 +37,11 @@ export default class TemplateBuilderBackgroundContent extends Component {
 
             if (isAccepted) {
               const {
-                createTemplate,
+                setTemplateBackground,
                 transition
               } = this.props;
 
-              createTemplate(path, (id) =>
-                transition()
-              );
+              setTemplateBackground(path);
             }
             else {
               alert(`Mocksy doesn't currently support that ):`);

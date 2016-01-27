@@ -11,7 +11,7 @@ import gm from 'api/gm';
 // Creates a directory for the new template in userData
 // Copies the file from path to new directory
 // Creates a thumbnail for the template
-export default function(id, stockPath) {
+export default function(id, stockPath, callback) {
   const userDataPath = app.getPath('userData');
   const templatesPath = path.join(userDataPath, 'templates');
   const templateDir = path.join(templatesPath, id);
@@ -23,6 +23,7 @@ export default function(id, stockPath) {
     else {
       createTemplateImage(stockPath, templateDir);
       createThumbnailImage(stockPath, templateDir);
+      callback();
     }
   })
 }

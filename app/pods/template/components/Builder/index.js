@@ -11,20 +11,18 @@ import backIcon from 'assets/icons/back.svg';
 export default class TemplateBuilder extends Component {
   static propTypes = {
     actions: PropTypes.shape({
-      createTemplate: PropTypes.func.isRequired,
-      updateTemplate: PropTypes.func.isRequired,
-      removeTemplate: PropTypes.func.isRequired,
-      transition: PropTypes.func.isRequired,
+      setTemplateBackground: PropTypes.func.isRequired,
+      setTemplateForeground: PropTypes.func.isRequired,
+      setTemplateDetails: PropTypes.func.isRequired,
       goBack: PropTypes.func.isRequired
     })
   };
 
   render() {
     const {
-      createTemplate,
-      updateTemplate,
-      removeTemplate,
-      transition,
+      setTemplateBackground,
+      setTemplateForeground,
+      setTemplateDetails,
       goBack
     } = this.props.actions;
 
@@ -50,10 +48,9 @@ export default class TemplateBuilder extends Component {
 
         <PreviewArea>
           {React.cloneElement(this.props.content, {
-            createTemplate,
-            updateTemplate,
-            removeTemplate,
-            transition
+            setTemplateBackground,
+            setTemplateForeground,
+            setTemplateDetails
           })}
         </PreviewArea>
       </div>

@@ -8,12 +8,14 @@ import { actionTypes } from './constants';
 const {
   ADD_TEMPLATE,
   UPDATE_TEMPLATE,
+  UPDATE_NEW_TEMPLATE,
   REMOVE_TEMPLATE,
   SET_CURRENT_TEMPLATE
 } = actionTypes;
 
 const templatesReducer = combineReducers({
   entities: entitiesReducer,
+  newRecord: newRecordReducer,
   condition: conditionReducer
 });
 
@@ -46,6 +48,15 @@ function updateTemplate(state, id, props) {
 
 function removeTemplate(state, id) {
   return omit(state, id);
+}
+
+function newRecordReducer(state={}, action) {
+  switch (action.type) {
+      case UPDATE_NEW_TEMPLATE:
+        return merge(state, action.props);
+  }
+
+  return state;
 }
 
 function conditionReducer(state={}, action) {

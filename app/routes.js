@@ -16,6 +16,10 @@ import TemplatesEdit from 'pods/templates/edit/container';
 
 import TemplateBuilderBackgroundContent from 'pods/template/components/Builder/Background/Content';
 import TemplateBuilderBackgroundSidebar from 'pods/template/components/Builder/Background/Sidebar';
+import TemplateBuilderForegroundContent from 'pods/template/components/Builder/Foreground/Content';
+import TemplateBuilderForegroundSidebar from 'pods/template/components/Builder/Foreground/Sidebar';
+import TemplateBuilderDetailsContent from 'pods/template/components/Builder/Details/Content';
+import TemplateBuilderDetailsSidebar from 'pods/template/components/Builder/Details/Sidebar';
 
 export default (
   <Router history={history}>
@@ -33,12 +37,12 @@ export default (
             sidebar: TemplateBuilderBackgroundSidebar
           }} />
           <Route path="foreground" components={{
-            content: TemplateBuilderBackgroundContent,
-            sidebar: TemplateBuilderBackgroundSidebar
+            content: TemplateBuilderForegroundContent,
+            sidebar: TemplateBuilderForegroundSidebar
           }} />
           <Route path="details" components={{
-            content: TemplateBuilderBackgroundContent,
-            sidebar: TemplateBuilderBackgroundSidebar
+            content: TemplateBuilderDetailsContent,
+            sidebar: TemplateBuilderDetailsSidebar
           }} />
         </Route>
 

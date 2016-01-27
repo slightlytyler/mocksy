@@ -7,32 +7,37 @@ import { bindActionCreators } from 'redux';
 import { routeActions } from 'react-router-redux';
 
 import {
-  createTemplate,
-  updateTemplate,
-  removeTemplate
+  addTemplate,
+  updateNewTemplate,
+  addTemplateBackground
 } from 'pods/templates/actions';
 
 import Component from 'pods/template/components/Builder';
 
 function mapStateToProps(state) {
-  const { present } = state;
-
   return {
-    currentStep: pathModule.basename(present.routing.location.pathname)
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    createTemplate,
-    updateTemplate,
-    removeTemplate,
+    addTemplate,
+    updateNewTemplate,
+    addTemplateBackground,
     transition: routeActions.push,
     goBack: routeActions.goBack
   }, dispatch);
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
+  const { currentStep } = stateProps;
+  const {
+    addTemplate,
+    updateNewTemplate,
+    addTemplateBackground,
+    transition,
+    goBack,
+  } = dispatchProps;
   const { content, sidebar } = ownProps;
 
   return Object.assign({}, stateProps, {
@@ -40,34 +45,28 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     sidebar,
 
     actions: {
-      ...dispatchProps,
-      transition: () => dispatchProps.transitionTo(
-        nextStep(stateProps.currentStep)
-      ),
+      setTemplateBackground: path => addTemplateBackground(path, () => transition('templates/new/foreground')),
+      setTemplateForeground: (width, height, left, top) => {
+        updateNewTemplate({
+          dimensions: {
+            foreground: {
+              width: Number(width),
+              height: Number(height),
+              left: Number(left),
+              top: Number(top)
+            }
+          }
+        });
+
+        transition('templates/new/details')
+      },
+      setTemplateDetails: (props) => {
+        updateNewTemplate(props);
+        addTemplate(() => transition('templates/user'));
+      },
+      goBack
     }
   });
-}
-
-function nextStep(currentStep, ) {
-  const steps = [
-    'background',
-    'foreground',
-    'details'
-  ];
-  const currentStepIndex = steps.indexOf(currentStep);
-  const nextStepIndex = currentStepIndex + 1;
-
-  const nextStep = currentStepIndex < steps.length
-    ? steps[nextStepIndex]
-    : 'exit'
-  ;
-
-  if (nextStep === 'exit') {
-    return '/templates/user';
-  }
-  else {
-    return `/templates/new/${nextStep}`;
-  }
 }
 
 export default connect(
