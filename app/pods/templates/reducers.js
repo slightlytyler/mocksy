@@ -2,6 +2,7 @@
 
 import { combineReducers } from 'redux';
 import shortid from 'shortid';
+import { merge } from 'lodash';
 import { actionTypes } from './constants';
 
 const {
@@ -38,8 +39,8 @@ function addTemplate(state, entity) {
 }
 
 function updateTemplate(state, id, props) {
-  return Object.assign({}, state, {
-    [id]: Object.assign({}, state[id], props)
+  return merge({}, state, {
+    [id]: props
   });
 }
 

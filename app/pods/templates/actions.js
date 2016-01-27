@@ -72,14 +72,17 @@ export function createTemplateWithBackground(path, callback) {
   };
 }
 
-export function setTemplateForeground(id, dimensions) {
-  return (dispatch, getState) => {
-    dispatch(updateTemplate(id, {
-      dimensions: {
-        foreground: { ...dimensions }
+export function setTemplateForeground(id, width, height, left, top) {
+  return updateTemplate(id, {
+    dimensions: {
+      foreground: {
+        width: Number(width),
+        height: Number(height),
+        left: Number(left),
+        top: Number(top)
       }
-    }));
-  };
+    }
+  });
 }
 
 export function setCurrentTemplate(id) {

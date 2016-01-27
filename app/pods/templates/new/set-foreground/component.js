@@ -35,11 +35,13 @@ export default class TemplatesNewSetForeground extends Component {
 
   render() {
     const {
-      addTemplate
+      id,
+      actions
+    } = this.props;
+    const {
+      setTemplateForeground
     } = this.props.actions;
     const {
-      name,
-      backgroundPath,
       foregroundWidth,
       foregroundHeight,
       foregroundLeft,
@@ -68,7 +70,19 @@ export default class TemplatesNewSetForeground extends Component {
           <input value={foregroundTop} onChange={e => this.updateForm(this.state, 'foregroundTop', e.target.value)} />
         </div>
 
-        <button onClick={() => addTemplate(this.state.form)}>Submit</button>
+        <button
+          onClick={
+            () => setTemplateForeground(
+              id,
+              foregroundWidth,
+              foregroundHeight,
+              foregroundLeft,
+              foregroundTop
+            )
+          }
+        >
+          Submit
+        </button>
       </div>
     );
   }
