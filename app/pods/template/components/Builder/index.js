@@ -10,14 +10,23 @@ import backIcon from 'assets/icons/back.svg';
 @Radium
 export default class TemplateBuilder extends Component {
   static propTypes = {
-  };
-
-  static contextTypes = {
-    router: React.PropTypes.object.isRequired
+    actions: PropTypes.shape({
+      createTemplate: PropTypes.func.isRequired,
+      updateTemplate: PropTypes.func.isRequired,
+      removeTemplate: PropTypes.func.isRequired,
+      transition: PropTypes.func.isRequired,
+      goBack: PropTypes.func.isRequired
+    })
   };
 
   render() {
-    const { goBack } = this.context.router;
+    const {
+      createTemplate,
+      updateTemplate,
+      removeTemplate,
+      transition,
+      goBack
+    } = this.props.actions;
 
     return (
       <div style={styles.base}>
@@ -40,7 +49,12 @@ export default class TemplateBuilder extends Component {
         </Sidebar>
 
         <PreviewArea>
-          {this.props.content}
+          {React.cloneElement(this.props.content, {
+            createTemplate,
+            updateTemplate,
+            removeTemplate,
+            transition
+          })}
         </PreviewArea>
       </div>
     );

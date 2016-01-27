@@ -19,8 +19,6 @@ export function addTemplate(id, backgroundPath) {
   return (dispatch, getState) => {
     const date = new Date().getTime();
 
-    createTemplateFiles(id, backgroundPath);
-
     indentifyImage(backgroundPath, data => {
       const { format, size } = data;
       const { width, height } = size;
@@ -59,9 +57,11 @@ export function removeTemplate(id) {
   return { type: REMOVE_TEMPLATE, id };
 }
 
-export function createTemplateWithBackground(path, callback) {
+export function createTemplate(path, callback) {
   return (dispatch, getState) => {
     const id = shortId();
+
+    createTemplateFiles(id, path);
 
     dispatch(addTemplate(
       id,
