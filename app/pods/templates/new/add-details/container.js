@@ -3,12 +3,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { routeActions } from 'react-router-redux';
 
 import {
-  addTemplate
+  updateTemplate
 } from 'pods/templates/actions';
 
-import NewTemplateComponent from './component';
+import Component from './component';
 
 
 function mapStateToProps(state) {
@@ -20,14 +21,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    addTemplate
+    updateTemplate,
+    transitionTo: routeActions.push
   }, dispatch);
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { navigator } = ownProps;
-
   return Object.assign({}, stateProps, {
+    id: ownProps.params.templateId,
+
     actions: {
       ...dispatchProps
     }
@@ -38,4 +40,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(NewTemplateComponent);
+)(Component);

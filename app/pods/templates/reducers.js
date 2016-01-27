@@ -2,7 +2,7 @@
 
 import { combineReducers } from 'redux';
 import shortid from 'shortid';
-import { merge } from 'lodash';
+import { assign, merge, omit } from 'lodash';
 import { actionTypes } from './constants';
 
 const {
@@ -33,7 +33,7 @@ function entitiesReducer(state={}, action) {
 }
 
 function addTemplate(state, entity) {
-  return Object.assign({}, state, {
+  return assign({}, state, {
     [entity.id]: entity
   });
 }
@@ -45,7 +45,7 @@ function updateTemplate(state, id, props) {
 }
 
 function removeTemplate(state, id) {
-
+  return omit(state, id);
 }
 
 function conditionReducer(state={}, action) {
@@ -58,7 +58,7 @@ function conditionReducer(state={}, action) {
 }
 
 function setCurrentTemplate(state, id) {
-  return Object.assign({}, state, {
+  return assign({}, state, {
     currentTemplateId: id
   });
 }

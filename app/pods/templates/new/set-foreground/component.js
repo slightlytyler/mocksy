@@ -33,14 +33,34 @@ export default class TemplatesNewSetForeground extends Component {
     this.setState(newState);
   }
 
-  render() {
+  submit() {
     const {
       id,
       actions
     } = this.props;
     const {
-      setTemplateForeground
+      setTemplateForeground,
+      transitionTo
     } = this.props.actions;
+    const {
+      foregroundWidth,
+      foregroundHeight,
+      foregroundLeft,
+      foregroundTop
+    } = this.state.form;
+
+    setTemplateForeground(
+      id,
+      foregroundWidth,
+      foregroundHeight,
+      foregroundLeft,
+      foregroundTop
+    );
+
+    transitionTo(`/templates/new/add-details/${id}`);
+  }
+
+  render() {
     const {
       foregroundWidth,
       foregroundHeight,
@@ -70,17 +90,7 @@ export default class TemplatesNewSetForeground extends Component {
           <input value={foregroundTop} onChange={e => this.updateForm(this.state, 'foregroundTop', e.target.value)} />
         </div>
 
-        <button
-          onClick={
-            () => setTemplateForeground(
-              id,
-              foregroundWidth,
-              foregroundHeight,
-              foregroundLeft,
-              foregroundTop
-            )
-          }
-        >
+        <button onClick={() => this.submit()}>
           Submit
         </button>
       </div>
