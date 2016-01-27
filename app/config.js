@@ -2,11 +2,6 @@ import baseTemplates from 'constants/base-templates';
 
 export const initialState = {
   templates: {
-    condition: {
-      currentTemplate: 'iPhone_6',
-      currentTemplateSet: 'default'
-    },
-
     entities: {
       ...baseTemplates
     }

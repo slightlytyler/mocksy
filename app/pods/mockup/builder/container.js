@@ -27,7 +27,7 @@ import IndexComponent from './component';
 
 
 function mapStateToProps(state) {
-  let { present } = state;
+  const { present } = state;
 
   return {
     templates: currentTemplateSetSelector(present),

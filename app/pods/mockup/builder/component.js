@@ -13,8 +13,8 @@ import TemplatePreview from 'pods/template/components/Preview';
 @Radium
 export default class MockupBuilder extends Component {
   static propTypes = {
-    templates: PropTypes.object.isRequired,
-    currentTemplate: PropTypes.object.isRequired,
+    templates: PropTypes.object,
+    currentTemplate: PropTypes.object,
     currentTemplateSetId: PropTypes.string.isRequired,
     currentScreenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
@@ -64,22 +64,29 @@ export default class MockupBuilder extends Component {
             setCurrentTemplate={setCurrentTemplate}
           />
 
-          <ExportPanel
-            currentTemplate={currentTemplate}
-            screenshot={currentScreenshot}
-            sizes={sizes}
-            addSize={addSize}
-            removeSize={removeSize}
-            updateSize={updateSize}
-          />
+          {
+            currentTemplate &&
+            <ExportPanel
+              currentTemplate={currentTemplate}
+              screenshot={currentScreenshot}
+              sizes={sizes}
+              addSize={addSize}
+              removeSize={removeSize}
+              updateSize={updateSize}
+            />
+          }
         </Sidebar>
 
         <PreviewArea>
-          <TemplatePreview
-            { ...currentTemplate }
-            screenshot={currentScreenshot}
-            setCurrentScreenshot={setCurrentScreenshot}
-          />
+          {
+            currentTemplate &&
+            <TemplatePreview
+              { ...currentTemplate }
+              screenshot={currentScreenshot}
+              setCurrentScreenshot={setCurrentScreenshot}
+            />
+          }
+
         </PreviewArea>
       </div>
     );

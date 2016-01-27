@@ -25,8 +25,8 @@ const storageMiddleware = storage.createMiddleware(engine, [
 const load = storage.createLoader(engine);
 
 const finalCreateStore = compose(
-  applyMiddleware(storageMiddleware),
   applyMiddleware(thunk),
+  applyMiddleware(storageMiddleware),
   applyMiddleware(undoRedoMenuState),
   applyMiddleware(reduxRouterMiddleware)
 )(createStore);

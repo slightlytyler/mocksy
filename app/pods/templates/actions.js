@@ -15,17 +15,8 @@ const {
   SET_CURRENT_TEMPLATE,
 } = actionTypes;
 
-export function addTemplate(props) {
+export function addTemplate(id, backgroundPath) {
   return (dispatch, getState) => {
-    const {
-      name,
-      backgroundPath,
-      foregroundWidth,
-      foregroundHeight,
-      foregroundLeft,
-      foregroundTop
-    } = props;
-    const id = props.id || shortId();
     const date = new Date().getTime();
 
     createTemplateFiles(id, backgroundPath);
@@ -36,7 +27,7 @@ export function addTemplate(props) {
 
       const entity = {
         id,
-        name,
+        name: '',
         set: 'user',
         createdAt: date,
         updatedAt: date,
@@ -68,17 +59,27 @@ export function removeTemplate(id) {
   return { type: REMOVE_TEMPLATE, id };
 }
 
-export function createTemplateWithBackground(path) {
+export function createTemplateWithBackground(path, callback) {
   return (dispatch, getState) => {
     const id = shortId();
 
-    dispatch(addTemplate({
+    dispatch(addTemplate(
       id,
-      backgroundPath: path
-    }));
+      path
+    ));
 
-    dispatch(routeActions.push(`/templates/new/set-foreground/${id}`));
-  }
+    callback(id);
+  };
+}
+
+export function setTemplateForeground(id, dimensions) {
+  return (dispatch, getState) => {
+    dispatch(updateTemplate(id, {
+      dimensions: {
+        foreground: { ...dimensions }
+      }
+    }));
+  };
 }
 
 export function setCurrentTemplate(id) {

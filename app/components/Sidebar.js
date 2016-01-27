@@ -10,7 +10,7 @@ export default class Sidebar extends Component {
     children: PropTypes.oneOfType([
       PropTypes.array,
       PropTypes.object
-    ]).isRequired
+    ])
   };
 
   render() {

@@ -58,7 +58,7 @@ function conditionReducer(state={}, action) {
 
 function setCurrentTemplate(state, id) {
   return Object.assign({}, state, {
-    currentTemplate: id
+    currentTemplateId: id
   });
 }
 

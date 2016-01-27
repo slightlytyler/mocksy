@@ -8,7 +8,7 @@ import {
   addTemplate
 } from 'pods/templates/actions';
 
-import NewTemplateComponent from './component';
+import Component from './component';
 
 
 function mapStateToProps(state) {
@@ -25,8 +25,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { navigator } = ownProps;
-
   return Object.assign({}, stateProps, {
     actions: {
       ...dispatchProps
@@ -38,4 +36,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(NewTemplateComponent);
+)(Component);

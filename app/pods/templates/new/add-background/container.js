@@ -3,6 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { routeActions } from 'react-router-redux';
 
 import {
   createTemplateWithBackground
@@ -18,7 +19,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    createTemplateWithBackground
+    createTemplateWithBackground,
+    transitionTo: routeActions.push
   }, dispatch);
 }
 

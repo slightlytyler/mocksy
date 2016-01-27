@@ -11,8 +11,8 @@ import TemplateListEmpty from './Empty'
 @Radium
 export default class TemplateList extends Component {
   static propTypes = {
-    templates: PropTypes.object.isRequired,
-    currentTemplate: PropTypes.object.isRequired,
+    templates: PropTypes.object,
+    currentTemplate: PropTypes.object,
     setCurrentTemplate: PropTypes.func.isRequired,
   };
 

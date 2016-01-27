@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { pick } from 'lodash';
+import firstEntity from 'utils/first-entity';
 
 import { basePathSelector } from 'selectors/routing';
 
@@ -13,16 +14,6 @@ export const templatesConditionSelector = createSelector(
   templates => templates.condition
 );
 
-export const currentTemplateIdSelector = createSelector(
-  templatesConditionSelector,
-  condition => condition.currentTemplate
-);
-export const currentTemplateSelector = createSelector(
-  templatesEntitiesSelector,
-  currentTemplateIdSelector,
-  (entities, currentTemplateId) => entities[currentTemplateId]
-);
-
 export const currentTemplateSetIdSelector = createSelector(
   basePathSelector,
   path => path === 'user' ? 'user' : 'default'
@@ -30,5 +21,29 @@ export const currentTemplateSetIdSelector = createSelector(
 export const currentTemplateSetSelector = createSelector(
   templatesEntitiesSelector,
   currentTemplateSetIdSelector,
-  (entities, currentTemplateSetId) => pick(entities, template => template.set === currentTemplateSetId)
+  (entities, currentTemplateSetId) => {
+    return pick(entities, template => template.set === currentTemplateSetId)
+  }
+);
+
+export const currentTemplateIdSelector = createSelector(
+  templatesConditionSelector,
+  currentTemplateSetIdSelector,
+  currentTemplateSetSelector,
+  (condition, currentTemplateSetId, entities) => {
+
+    if (condition.currentTemplateId) {
+      return condition.currentTemplateId;
+    }
+    else {
+      return currentTemplateSetId === 'default'
+        ? firstEntity(entities, 'position').id
+        : firstEntity(entities, 'createdAt').id;
+    }
+  }
+);
+export const currentTemplateSelector = createSelector(
+  templatesEntitiesSelector,
+  currentTemplateIdSelector,
+  (entities, currentTemplateId) => entities[currentTemplateId]
 );

@@ -7,7 +7,7 @@ import remote from 'remote';
 @Radium
 export default class PreviewArea extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired
+    children: PropTypes.object
   };
 
   constructor(props) {
@@ -56,6 +56,7 @@ export default class PreviewArea extends Component {
 
   render() {
     const { canvasDimensions } = this.state
+    const { children } = this.props
 
     return (
       <section
@@ -63,7 +64,10 @@ export default class PreviewArea extends Component {
         className="preview"
         style={styles.base}
       >
-        {React.cloneElement(this.props.children, { canvasDimensions })}
+        {
+          children &&
+          React.cloneElement(children, { canvasDimensions })
+        }
       </section>
     );
   }

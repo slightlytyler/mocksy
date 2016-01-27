@@ -19,7 +19,8 @@ export default class TemplatesNew extends Component {
       height: PropTypes.number.isRequired
     }),
     actions: PropTypes.shape({
-      createTemplateWithBackground: PropTypes.func.isRequired
+      createTemplateWithBackground: PropTypes.func.isRequired,
+      transitionTo: PropTypes.func.isRequired
     })
   };
 
@@ -38,7 +39,14 @@ export default class TemplatesNew extends Component {
             );
 
             if (isAccepted) {
-              this.props.actions.createTemplateWithBackground(path)
+              const {
+                createTemplateWithBackground,
+                transitionTo
+              } = this.props.actions;
+
+              createTemplateWithBackground(path, (id) =>
+                transitionTo(`/templates/new/set-foreground/${id}`)
+              );
             }
             else {
               alert(`Mocksy doesn't currently support that ):`);
