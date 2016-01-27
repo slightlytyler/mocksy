@@ -99,7 +99,4 @@ export default class TemplatesNewSetForeground extends Component {
 }
 
 const styles = {
-  header: {
-    display: 'flex'
-  }
 };

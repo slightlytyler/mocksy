@@ -11,10 +11,11 @@ import App from 'containers/App';
 
 import MockupBuilder from 'pods/mockup/builder/container';
 
-import TemplatesNewLayout from 'pods/templates/new/layout';
-import TemplatesNewAddBackground from 'pods/templates/new/add-background/container';
-import TemplatesNewSetForeground from 'pods/templates/new/set-foreground/container';
-import TemplatesNewAddDetails from 'pods/templates/new/add-details/container';
+import TemplatesNew from 'pods/templates/new/container';
+import TemplatesEdit from 'pods/templates/edit/container';
+
+import TemplateBuilderBackgroundContent from 'pods/template/components/Builder/Background/Content';
+import TemplateBuilderBackgroundSidebar from 'pods/template/components/Builder/Background/Sidebar';
 
 export default (
   <Router history={history}>
@@ -25,11 +26,26 @@ export default (
         <Route path="default" component={MockupBuilder} />
         <Route path="user" component={MockupBuilder} />
 
-        <Redirect from="new" to="new/add-background" />
-        <Route path="new" component={TemplatesNewLayout}>
-          <Route path="add-background" component={TemplatesNewAddBackground} />
-          <Route path="set-foreground/:templateId" component={TemplatesNewSetForeground} />
-          <Route path="add-details/:templateId" component={TemplatesNewAddDetails} />
+        <Redirect from="new" to="new/background" />
+        <Route path="new" component={TemplatesNew}>
+          <Route path="background" components={{
+            content: TemplateBuilderBackgroundContent,
+            sidebar: TemplateBuilderBackgroundSidebar
+          }} />
+          <Route path="foreground" components={{
+            content: TemplateBuilderBackgroundContent,
+            sidebar: TemplateBuilderBackgroundSidebar
+          }} />
+          <Route path="details" components={{
+            content: TemplateBuilderBackgroundContent,
+            sidebar: TemplateBuilderBackgroundSidebar
+          }} />
+        </Route>
+
+        <Route path="edit/:templateId" component={TemplatesEdit}>
+          <Route path="background" />
+          <Route path="foreground" />
+          <Route path="details" />
         </Route>
       </Route>
     </Route>
