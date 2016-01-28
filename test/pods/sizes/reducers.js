@@ -9,11 +9,11 @@ import {
 
 const initialState = {
   condition: {},
-  entities: {}
+  records: {}
 };
 
 const oneSizeState = Object.assign({}, initialState, {
-  entities: {
+  records: {
     0: {
       format: 'png',
       id: 0,
@@ -24,7 +24,7 @@ const oneSizeState = Object.assign({}, initialState, {
 });
 
 const twoSizeState = assignDeep({}, oneSizeState, {
-  entities: {
+  records: {
     1: {
       format: 'png',
       id: 1,
@@ -35,7 +35,7 @@ const twoSizeState = assignDeep({}, oneSizeState, {
 });
 
 const threeSizeState =  assignDeep({}, twoSizeState, {
-  entities: {
+  records: {
     2: {
       format: 'png',
       id: 2,
@@ -68,7 +68,7 @@ export default describe('reducers', () => {
 
     expect(reducer(oneSizeState, updateSize(id, props))).to.deep.equal(
       assignDeep({}, oneSizeState, {
-        entities: {
+        records: {
           0: { ...props }
         }
       })

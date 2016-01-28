@@ -4,7 +4,7 @@ import { setCurrentTemplate} from 'pods/templates/actions';
 
 const initialState = {
   condition: {},
-  entities: {}
+  records: {}
 };
 
 const testId = 1;
@@ -13,7 +13,7 @@ const testState = {
   condition: {
     currentTemplate: testId
   },
-  entities: {}
+  records: {}
 };
 
 export default describe('reducers', () => {
