@@ -8,8 +8,9 @@ import { actionTypes } from './constants';
 const {
   ADD_TEMPLATE,
   UPDATE_TEMPLATE,
-  UPDATE_NEW_TEMPLATE,
   REMOVE_TEMPLATE,
+  UPDATE_NEW_TEMPLATE,
+  CLEAR_NEW_TEMPLATE,
   SET_CURRENT_TEMPLATE
 } = actionTypes;
 
@@ -54,6 +55,9 @@ function newRecordReducer(state={}, action) {
   switch (action.type) {
       case UPDATE_NEW_TEMPLATE:
         return merge(state, action.props);
+
+      case CLEAR_NEW_TEMPLATE:
+        return {};
   }
 
   return state;

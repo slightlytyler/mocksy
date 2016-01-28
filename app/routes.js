@@ -12,6 +12,7 @@ import App from 'containers/App';
 import MockupBuilder from 'pods/mockup/builder/container';
 
 import TemplatesNew from 'pods/templates/new/container';
+import * as TemplatesNewRoute from 'pods/templates/new/route';
 import TemplatesEdit from 'pods/templates/edit/container';
 
 import TemplateBuilderBackgroundContent from 'pods/template/components/Builder/Background/Content';
@@ -21,46 +22,50 @@ import TemplateBuilderForegroundSidebar from 'pods/template/components/Builder/F
 import TemplateBuilderDetailsContent from 'pods/template/components/Builder/Details/Content';
 import TemplateBuilderDetailsSidebar from 'pods/template/components/Builder/Details/Sidebar';
 
-export default (
-  <Router history={history}>
-    <Route path="/" component={App}>
-      <IndexRedirect to="templates/default" />
+export default (store) => {
+  const { dispatch } = store;
 
-      <Route path="templates">
-        <Route path="default" component={MockupBuilder} />
-        <Route path="user" component={MockupBuilder} />
+  return (
+    <Router history={history}>
+      <Route path="/" component={App}>
+        <IndexRedirect to="templates/default" />
 
-        <Redirect from="new" to="new/background" />
-        <Route path="new" component={TemplatesNew}>
-          <Route path="background" components={{
-            content: TemplateBuilderBackgroundContent,
-            sidebar: TemplateBuilderBackgroundSidebar
-          }} />
-          <Route path="foreground" components={{
-            content: TemplateBuilderForegroundContent,
-            sidebar: TemplateBuilderForegroundSidebar
-          }} />
-          <Route path="details" components={{
-            content: TemplateBuilderDetailsContent,
-            sidebar: TemplateBuilderDetailsSidebar
-          }} />
-        </Route>
+        <Route path="templates">
+          <Route path="default" component={MockupBuilder} />
+          <Route path="user" component={MockupBuilder} />
 
-        <Route path="edit/:templateId" component={TemplatesEdit}>
-          <Route path="background" components={{
-            content: TemplateBuilderBackgroundContent,
-            sidebar: TemplateBuilderBackgroundSidebar
-          }} />
-          <Route path="foreground" components={{
-            content: TemplateBuilderForegroundContent,
-            sidebar: TemplateBuilderForegroundSidebar
-          }} />
-          <Route path="details" components={{
-            content: TemplateBuilderDetailsContent,
-            sidebar: TemplateBuilderDetailsSidebar
-          }} />
+          <Redirect from="new" to="new/background" />
+          <Route path="new" component={TemplatesNew} onLeave={() => TemplatesNewRoute.onLeave(dispatch)}>
+            <Route path="background" components={{
+              content: TemplateBuilderBackgroundContent,
+              sidebar: TemplateBuilderBackgroundSidebar
+            }} />
+            <Route path="foreground" components={{
+              content: TemplateBuilderForegroundContent,
+              sidebar: TemplateBuilderForegroundSidebar
+            }} />
+            <Route path="details" components={{
+              content: TemplateBuilderDetailsContent,
+              sidebar: TemplateBuilderDetailsSidebar
+            }} />
+          </Route>
+
+          <Route path="edit/:templateId" component={TemplatesEdit}>
+            <Route path="background" components={{
+              content: TemplateBuilderBackgroundContent,
+              sidebar: TemplateBuilderBackgroundSidebar
+            }} />
+            <Route path="foreground" components={{
+              content: TemplateBuilderForegroundContent,
+              sidebar: TemplateBuilderForegroundSidebar
+            }} />
+            <Route path="details" components={{
+              content: TemplateBuilderDetailsContent,
+              sidebar: TemplateBuilderDetailsSidebar
+            }} />
+          </Route>
         </Route>
       </Route>
-    </Route>
-  </Router>
-);
+    </Router>
+  );
+}

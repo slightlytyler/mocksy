@@ -13,6 +13,7 @@ const {
   UPDATE_TEMPLATE,
   REMOVE_TEMPLATE,
   UPDATE_NEW_TEMPLATE,
+  CLEAR_NEW_TEMPLATE,
   SET_CURRENT_TEMPLATE,
 } = actionTypes;
 
@@ -76,6 +77,10 @@ export function updateNewTemplateBackground(path, callback) {
       callback();
     });
   }
+}
+
+export function clearNewTemplate() {
+  return { type: CLEAR_NEW_TEMPLATE }
 }
 
 export function setCurrentTemplate(id) {
