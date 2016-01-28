@@ -32,9 +32,11 @@ module.exports = {
       components: path.join(__dirname, "app/components"),
       reducers: path.join(__dirname, "app/reducers"),
       constants: path.join(__dirname, "app/constants"),
+      selectors: path.join(__dirname, "app/selectors"),
       api: path.join(__dirname, "app/api"),
       utils: path.join(__dirname, "app/utils"),
-      styles: path.join(__dirname, "app/styles")
+      styles: path.join(__dirname, "app/styles"),
+      assets: path.join(__dirname, "app/assets")
     },
     extensions: ['', '.js', '.jsx'],
     packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']

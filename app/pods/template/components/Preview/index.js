@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import Foreground from './Foreground';
+import { computeTemplateImages } from 'pods/templates/helpers';
 
 @Radium
 export default class TemplatePreview extends Component {
@@ -48,6 +49,8 @@ export default class TemplatePreview extends Component {
   render() {
     const {
       id,
+      set,
+      format,
       dimensions,
       canvasDimensions,
       screenshot,
@@ -67,13 +70,18 @@ export default class TemplatePreview extends Component {
       height,
     } = this.getPixelValues(targetWidth, backgroundAspect);
 
+    const backgroundImage =
+        set !== 'user' ?
+        `assets/base-templates/${id.toLowerCase()}/template.png` :
+        computeTemplateImages(id, format).background;
+
     return (
       <div
         ref="background"
         className="template"
         style={[
           styles.base,
-          { backgroundImage: `url('assets/base-templates/${id.toLowerCase()}/template.png')` },
+          { backgroundImage: `url("${backgroundImage}")` },
           {
             width,
             height

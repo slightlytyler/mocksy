@@ -2,6 +2,7 @@ export default {
   'iPhone_6': {
     id: 'iPhone_6',
     position: 1,
+    set: 'default',
 
     dimensions: {
       width: 1106,
@@ -19,6 +20,7 @@ export default {
   'iPhone_6_Plus': {
     id: 'iPhone_6_Plus',
     position: 2,
+    set: 'default',
 
     dimensions: {
       width: 1457,
@@ -36,6 +38,7 @@ export default {
   'Macbook': {
     id: 'Macbook',
     position: 3,
+    set: 'default',
 
     dimensions: {
       width: 2204,
@@ -53,6 +56,7 @@ export default {
   'Macbook_Pro': {
     id: 'Macbook_Pro',
     position: 4,
+    set: 'default',
 
     dimensions: {
       width: 1897,
@@ -70,6 +74,7 @@ export default {
   'iMac_Cinema': {
     id: 'iMac_Cinema',
     position: 5,
+    set: 'default',
 
     dimensions: {
       width: 1899,
@@ -87,6 +92,7 @@ export default {
   'Nexus_6': {
     id: 'Nexus_6',
     position: 6,
+    set: 'default',
 
     dimensions: {
       width: 1589,
@@ -104,6 +110,7 @@ export default {
   'Nexus_7': {
     id: 'Nexus_7',
     position: 7,
+    set: 'default',
 
     dimensions: {
       width: 1506,
@@ -121,6 +128,7 @@ export default {
   'Galaxy_S4': {
     id: 'Galaxy_S4',
     position: 8,
+    set: 'default',
 
     dimensions: {
       width: 1184,
@@ -138,6 +146,7 @@ export default {
   'Surface_Pro_3': {
     id: 'Surface_Pro_3',
     position: 9,
+    set: 'default',
 
     dimensions: {
       width: 2556,

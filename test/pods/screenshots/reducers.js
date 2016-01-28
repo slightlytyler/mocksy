@@ -4,7 +4,7 @@ import { setCurrentScreenshot } from 'pods/screenshots/actions';
 
 const initialState = {
   condition: {},
-  entities: {}
+  records: {}
 };
 
 const testPath = '/path/to/test';
@@ -13,7 +13,7 @@ const testState = {
   condition: {
     currentScreenshot: testPath
   },
-  entities: {}
+  records: {}
 };
 
 export default describe('reducers', () => {

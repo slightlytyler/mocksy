@@ -1,39 +1,33 @@
 import baseTemplates from 'constants/base-templates';
 
 export const initialState = {
-  present: {
-    templates: {
-      condition: {
-        currentTemplate: 'iPhone_6'
-      },
+  templates: {
+    records: {
+      ...baseTemplates
+    }
+  },
 
-      entities: {
-        ...baseTemplates
-      }
+  screenshots: {
+    condition: {
+      currentScreenshot: null
     },
 
-    screenshots: {
-      condition: {
-        currentScreenshot: null
-      },
+    records: {
 
-      entities: {
+    }
+  },
 
-      }
+  sizes: {
+    condition: {
+
     },
 
-    sizes: {
-      condition: {
-
-      },
-
-      entities: {
-        0: {
-          id: 0,
-          multiplier: '1x',
-          suffix: '',
-          format: 'png'
-        }
+    records: {
+      0: {
+        id: 0,
+        multiplier: '1x',
+        suffix: '',
+        format: 'png'
       }
     }
   }

@@ -1,4 +1,4 @@
 describe('templates', () => {
-  require('./actions');
-  require('./reducers');
-})
+  // require('./actions');
+  // require('./reducers');
+});

@@ -82,7 +82,7 @@ export default describe('Preview', () => {
   it('should render proper background image', () => {
     let background = findWithRef(render.output, 'background');
 
-    expect(background.props.style.backgroundImage).to.equal(`url('assets/base-templates/${props.id.toLowerCase()}/template.png')`)
+    expect(background.props.style.backgroundImage).to.equal(`url("assets/base-templates/${props.id.toLowerCase()}/template.png")`)
   });
 
   it('should render TemplatePreviewForeground component', () => {

@@ -4,13 +4,10 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 import remote from 'remote';
 
-import TemplatePreview from 'pods/template/components/Preview';
-
 @Radium
-export default class IndexPreviewArea extends Component {
+export default class PreviewArea extends Component {
   static propTypes = {
-    template: PropTypes.object.isRequired,
-    setCurrentScreenshot: PropTypes.func.isRequired
+    children: PropTypes.object
   };
 
   constructor(props) {
@@ -21,7 +18,7 @@ export default class IndexPreviewArea extends Component {
         width: 1,
         height: 1
       }
-    }
+    };
   }
 
   handleResize() {
@@ -52,16 +49,14 @@ export default class IndexPreviewArea extends Component {
   }
 
   componentWillUnmount() {
+    const win = remote.getCurrentWindow();
+
     win.removeListener('resize', this.handleResize);
   }
 
   render() {
-    const {
-      template,
-      screenshot,
-      setCurrentScreenshot
-    } = this.props;
     const { canvasDimensions } = this.state
+    const { children } = this.props
 
     return (
       <section
@@ -69,13 +64,10 @@ export default class IndexPreviewArea extends Component {
         className="preview"
         style={styles.base}
       >
-        <TemplatePreview
-          id={template.id}
-          dimensions={template.dimensions}
-          canvasDimensions={canvasDimensions}
-          screenshot={screenshot}
-          setCurrentScreenshot={setCurrentScreenshot}
-        />
+        {
+          children &&
+          React.cloneElement(children, { canvasDimensions })
+        }
       </section>
     );
   }
