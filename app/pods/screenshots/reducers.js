@@ -9,11 +9,11 @@ const {
 
 
 const screenshotsReducer = combineReducers({
-  entities: entitiesReducer,
+  records: recordsReducer,
   condition: conditionReducer
 });
 
-function entitiesReducer(state={}, action) {
+function recordsReducer(state={}, action) {
   switch (action.type) {
   }
 

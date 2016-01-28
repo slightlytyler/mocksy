@@ -5,7 +5,7 @@ import firstRecord from 'utils/first-record';
 import { basePathSelector } from 'selectors/routing';
 
 export const templatesStateSelector = state => state.templates;
-export const templatesEntitiesSelector = createSelector(
+export const templatesRecordsSelector = createSelector(
   templatesStateSelector,
   templates => templates.records
 );
@@ -19,7 +19,7 @@ export const currentTemplateSetIdSelector = createSelector(
   path => path === 'user' ? 'user' : 'default'
 );
 export const currentTemplateSetSelector = createSelector(
-  templatesEntitiesSelector,
+  templatesRecordsSelector,
   currentTemplateSetIdSelector,
   (records, currentTemplateSetId) => {
     return pick(records, template => template.set === currentTemplateSetId)
@@ -43,7 +43,7 @@ export const currentTemplateIdSelector = createSelector(
   }
 );
 export const currentTemplateSelector = createSelector(
-  templatesEntitiesSelector,
+  templatesRecordsSelector,
   currentTemplateIdSelector,
   (records, currentTemplateId) => records[currentTemplateId]
 );

@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect'
 
 const sizesStateSelector = state => state.sizes;
-export const sizesEntitiesSelector = createSelector(
+export const sizesRecordsSelector = createSelector(
   sizesStateSelector,
-  sizes => sizes.entities
+  sizes => sizes.records
 );
 export const sizesConditionSelector = createSelector(
   sizesStateSelector,

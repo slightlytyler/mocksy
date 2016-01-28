@@ -21,7 +21,7 @@ import {
   removeSize,
   updateSize
 } from 'pods/sizes/actions';
-import { sizesEntitiesSelector } from 'pods/sizes/selectors';
+import { sizesRecordsSelector } from 'pods/sizes/selectors';
 
 import IndexComponent from './component';
 
@@ -34,7 +34,7 @@ function mapStateToProps(state) {
     currentTemplate: currentTemplateSelector(present),
     currentTemplateSetId: currentTemplateSetIdSelector(present),
     currentScreenshot: currentScreenshotSelector(present),
-    sizes: sizesEntitiesSelector(present)
+    sizes: sizesRecordsSelector(present)
   };
 }
 

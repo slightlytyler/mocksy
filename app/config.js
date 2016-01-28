@@ -12,7 +12,7 @@ export const initialState = {
       currentScreenshot: null
     },
 
-    entities: {
+    records: {
 
     }
   },
@@ -22,7 +22,7 @@ export const initialState = {
 
     },
 
-    entities: {
+    records: {
       0: {
         id: 0,
         multiplier: '1x',

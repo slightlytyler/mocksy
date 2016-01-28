@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect'
 
 const screenshotsStateSelector = state => state.screenshots;
-export const screenshotsEntitiesSelector = createSelector(
+export const screenshotsRecordsSelector = createSelector(
   screenshotsStateSelector,
-  screenshots => screenshots.entities
+  screenshots => screenshots.records
 );
 export const screenshotsConditionSelector = createSelector(
   screenshotsStateSelector,
