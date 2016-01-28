@@ -35,13 +35,8 @@ export default class TemplateBuilderDetailsContent extends Component {
   }
 
   submit() {
-    const {
-      setTemplateDetails,
-      transition
-    } = this.props;
-    const {
-      name
-    } = this.state.form;
+    const { setTemplateDetails } = this.props;
+    const { name } = this.state.form;
 
     setTemplateDetails({
       name
@@ -49,15 +44,18 @@ export default class TemplateBuilderDetailsContent extends Component {
   }
 
   render() {
-    const {
-      name
-    } = this.state.form;
+    const { name } = this.state.form;
 
     return (
       <div style={styles.form}>
         <div>
           <label>Name</label>
-          <input value={name} onChange={e => this.updateForm(this.state, 'name', e.target.value)} />
+          <input
+            value={name}
+            onChange={e =>
+              this.updateForm(this.state, 'name', e.target.value)
+            }
+          />
         </div>
 
         <button onClick={() => this.submit()}>

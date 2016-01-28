@@ -47,9 +47,18 @@ export default (
         </Route>
 
         <Route path="edit/:templateId" component={TemplatesEdit}>
-          <Route path="background" />
-          <Route path="foreground" />
-          <Route path="details" />
+          <Route path="background" components={{
+            content: TemplateBuilderBackgroundContent,
+            sidebar: TemplateBuilderBackgroundSidebar
+          }} />
+          <Route path="foreground" components={{
+            content: TemplateBuilderForegroundContent,
+            sidebar: TemplateBuilderForegroundSidebar
+          }} />
+          <Route path="details" components={{
+            content: TemplateBuilderDetailsContent,
+            sidebar: TemplateBuilderDetailsSidebar
+          }} />
         </Route>
       </Route>
     </Route>

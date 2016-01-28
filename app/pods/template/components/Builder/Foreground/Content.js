@@ -11,7 +11,6 @@ export default class TemplateBuilderForegroundContent extends Component {
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
-    id: PropTypes.string.isRequired,
     setTemplateForeground: PropTypes.func.isRequired
   };
 
@@ -39,11 +38,7 @@ export default class TemplateBuilderForegroundContent extends Component {
   }
 
   submit() {
-    const {
-      id,
-      setTemplateForeground,
-      transition
-    } = this.props;
+    const { setTemplateForeground } = this.props;
     const {
       foregroundWidth,
       foregroundHeight,
@@ -71,22 +66,42 @@ export default class TemplateBuilderForegroundContent extends Component {
       <div style={styles.form}>
         <div>
           <label>Foreground Width</label>
-          <input value={foregroundWidth} onChange={e => this.updateForm(this.state, 'foregroundWidth', e.target.value)} />
+          <input
+            value={foregroundWidth}
+            onChange={e =>
+              this.updateForm(this.state, 'foregroundWidth', e.target.value)
+            }
+          />
         </div>
 
         <div>
           <label>Foreground Height</label>
-          <input value={foregroundHeight} onChange={e => this.updateForm(this.state, 'foregroundHeight', e.target.value)} />
+          <input
+            value={foregroundHeight}
+            onChange={e =>
+              this.updateForm(this.state, 'foregroundHeight', e.target.value)
+            }
+          />
         </div>
 
         <div>
           <label>Foreground Left</label>
-          <input value={foregroundLeft} onChange={e => this.updateForm(this.state, 'foregroundLeft', e.target.value)} />
+          <input
+            value={foregroundLeft}
+            onChange={e =>
+              this.updateForm(this.state, 'foregroundLeft', e.target.value)
+            }
+          />
         </div>
 
         <div>
           <label>Foreground Top</label>
-          <input value={foregroundTop} onChange={e => this.updateForm(this.state, 'foregroundTop', e.target.value)} />
+          <input
+            value={foregroundTop}
+            onChange={e =>
+              this.updateForm(this.state, 'foregroundTop', e.target.value)
+            }
+          />
         </div>
 
         <button onClick={() => this.submit()}>

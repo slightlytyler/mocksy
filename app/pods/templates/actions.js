@@ -51,7 +51,6 @@ export function updateTemplate(id, props) {
   return { type: UPDATE_TEMPLATE, id, props };
 }
 
-
 export function removeTemplate(id) {
   return { type: REMOVE_TEMPLATE, id };
 }

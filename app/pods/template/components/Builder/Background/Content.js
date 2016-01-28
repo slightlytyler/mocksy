@@ -36,10 +36,7 @@ export default class TemplateBuilderBackgroundContent extends Component {
             );
 
             if (isAccepted) {
-              const {
-                setTemplateBackground,
-                transition
-              } = this.props;
+              const { setTemplateBackground } = this.props;
 
               setTemplateBackground(path);
             }
