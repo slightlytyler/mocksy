@@ -11,10 +11,8 @@ import { actionTypes } from './constants';
 const {
   ADD_TEMPLATE,
   UPDATE_TEMPLATE,
-  UPDATE_TEMPLATE_BACKGROUND,
   REMOVE_TEMPLATE,
   UPDATE_NEW_TEMPLATE,
-  ADD_TEMPLATE_BACKGROUND,
   SET_CURRENT_TEMPLATE,
 } = actionTypes;
 
@@ -59,7 +57,7 @@ export function updateNewTemplate(props) {
   return { type: UPDATE_NEW_TEMPLATE, props };
 }
 
-export function addTemplateBackground(path, callback) {
+export function updateNewTemplateBackground(path, callback) {
   return (dispatch, getState) => {
     indentifyImage(path, data => {
       const { format, size } = data;

@@ -9,7 +9,7 @@ import { routeActions } from 'react-router-redux';
 import {
   addTemplate,
   updateNewTemplate,
-  addTemplateBackground
+  updateNewTemplateBackground
 } from 'pods/templates/actions';
 
 import Component from 'pods/template/components/Builder';
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     addTemplate,
     updateNewTemplate,
-    addTemplateBackground,
+    updateNewTemplateBackground,
     transition: routeActions.push,
     goBack: routeActions.goBack
   }, dispatch);
@@ -34,7 +34,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const {
     addTemplate,
     updateNewTemplate,
-    addTemplateBackground,
+    updateNewTemplateBackground,
     transition,
     goBack,
   } = dispatchProps;
@@ -45,7 +45,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     sidebar,
 
     actions: {
-      setTemplateBackground: path => addTemplateBackground(path, () => transition('templates/new/foreground')),
+      setTemplateBackground: path => updateNewTemplateBackground(path, () => transition('templates/new/foreground')),
       setTemplateForeground: (width, height, left, top) => {
         updateNewTemplate({
           dimensions: {
