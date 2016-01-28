@@ -28,7 +28,7 @@ export function addTemplate(callback) {
     const id = shortId();
     const date = new Date().getTime();
 
-    const entity = {
+    const record = {
       id,
       name,
       set: 'user',
@@ -39,7 +39,7 @@ export function addTemplate(callback) {
     };
 
     createTemplateFiles(id, backgroundPath, () => {
-      dispatch({ type: ADD_TEMPLATE, entity });
+      dispatch({ type: ADD_TEMPLATE, record });
       callback();
     });
   };

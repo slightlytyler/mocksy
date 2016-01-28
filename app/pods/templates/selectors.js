@@ -1,13 +1,13 @@
 import { createSelector } from 'reselect'
 import { pick } from 'lodash';
-import firstEntity from 'utils/first-entity';
+import firstRecord from 'utils/first-record';
 
 import { basePathSelector } from 'selectors/routing';
 
 export const templatesStateSelector = state => state.templates;
 export const templatesEntitiesSelector = createSelector(
   templatesStateSelector,
-  templates => templates.entities
+  templates => templates.records
 );
 export const templatesConditionSelector = createSelector(
   templatesStateSelector,
@@ -21,8 +21,8 @@ export const currentTemplateSetIdSelector = createSelector(
 export const currentTemplateSetSelector = createSelector(
   templatesEntitiesSelector,
   currentTemplateSetIdSelector,
-  (entities, currentTemplateSetId) => {
-    return pick(entities, template => template.set === currentTemplateSetId)
+  (records, currentTemplateSetId) => {
+    return pick(records, template => template.set === currentTemplateSetId)
   }
 );
 
@@ -30,20 +30,20 @@ export const currentTemplateIdSelector = createSelector(
   templatesConditionSelector,
   currentTemplateSetIdSelector,
   currentTemplateSetSelector,
-  (condition, currentTemplateSetId, entities) => {
+  (condition, currentTemplateSetId, records) => {
 
     if (condition.currentTemplateId) {
       return condition.currentTemplateId;
     }
     else {
       return currentTemplateSetId === 'default'
-        ? firstEntity(entities, 'position').id
-        : firstEntity(entities, 'createdAt').id;
+        ? firstRecord(records, 'position').id
+        : firstRecord(records, 'createdAt').id;
     }
   }
 );
 export const currentTemplateSelector = createSelector(
   templatesEntitiesSelector,
   currentTemplateIdSelector,
-  (entities, currentTemplateId) => entities[currentTemplateId]
+  (records, currentTemplateId) => records[currentTemplateId]
 );

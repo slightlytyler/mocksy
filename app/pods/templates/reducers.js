@@ -14,15 +14,15 @@ const {
 } = actionTypes;
 
 const templatesReducer = combineReducers({
-  entities: entitiesReducer,
+  records: recordsReducer,
   newRecord: newRecordReducer,
   condition: conditionReducer
 });
 
-function entitiesReducer(state={}, action) {
+function recordsReducer(state={}, action) {
   switch (action.type) {
       case ADD_TEMPLATE:
-        return addTemplate(state, action.entity);
+        return addTemplate(state, action.record);
 
       case UPDATE_TEMPLATE:
         return updateTemplate(state, action.id, action.props);
@@ -34,9 +34,9 @@ function entitiesReducer(state={}, action) {
   return state;
 }
 
-function addTemplate(state, entity) {
+function addTemplate(state, record) {
   return assign({}, state, {
-    [entity.id]: entity
+    [record.id]: record
   });
 }
 

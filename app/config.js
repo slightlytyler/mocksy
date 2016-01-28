@@ -2,7 +2,7 @@ import baseTemplates from 'constants/base-templates';
 
 export const initialState = {
   templates: {
-    entities: {
+    records: {
       ...baseTemplates
     }
   },
