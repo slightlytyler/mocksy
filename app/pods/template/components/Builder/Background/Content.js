@@ -9,7 +9,7 @@ import acceptedImageFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
 import wireframe from './assets/wireframe.svg';
-import addIcon from 'assets/icons/add-background.svg';
+import addIcon from 'assets/icons/add-pink.svg';
 
 @Radium
 export default class TemplateBuilderBackgroundContent extends Component {
