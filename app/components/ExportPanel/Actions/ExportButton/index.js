@@ -5,7 +5,7 @@ import Radium from 'radium';
 
 import exportAssets from 'api/export-assets';
 import colors from 'constants/colors';
-import Button from 'components/form/Button';
+import Button from 'components/Form/Button';
 
 @Radium
 export default class IndexSideBarExportPanelExportButton extends Component {

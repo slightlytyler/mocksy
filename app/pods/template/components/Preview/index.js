@@ -69,11 +69,7 @@ export default class TemplatePreview extends Component {
       width,
       height,
     } = this.getPixelValues(targetWidth, backgroundAspect);
-
-    const backgroundImage =
-        set !== 'user' ?
-        `assets/base-templates/${id.toLowerCase()}/template.png` :
-        computeTemplateImages(id, format).background;
+    const backgroundImage = computeTemplateImages(id, set, format).full;
 
     return (
       <div

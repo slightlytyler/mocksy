@@ -4,15 +4,15 @@ import { forEach } from 'lodash';
 
 import compositeImages from 'api/composite-images';
 import writeFile from 'api/write-file.js'
+import { computeTemplateImages } from 'pods/templates/helpers';
 
 export default function(currentTemplate, screenshot, sizes) {
   const { foreground } = currentTemplate.dimensions;
-
-  const template =
-    currentTemplate.set === 'default'
-    ? path.join(app.getAppPath(), `app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`)
-    : path.join(app.getPath('userData'), `templates/${currentTemplate.id.toLowerCase()}/template.png`);
-
+  const template = computeTemplateImages(
+    currentTemplate.id,
+    currentTemplate.set,
+    currentTemplate.format
+  ).full;
 
   // Get destination
   dialog.showSaveDialog(fullDestination => {
