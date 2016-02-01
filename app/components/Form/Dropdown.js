@@ -147,14 +147,14 @@ export default class FormDropdown extends Component {
 const styles = {
   base: {
     position: 'relative',
-    lineHeight: 'normal',
-    backgroundColor: 'white',
-    cursor: 'pointer',
     width: '100%',
     marginBottom: '.3em',
     fontSize: '.9em',
+    lineHeight: 'normal',
     color: colors.black,
-    border: `1px solid ${colors.pink}`,
+    backgroundColor: 'white',
+     border: `1px solid ${colors.pink}`,
+    cursor: 'pointer',
 
     ':focus': {
       outline: '-webkit-focus-ring-color auto 5px'

@@ -34,6 +34,7 @@ export default class FormInput extends Component {
 const styles = {
   base: {
     width: '100%',
+    padding: '1px 1px 1px .25em',
     marginBottom: '.3em',
     fontSize: '.9em',
     color: colors.black,

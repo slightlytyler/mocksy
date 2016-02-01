@@ -58,7 +58,7 @@ export default class TemplateBuilderDetailsSidebar extends Component {
             isLastRow={true}
           >
             <label style={styles.options.item.label}>Name</label>
-            <Field >
+            <Field flexRatio={2}>
               <Input
                 value={name}
                 placeholder="Template Name"
@@ -74,7 +74,7 @@ export default class TemplateBuilderDetailsSidebar extends Component {
           onClick={() => this.submit()}
           fluid={true}
         >
-          Next Step
+          Save Template
         </Button>
       </div>
     );
