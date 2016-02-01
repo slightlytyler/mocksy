@@ -29,7 +29,7 @@ const styles = {
   base: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flex: 4,
     position: 'relative',
     height: '100vh',

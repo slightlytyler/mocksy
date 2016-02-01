@@ -10,7 +10,7 @@ import colors from 'constants/colors';
 
 @listensToClickOutside
 @Radium
-export default class Dropdown extends Component {
+export default class FormDropdown extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
@@ -63,8 +63,7 @@ export default class Dropdown extends Component {
       value,
       options,
       editable,
-      onChange,
-      baseStyle
+      onChange
     } = this.props;
     const { isActive } = this.state;
     const currentOption = this.currentOption();
@@ -75,7 +74,6 @@ export default class Dropdown extends Component {
         className={`dropdown ${name}`}
         style={[
           styles.base,
-          baseStyle,
           !editable && styles.notEditable,
           isActive && styles.active
         ]}
@@ -152,6 +150,11 @@ const styles = {
     lineHeight: 'normal',
     backgroundColor: 'white',
     cursor: 'pointer',
+    width: '100%',
+    marginBottom: '.3em',
+    fontSize: '.9em',
+    color: colors.black,
+    border: `1px solid ${colors.pink}`,
 
     ':focus': {
       outline: '-webkit-focus-ring-color auto 5px'

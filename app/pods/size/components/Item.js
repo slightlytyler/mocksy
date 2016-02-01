@@ -5,7 +5,10 @@ import Radium from 'radium';
 
 import acceptedFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
-import Dropdown from 'components/Dropdown';
+import Row from 'components/form/row';
+import Field from 'components/form/field';
+import Input from 'components/form/input';
+import Dropdown from 'components/form/Dropdown';
 
 @Radium
 export default class SizeItem extends Component {
@@ -45,21 +48,14 @@ export default class SizeItem extends Component {
     } = this;
 
     return (
-      <li
-        style={[
-          styles.base,
-          isLastSize && styles.last
-        ]}
-      >
-        <div
-          ref="multiplierDropdownContainer"
-          style={[
-            styles.input.container,
-            styles.size
-          ]}
+      <Row isLastRow={isLastSize}>
+        <Field
+          ref="sizeDropdownContainer"
+          label="Size"
+          flexRatio={5}
         >
           <Dropdown
-            ref="multiplierDropdown"
+            ref="sizeDropdown"
             key={`size:${id}-multiplier`}
             name="multiplier"
             value={multiplier}
@@ -68,51 +64,28 @@ export default class SizeItem extends Component {
             onChange={(val) => updateSize(id, {
               multiplier: val
             })}
-            baseStyle={styles.input.base}
           />
+        </Field>
 
-          <label
-            ref="multiplierLabel"
-            style={styles.input.label}
-          >
-            Size
-          </label>
-        </div>
-
-        <div
+        <Field
           ref="suffixInputContainer"
-          style={[
-            styles.input.container,
-            styles.suffix
-          ]}
+          label="Suffix"
+          flexRatio={3}
         >
-          <input
+          <Input
             ref="suffixInput"
             value={suffix}
+            placeholder="None"
             onChange={(e) => updateSize(id, {
               suffix: e.target.value
             })}
-            className="suffix input"
-            style={[
-              styles.input.base,
-              styles.input.paddingOverride
-            ]}
           />
+        </Field>
 
-          <label
-            ref="suffixLabel"
-            style={styles.input.label}
-          >
-            Suffix
-          </label>
-        </div>
-
-        <div
-          ref="formatDropdownContainer"
-          style={[
-            styles.input.container,
-            styles.format
-          ]}
+        <Field
+          ref="sizeDropdownContainer"
+          label="Format"
+          flexRatio={3}
         >
           <Dropdown
             ref="formatDropdown"
@@ -123,16 +96,8 @@ export default class SizeItem extends Component {
             onChange={(val) => updateSize(id, {
               format: val
             })}
-            baseStyle={styles.input.base}
           />
-
-          <label
-            ref="formatLabel"
-            style={styles.input.label}
-          >
-            Format
-          </label>
-        </div>
+        </Field>
 
         <div
           ref="removeButton"
@@ -148,65 +113,14 @@ export default class SizeItem extends Component {
             style={styles.remove.icon}
           />
         </div>
-      </li>
+      </Row>
     );
   }
 }
 
 const styles = {
-  base: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '.75em'
-  },
-
-  last: {
-    marginBottom: 0,
-  },
-
-  input: {
-    base: {
-      width: '100%',
-      marginBottom: '.3em',
-      fontSize: '.9em',
-      color: colors.black,
-      border: `1px solid ${colors.pink}`,
-    },
-
-    paddingOverride: {
-      padding: '1px 1px 1px .25em',
-    },
-
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      marginRight: '1.5em'
-    },
-
-    label: {
-      fontSize: '.8em',
-      color: colors.black,
-      fontWeight: 200
-    }
-  },
-
-  size: {
-    flex: 5,
-  },
-
-  suffix: {
-    flex: 3,
-  },
-
-  format: {
-    flex: 3,
-  },
-
   remove: {
     base: {
-      alignSelf: 'flex-start',
       marginTop: '.1em'
     },
 
