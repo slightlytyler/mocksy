@@ -8,7 +8,11 @@ import writeFile from 'api/write-file.js'
 export default function(currentTemplate, screenshot, sizes) {
   const { foreground } = currentTemplate.dimensions;
 
-  const template = path.join(app.getAppPath(), `app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`);
+  const template =
+    currentTemplate.set === 'default'
+    ? path.join(app.getAppPath(), `app/assets/base-templates/${currentTemplate.id.toLowerCase()}/template.png`)
+    : path.join(app.getPath('userData'), `templates/${currentTemplate.id.toLowerCase()}/template.png`);
+
 
   // Get destination
   dialog.showSaveDialog(fullDestination => {
