@@ -10,7 +10,7 @@ export default class TemplateBuilderBackgroundSidebar extends Component {
 
   render() {
     return (
-      <div>Background Sidebar</div>
+      <div></div>
     );
   }
 }

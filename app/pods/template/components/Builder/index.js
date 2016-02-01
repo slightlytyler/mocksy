@@ -20,11 +20,16 @@ export default class TemplateBuilder extends Component {
 
   render() {
     const {
+      content,
+      sidebar,
+      actions
+    } = this.props;
+    const {
       setTemplateBackground,
       setTemplateForeground,
       setTemplateDetails,
       goBack
-    } = this.props.actions;
+    } = actions;
 
     return (
       <div style={styles.base}>
@@ -42,12 +47,16 @@ export default class TemplateBuilder extends Component {
           </header>
 
           <section style={styles.sidebar.content}>
-            {this.props.sidebar}
+            {React.cloneElement(sidebar, {
+              setTemplateBackground,
+              setTemplateForeground,
+              setTemplateDetails
+            })}
           </section>
         </Sidebar>
 
         <PreviewArea>
-          {React.cloneElement(this.props.content, {
+          {React.cloneElement(content, {
             setTemplateBackground,
             setTemplateForeground,
             setTemplateDetails
