@@ -4,7 +4,6 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import openFile from 'api/open-file';
-import colors from 'constants/colors';
 import TemplatePreview from 'pods/template/components/Preview';
 import wireframe from './assets/wireframe.svg';
 import Prompt from 'components/Prompt'

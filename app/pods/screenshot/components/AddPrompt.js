@@ -2,10 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import { dialog } from 'remote';
 
-import gm from 'api/gm';
-import acceptedImageFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
 import Prompt from 'components/Prompt';
 

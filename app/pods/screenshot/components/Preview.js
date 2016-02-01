@@ -48,7 +48,6 @@ export default class ScreenshotPreview extends Component {
 
 const styles = {
   base: {
-
   },
 
   screenshot: {
