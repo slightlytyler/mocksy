@@ -10,6 +10,7 @@ export default class FormField extends Component {
   static propTypes = {
     children: PropTypes.object,
     label: PropTypes.string,
+    labelColor: PropTypes.string,
     flexRatio: PropTypes.number,
     isLastChild: PropTypes.bool
   };
@@ -18,6 +19,7 @@ export default class FormField extends Component {
     const {
       children,
       label,
+      labelColor,
       flexRatio,
       isLastChild
     } = this.props;
@@ -26,12 +28,21 @@ export default class FormField extends Component {
       <div style={[
         styles.base,
         isLastChild && styles.last,
-        {
+        flexRatio && {
           flex: flexRatio
         }
       ]}>
         {children}
-        <label style={styles.label}>{label}</label>
+        <label
+          style={[
+            styles.label,
+            labelColor && {
+              color: labelColor
+            }
+          ]}
+        >
+          {label}
+        </label>
       </div>
     );
   }

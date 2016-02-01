@@ -4,7 +4,10 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import colors from 'constants/colors';
-import Field from 'components/form/field';
+import Row from 'components/Form/Row';
+import Field from 'components/Form/Field';
+import Input from 'components/Form/Input';
+import Button from 'components/Form/Button'
 
 @Radium
 export default class TemplateBuilderForegroundSidebar extends Component {
@@ -18,51 +21,84 @@ export default class TemplateBuilderForegroundSidebar extends Component {
           ref="options"
           style={styles.options.base}
         >
-          <li
+          <Row
             ref="mode"
-            style={styles.options.item.base}
+            isLastRow={false}
           >
             <label style={styles.options.item.label}>Mode</label>
-            <button style={styles.options.item.button}>Marquee</button>
-            <button style={styles.options.item.button}>Free</button>
-          </li>
+            <div style={{flex: 1, marginRight: '1.5em'}}>
+              <Button
+                fluid={true}
+                active={true}
+              >
+                Marquee
+              </Button>
+            </div>
+            <div style={{flex: 1}}>
+              <Button fluid={true}>Free</Button>
+            </div>
+          </Row>
 
-          <li
+          <Row
             ref="position"
-            style={styles.options.item.base}
+            isLastRow={false}
           >
             <label style={styles.options.item.label}>Position</label>
             <Field
-              value={undefined}
-              placeholder="0"
               label="X"
-            />
+              labelColor="white"
+            >
+              <Input
+                value={undefined}
+                placeholder="0"
+                onChange={() => console.log('test')}
+              />
+            </Field>
             <Field
-              value={undefined}
-              placeholder="0"
               label="Y"
-            />
-          </li>
+              labelColor="white"
+            >
+              <Input
+                value={undefined}
+                placeholder="0"
+                onChange={() => console.log('test')}
+              />
+            </Field>
+          </Row>
 
-          <li
+          <Row
             ref="size"
-            style={styles.options.item.base}
+            isLastRow={true}
           >
             <label style={styles.options.item.label}>Size</label>
             <Field
-              value={undefined}
-              placeholder="0"
               label="Width"
-            />
-           <Field
-              value={undefined}
-              placeholder="0"
+              labelColor="white"
+            >
+              <Input
+                value={undefined}
+                placeholder="0"
+                onChange={() => console.log('test')}
+              />
+            </Field>
+            <Field
               label="Height"
-            />
-          </li>
+              labelColor="white"
+            >
+              <Input
+                value={undefined}
+                placeholder="0"
+                onChange={() => console.log('test')}
+              />
+            </Field>
+          </Row>
         </ul>
 
-        <button>Next Step</button>
+        <Button
+          fluid={true}
+        >
+          Next Step
+        </Button>
       </div>
     );
   }
@@ -70,13 +106,15 @@ export default class TemplateBuilderForegroundSidebar extends Component {
 
 const styles = {
   base: {
-    marginTop: '2em'
+    marginTop: '2em',
+    padding: '0 1em',
   },
 
   options: {
     base: {
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      marginBottom: '2em'
     },
 
     item: {
@@ -86,6 +124,7 @@ const styles = {
 
       label: {
         flex: 1,
+        color: 'white'
       },
 
       button: {

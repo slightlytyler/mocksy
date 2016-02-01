@@ -8,7 +8,7 @@ import colors from 'constants/colors';
 @Radium
 export default class FormInput extends Component {
   static propTypes = {
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any,
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired
   };

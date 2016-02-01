@@ -5,7 +5,7 @@ import Radium from 'radium';
 
 import exportAssets from 'api/export-assets';
 import colors from 'constants/colors';
-
+import Button from 'components/form/Button';
 
 @Radium
 export default class IndexSideBarExportPanelExportButton extends Component {
@@ -23,37 +23,17 @@ export default class IndexSideBarExportPanelExportButton extends Component {
     } = this.props;
 
     return (
-      <button
+      <Button
         ref="exportButton"
         onClick={() => exportAssets(currentTemplate, screenshot, sizes)}
-        style={[
-          styles.base,
-          !screenshot && styles.disabled
-        ]}
+        color={colors.pink}
+        disabled={!screenshot}
       >
         Export Screenshot
-      </button>
+      </Button>
     );
   }
 }
 
 const styles = {
-  base: {
-    flex: 1,
-    color: colors.pink,
-    border: `1px solid ${colors.pink}`,
-    borderRadius: '4px',
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-
-    ':hover': {
-      color: 'white',
-      backgroundColor: colors.pink
-    }
-  },
-
-  disabled: {
-    opacity: '.3',
-    pointerEvents: 'none'
-  }
 };

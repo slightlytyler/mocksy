@@ -5,10 +5,10 @@ import Radium from 'radium';
 
 import acceptedFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
-import Row from 'components/form/row';
-import Field from 'components/form/field';
-import Input from 'components/form/input';
-import Dropdown from 'components/form/Dropdown';
+import Row from 'components/Form/Row';
+import Field from 'components/Form/Field';
+import Input from 'components/Form/Input';
+import Dropdown from 'components/Form/Dropdown';
 
 @Radium
 export default class SizeItem extends Component {
