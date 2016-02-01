@@ -13,13 +13,13 @@ export default class AspectContainer extends Component {
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    }),
-    handleClick: PropTypes.func
+    })
   };
 
   width(dimensions, canvasDimensions) {
     const { width, height } = dimensions;
     const aspectRatio = width / height;
+
     if (aspectRatio > (canvasDimensions.width / canvasDimensions.height)) {
       return '100%';
     }
@@ -32,7 +32,7 @@ export default class AspectContainer extends Component {
     const { width, height } = dimensions;
     const aspectRatio = height / width;
 
-    if (aspectRatio / (canvasDimensions.height / canvasDimensions.width)) {
+    if (aspectRatio > (canvasDimensions.height / canvasDimensions.width)) {
       return '100%';
     }
     else {
@@ -43,13 +43,11 @@ export default class AspectContainer extends Component {
   render() {
     const {
       dimensions,
-      canvasDimensions,
-      handleClick
+      canvasDimensions
     } = this.props;
 
     return(
       <div
-        onClick={handleClick}
         style={[
           styles.base,
           {

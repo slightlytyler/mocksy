@@ -9,6 +9,7 @@ import ExportPanel from 'components/ExportPanel';
 
 import PreviewArea from 'components/PreviewArea';
 import TemplatePreview from 'pods/template/components/Preview';
+import ScreenshotPreview from 'pods/screenshot/components/Preview';
 
 @Radium
 export default class MockupBuilder extends Component {
@@ -81,12 +82,15 @@ export default class MockupBuilder extends Component {
           {
             currentTemplate &&
             <TemplatePreview
-              { ...currentTemplate }
-              screenshot={currentScreenshot}
-              setCurrentScreenshot={setCurrentScreenshot}
-            />
+              {...currentTemplate}
+            >
+              <ScreenshotPreview
+                screenshot={currentScreenshot}
+                setCurrentScreenshot={setCurrentScreenshot}
+                expectedDimensions={currentTemplate.dimensions}
+              />
+            </TemplatePreview>
           }
-
         </PreviewArea>
       </div>
     );

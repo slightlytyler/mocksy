@@ -3,49 +3,29 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Foreground from './Foreground';
 import { computeTemplateImages } from 'pods/templates/helpers';
+import AspectContainer from 'components/AspectContainer';
+import Foreground from 'pods/template/components/Preview/Foreground';
 
 @Radium
 export default class TemplatePreview extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    dimensions: PropTypes.object.isRequired,
+    set: PropTypes.string.isRequired,
+    format: PropTypes.string,
+    dimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired
+    }),
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
-    screenshot: PropTypes.string,
-    setCurrentScreenshot: PropTypes.func.isRequired
+    children: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array
+    ])
   };
-
-  // To prevent sub pixel aliasing we attempt to
-  // resize, while maintaining aspect ratio, and
-  // preferring whole number dimensions
-
-  getPixelValues(targetWidth, targetAspect) {
-    const maxWidth = Math.floor(targetWidth);
-    const maxHeight = Math.round(maxWidth / targetAspect);
-    let width = maxWidth,
-        height = maxHeight,
-        i = maxWidth;
-
-    while (i >= (maxWidth - 20)) {
-      if (Number.isInteger(i / targetAspect)) {
-        width = i;
-        height = i / targetAspect;
-        break;
-      } else {
-        i--;
-      }
-    }
-
-    return {
-      width,
-      height
-    };
-  }
-
   render() {
     const {
       id,
@@ -53,57 +33,37 @@ export default class TemplatePreview extends Component {
       format,
       dimensions,
       canvasDimensions,
-      screenshot,
-      setCurrentScreenshot
+      children
     } = this.props;
-    const { foreground } = dimensions;
-    const backgroundAspect = dimensions.width / dimensions.height;
-    const canvasWidth = Math.floor(canvasDimensions.width);
-    const canvasHeight = Math.floor(canvasDimensions.height);
-    const canvasAspect = canvasWidth / canvasHeight;
-    const aspectDifference = backgroundAspect / canvasAspect;
-    const isHigherAspect = backgroundAspect >= canvasAspect;
-    const targetWidth = isHigherAspect ? canvasWidth : (canvasWidth * aspectDifference);
-
-    const {
-      width,
-      height,
-    } = this.getPixelValues(targetWidth, backgroundAspect);
-    const backgroundImage = computeTemplateImages(id, set, format).full;
+    const backgroundPath = computeTemplateImages(id, set, format).full;
 
     return (
-      <div
-        ref="background"
-        className="template"
-        style={[
-          styles.base,
-          { backgroundImage: `url("${backgroundImage}")` },
-          {
-            width,
-            height
-          }
-        ]}
+      <AspectContainer
+        dimensions={dimensions}
+        canvasDimensions={canvasDimensions}
       >
-        <Foreground
-          ref="foreground"
-          screenshot={screenshot}
-          setCurrentScreenshot={setCurrentScreenshot}
-          foregroundDimensions={foreground}
-          containerDimensions={{
-            width: dimensions.width,
-            height: dimensions.height
-          }}
+        <img
+          src={backgroundPath}
+          style={styles.background}
         />
-      </div>
+        <Foreground
+          backgroundDimensions={dimensions}
+          dimensions={dimensions.foreground}
+        >
+          {children}
+        </Foreground>
+      </AspectContainer>
     );
   }
 }
 
 const styles = {
-  base: {
-    position: 'relative',
-    backgroundSize: '100%',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
+  background: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100%',
+    height: '100%'
   }
 };
