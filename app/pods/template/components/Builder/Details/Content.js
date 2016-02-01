@@ -1,7 +1,6 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react';
-import update from 'react-addons-update';
 import Radium from 'radium';
 
 @Radium
@@ -24,44 +23,11 @@ export default class TemplateBuilderDetailsContent extends Component {
     };
   }
 
-  updateForm(state, prop, value) {
-    const newState = update(state, {
-      form: {
-        [prop]: { $set: value }
-      }
-    });
-
-    this.setState(newState);
-  }
-
-  submit() {
-    const { setTemplateDetails } = this.props;
-    const { name } = this.state.form;
-
-    setTemplateDetails({
-      name
-    });
-  }
-
   render() {
     const { name } = this.state.form;
 
     return (
-      <div style={styles.form}>
-        <div>
-          <label>Name</label>
-          <input
-            value={name}
-            onChange={e =>
-              this.updateForm(this.state, 'name', e.target.value)
-            }
-          />
-        </div>
-
-        <button onClick={() => this.submit()}>
-          Submit
-        </button>
-      </div>
+      <div>Editor Here</div>
     );
   }
 }
