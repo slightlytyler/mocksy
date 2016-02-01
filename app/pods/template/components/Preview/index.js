@@ -3,16 +3,13 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import { computeTemplateImages } from 'pods/templates/helpers';
 import AspectContainer from 'components/AspectContainer';
 import Foreground from 'pods/template/components/Preview/Foreground';
 
 @Radium
 export default class TemplatePreview extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
-    set: PropTypes.string.isRequired,
-    format: PropTypes.string,
+    backgroundPath: PropTypes.string.isRequired,
     dimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
@@ -28,14 +25,11 @@ export default class TemplatePreview extends Component {
   };
   render() {
     const {
-      id,
-      set,
-      format,
+      backgroundPath,
       dimensions,
       canvasDimensions,
       children
     } = this.props;
-    const backgroundPath = computeTemplateImages(id, set, format).full;
 
     return (
       <AspectContainer

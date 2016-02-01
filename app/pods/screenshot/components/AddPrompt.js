@@ -29,7 +29,7 @@ export default class ScreenshotAddPrompt extends Component {
         onClick={handleClick}
         style={styles.container}
       >
-        <Prompt text="Add Screesnhot">
+        <Prompt text="Add a screesnhot">
           <span ref="screenshotDimensions">
             {`( ${expectedDimensions.width} x ${expectedDimensions.height} )`}
           </span>

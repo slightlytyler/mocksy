@@ -2,119 +2,69 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import { dialog } from 'remote';
 
-import gm from 'api/gm';
-import acceptedImageFormats from 'constants/accepted-image-formats';
+import openFile from 'api/open-file';
 import colors from 'constants/colors';
-import AspectContainer from 'components/AspectContainer';
+import TemplatePreview from 'pods/template/components/Preview';
 import wireframe from './assets/wireframe.svg';
-import addIcon from 'assets/icons/add-pink.svg';
+import Prompt from 'components/Prompt'
 
 @Radium
 export default class TemplateBuilderBackgroundContent extends Component {
   static propTypes = {
+    setTemplateBackground: PropTypes.func.isRequired,
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    }),
-    setTemplateBackground: PropTypes.func.isRequired
+    })
   };
 
-  openFile() {
-    dialog.showOpenDialog({ multiSelections: false }, fileNames => {
-      if (fileNames) {
-        const path = fileNames[0];
-
-        gm(path).identify((err, value) => {
-          if (err) {
-            alert('The file you selected is not recognized as an image.')
-          } else {
-            const selectedFileFormat = value.format.toLowerCase();
-            const isAccepted = acceptedImageFormats.some(format =>
-              selectedFileFormat === format.value || selectedFileFormat === format.alias
-            );
-
-            if (isAccepted) {
-              const { setTemplateBackground } = this.props;
-
-              setTemplateBackground(path);
-            }
-            else {
-              alert(`Mocksy doesn't currently support that ):`);
-            }
-          }
-        });
-      }
-    });
-  }
-
   render() {
-    const { canvasDimensions } = this.props;
+    const {
+      setTemplateBackground,
+      canvasDimensions
+    } = this.props;
 
     return (
-      <AspectContainer
+      <TemplatePreview
         dimensions={{
           width: 255,
-          height: 512
+          height: 512,
+
+          foreground: {
+            width: 204,
+            height: 372,
+            left: 25,
+            top: 70
+          }
         }}
         canvasDimensions={{
           width: canvasDimensions.width,
           height: canvasDimensions.height
         }}
-        handleClick={() => this.openFile()}
+        backgroundPath={wireframe}
       >
-        <section
-          ref="prompt"
-          style={styles.prompt.base}
+        <div
+          onClick={() => openFile(setTemplateBackground)}
+          style={styles.container}
         >
-          <img
-            src={addIcon}
-            style={styles.prompt.icon}
+          <Prompt
+            text="Add a background"
+            color="pink"
           />
-          <span style={styles.prompt.text}>
-            Add a background
-          </span>
-        </section>
-
-        <img
-          ref="wireframe"
-          src={wireframe}
-          style={styles.wireframe.image}
-        />
-      </AspectContainer>
+        </div>
+      </TemplatePreview>
     );
   }
 }
 
 const styles = {
-  wireframe: {
-    image: {
-      width: '100%',
-    }
-  },
-
-  prompt: {
-    base: {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    },
-
-    icon: {
-      width: '5em',
-      marginBottom: '1em'
-    },
-
-    text: {
-      fontSize: '2em',
-      fontWeight: '200',
-      color: colors.pink,
-      whiteSpace: 'nowrap'
-    }
+  container: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    cursor: 'pointer'
   }
 };

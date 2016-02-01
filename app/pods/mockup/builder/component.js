@@ -9,6 +9,7 @@ import ExportPanel from 'components/ExportPanel';
 
 import PreviewArea from 'components/PreviewArea';
 import TemplatePreview from 'pods/template/components/Preview';
+import { computeTemplateImages } from 'pods/templates/helpers';
 import ScreenshotPreview from 'pods/screenshot/components/Preview';
 
 @Radium
@@ -55,8 +56,8 @@ export default class MockupBuilder extends Component {
           <TemplateTabs />
 
           {
-            isUserTemplateSet &&
-            <TemplateNewButton />
+            isUserTemplateSet
+            && <TemplateNewButton />
           }
 
           <TemplateList
@@ -66,30 +67,40 @@ export default class MockupBuilder extends Component {
           />
 
           {
-            currentTemplate &&
-            <ExportPanel
-              currentTemplate={currentTemplate}
-              screenshot={currentScreenshot}
-              sizes={sizes}
-              addSize={addSize}
-              removeSize={removeSize}
-              updateSize={updateSize}
-            />
+            currentTemplate
+            && (
+              <ExportPanel
+                currentTemplate={currentTemplate}
+                screenshot={currentScreenshot}
+                sizes={sizes}
+                addSize={addSize}
+                removeSize={removeSize}
+                updateSize={updateSize}
+              />
+            )
           }
         </Sidebar>
 
         <PreviewArea>
           {
-            currentTemplate &&
-            <TemplatePreview
-              {...currentTemplate}
-            >
-              <ScreenshotPreview
-                screenshot={currentScreenshot}
-                setCurrentScreenshot={setCurrentScreenshot}
-                expectedDimensions={currentTemplate.dimensions}
-              />
-            </TemplatePreview>
+            currentTemplate
+            && (
+              <TemplatePreview
+                dimensions={currentTemplate.dimensions}
+                backgroundPath={computeTemplateImages(
+                  currentTemplate.id,
+                  currentTemplate.set,
+                  currentTemplate.format
+                ).full}
+                {...currentTemplate}
+              >
+                <ScreenshotPreview
+                  screenshot={currentScreenshot}
+                  setCurrentScreenshot={setCurrentScreenshot}
+                  expectedDimensions={currentTemplate.dimensions}
+                />
+              </TemplatePreview>
+            )
           }
         </PreviewArea>
       </div>
