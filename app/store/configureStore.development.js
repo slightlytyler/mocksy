@@ -18,7 +18,8 @@ const reduxRouterMiddleware = syncHistory(history)
 const reducer = storage.reducer(rootReducer);
 const engineComposers = [
   (engine) => storage.decorators.filter(engine, [
-    ['present', 'templates', 'records']
+    ['present', 'templates', 'records'],
+    ['present', 'templates', 'newRecord']
   ])
 ];
 const engine = compose(...engineComposers)(createEngine('mocksy'));

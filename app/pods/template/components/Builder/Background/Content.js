@@ -4,9 +4,11 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import openFile from 'api/open-file';
+import colors from 'constants/colors';
 import TemplatePreview from 'pods/template/components/Preview';
 import wireframe from './assets/wireframe.svg';
-import Prompt from 'components/Prompt'
+import Prompt from 'components/Prompt';
+import Spinner from 'components/Spinner';
 
 @Radium
 export default class TemplateBuilderBackgroundContent extends Component {
@@ -18,11 +20,20 @@ export default class TemplateBuilderBackgroundContent extends Component {
     })
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false
+    }
+  }
+
   render() {
     const {
       setTemplateBackground,
       canvasDimensions
     } = this.props;
+    const { loading } = this.state
 
     return (
       <TemplatePreview
@@ -44,13 +55,31 @@ export default class TemplateBuilderBackgroundContent extends Component {
         backgroundPath={wireframe}
       >
         <div
-          onClick={() => openFile(setTemplateBackground)}
-          style={styles.container}
+          onClick={() => !loading && openFile(
+            path => setTemplateBackground(
+              path,
+              () => this.setState({
+                loading: true
+              })
+            )
+          )}
+          style={[
+            styles.container.base,
+            loading && styles.container.disabled
+          ]}
         >
-          <Prompt
-            text="Add a background"
-            color="pink"
-          />
+          {
+            loading
+            ? (
+              <Spinner color={colors.pink} />
+            )
+            : (
+              <Prompt
+                text="Add a background"
+                color="pink"
+              />
+            )
+          }
         </div>
       </TemplatePreview>
     );
@@ -59,11 +88,24 @@ export default class TemplateBuilderBackgroundContent extends Component {
 
 const styles = {
   container: {
+    base: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: '100%',
+      height: '100%',
+      cursor: 'pointer'
+    },
+
+    disabled: {
+      pointerEvents: 'none'
+    }
+  },
+
+  spinner: {
     position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    cursor: 'pointer'
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)'
   }
 };

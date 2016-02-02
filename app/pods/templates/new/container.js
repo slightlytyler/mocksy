@@ -16,6 +16,7 @@ import Component from 'pods/template/components/Builder';
 
 function mapStateToProps(state) {
   return {
+    record: state.present.templates.newRecord
   };
 }
 
@@ -45,7 +46,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     sidebar,
 
     actions: {
-      setTemplateBackground: path => updateNewTemplateBackground(path, () => transition('templates/new/foreground')),
+      setTemplateBackground: (path, loadingCb) => {
+        loadingCb();
+        updateNewTemplateBackground(path, () => transition('templates/new/foreground'));
+      },
       setTemplateForeground: (width, height, left, top) => {
         updateNewTemplate({
           dimensions: {

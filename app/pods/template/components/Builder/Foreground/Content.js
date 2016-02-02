@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import Editor from 'pods/template/components/Builder/Editor';
+
 @Radium
 export default class TemplateBuilderForegroundContent extends Component {
   static propTypes = {
@@ -10,6 +12,7 @@ export default class TemplateBuilderForegroundContent extends Component {
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
+    record: PropTypes.object.isRequired,
     setTemplateForeground: PropTypes.func.isRequired
   };
 
@@ -27,6 +30,7 @@ export default class TemplateBuilderForegroundContent extends Component {
   }
 
   render() {
+    const { record } = this.props;
     const {
       foregroundWidth,
       foregroundHeight,
@@ -35,7 +39,15 @@ export default class TemplateBuilderForegroundContent extends Component {
     } = this.state.form;
 
     return (
-      <div>Editor Here</div>
+      <Editor
+        backgroundPath={record.backgroundPath}
+        foregroundDimensions={{
+          left: 100,
+          top: 100,
+          width: 100,
+          height: 100
+        }}
+      />
     );
   }
 }
