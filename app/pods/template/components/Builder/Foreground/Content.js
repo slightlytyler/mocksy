@@ -9,12 +9,12 @@ import Editor from 'pods/template/components/Builder/Editor';
 export default class TemplateBuilderForegroundContent extends Component {
   static propTypes = {
     canvasDimensions: PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired
+      width: PropTypes.number,
+      height: PropTypes.number
     }),
-    record: PropTypes.object.isRequired,
-    updateTemplateForeground: PropTypes.func.isRequired,
-    setTemplateForeground: PropTypes.func.isRequired
+    record: PropTypes.object,
+    updateTemplateForeground: PropTypes.func,
+    setTemplateForeground: PropTypes.func
   };
 
 

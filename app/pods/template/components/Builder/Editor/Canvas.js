@@ -14,7 +14,7 @@ import colors from 'constants/colors';
 export default class TemplateBuilderEditorCanvas extends Component {
   static propTypes = {
     dimensions: PropTypes.object.isRequired,
-    containerDimensions: PropTypes.object.isRequired
+    containerDimensions: PropTypes.object
   };
 
   render() {
@@ -30,32 +30,37 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const width = dimensions.width * ratio;
     const height =dimensions.height * ratio;
 
-    return (
-      <Surface
-        width={containerDimensions.width}
-        height={containerDimensions.height}
-        style={styles.surface}
-      >
-        <ClippingRectangle
-          x={left}
-          y={top}
-          width={width}
-          height={height}
+    if (containerDimensions) {
+      return (
+        <Surface
+          width={containerDimensions.width}
+          height={containerDimensions.height}
+          style={styles.surface}
         >
-          <Rectangle
+          <ClippingRectangle
             x={left}
             y={top}
             width={width}
             height={height}
-            fill={new LinearGradient([colors.pink, colors.orange])}
-            stroke={colors.white}
-            strokeWidth={4}
-            strokeDash={[9, 10]}
-            strokeCap="square"
-          />
-        </ClippingRectangle>
-      </Surface>
-    );
+          >
+            <Rectangle
+              x={left}
+              y={top}
+              width={width}
+              height={height}
+              fill={new LinearGradient([colors.pink, colors.orange])}
+              stroke={colors.white}
+              strokeWidth={4}
+              strokeDash={[9, 10]}
+              strokeCap="square"
+            />
+          </ClippingRectangle>
+        </Surface>
+      );
+    }
+    else {
+      return (<div>Loading</div>);
+    }
   }
 }
 

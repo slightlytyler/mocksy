@@ -13,10 +13,10 @@ import Spinner from 'components/Spinner';
 @Radium
 export default class TemplateBuilderBackgroundContent extends Component {
   static propTypes = {
-    setTemplateBackground: PropTypes.func.isRequired,
+    setTemplateBackground: PropTypes.func,
     canvasDimensions: PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired
+      width: PropTypes.number,
+      height: PropTypes.number
     })
   };
 

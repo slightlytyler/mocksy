@@ -7,10 +7,10 @@ import Radium from 'radium';
 export default class TemplateBuilderDetailsContent extends Component {
   static propTypes = {
     canvasDimensions: PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired
+      width: PropTypes.number,
+      height: PropTypes.number
     }),
-    setTemplateDetails: PropTypes.func.isRequired
+    setTemplateDetails: PropTypes.func
   };
 
   constructor(props) {

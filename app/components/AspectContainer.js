@@ -61,8 +61,7 @@ export default class AspectContainer extends Component {
         ]}
       >
         {children.map(child => React.cloneElement(child, {
-          containerDimensions,
-          'test': 'test'
+          containerDimensions
         }))}
       </div>
     );

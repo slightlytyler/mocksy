@@ -10,6 +10,10 @@ import Canvas from 'pods/template/components/Builder/Editor/Canvas';
 @Radium
 export default class TemplateBuilderEditor extends Component {
   static propTypes = {
+    backgroundPath: PropTypes.string.isRequired,
+    dimensions: PropTypes.object.isRequired,
+    foregroundDimensions: PropTypes.object.isRequired,
+    canvasDimensions: PropTypes.object.isRequired
   };
 
   render() {

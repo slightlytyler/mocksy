@@ -13,9 +13,9 @@ import Button from 'components/Form/Button'
 @Radium
 export default class TemplateBuilderForegroundSidebar extends Component {
   static propTypes = {
-    record: PropTypes.object.isRequired,
-    updateTemplateForeground: PropTypes.func.isRequired,
-    setTemplateForeground: PropTypes.func.isRequired
+    record: PropTypes.object,
+    updateTemplateForeground: PropTypes.func,
+    setTemplateForeground: PropTypes.func
   };
 
   render() {

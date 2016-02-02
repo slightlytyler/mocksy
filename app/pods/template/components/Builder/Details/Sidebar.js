@@ -12,9 +12,9 @@ import Button from 'components/Form/Button'
 @Radium
 export default class TemplateBuilderDetailsSidebar extends Component {
   static propTypes = {
-    record: PropTypes.object.isRequired,
-    updateTemplateDetails: PropTypes.func.isRequired,
-    setTemplateDetails: PropTypes.func.isRequired
+    record: PropTypes.object,
+    updateTemplateDetails: PropTypes.func,
+    setTemplateDetails: PropTypes.func
   };
 
 
