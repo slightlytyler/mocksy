@@ -50,6 +50,7 @@ export default class AspectContainer extends Component {
       <div
         style={[
           styles.base,
+          this.props.style,
           {
             width: this.width(dimensions, canvasDimensions),
             height: this.height(dimensions, canvasDimensions)
@@ -64,6 +65,7 @@ export default class AspectContainer extends Component {
 
 const styles = {
   base: {
-    position: 'relative'
+    position: 'relative',
+    boxSizing: 'content-box'
   }
 };

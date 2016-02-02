@@ -30,7 +30,10 @@ export default class TemplateBuilderForegroundContent extends Component {
   }
 
   render() {
-    const { record } = this.props;
+    const {
+      record,
+      canvasDimensions
+    } = this.props;
     const {
       foregroundWidth,
       foregroundHeight,
@@ -41,12 +44,14 @@ export default class TemplateBuilderForegroundContent extends Component {
     return (
       <Editor
         backgroundPath={record.backgroundPath}
+        dimensions={record.dimensions}
         foregroundDimensions={{
-          left: 100,
-          top: 100,
-          width: 100,
-          height: 100
+          left: 44,
+          top: 58,
+          width: 199,
+          height: 353
         }}
+        canvasDimensions={canvasDimensions}
       />
     );
   }
