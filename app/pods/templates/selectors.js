@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { pick } from 'lodash';
+import { pickBy } from 'lodash';
 import firstRecord from 'utils/first-record';
 
 import { basePathSelector } from 'selectors/routing';
@@ -22,7 +22,7 @@ export const currentTemplateSetSelector = createSelector(
   templatesRecordsSelector,
   currentTemplateSetIdSelector,
   (records, currentTemplateSetId) => {
-    return pick(records, template => template.set === currentTemplateSetId)
+    return pickBy(records, template => template.set === currentTemplateSetId)
   }
 );
 

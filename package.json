@@ -99,7 +99,7 @@
     "fs": "0.0.2",
     "gm": "git+https://github.com/slightlytyler/gm.git",
     "history": "^1.13.0",
-    "lodash": "^3.10.1",
+    "lodash": "^4.2.0",
     "lodash.merge": "^4.0.2",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",

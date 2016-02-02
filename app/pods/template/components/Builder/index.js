@@ -12,7 +12,9 @@ export default class TemplateBuilder extends Component {
   static propTypes = {
     actions: PropTypes.shape({
       setTemplateBackground: PropTypes.func.isRequired,
+      updateTemplateForeground: PropTypes.func.isRequired,
       setTemplateForeground: PropTypes.func.isRequired,
+      updateTemplateDetails: PropTypes.func.isRequired,
       setTemplateDetails: PropTypes.func.isRequired,
       goBack: PropTypes.func.isRequired
     })
@@ -27,7 +29,9 @@ export default class TemplateBuilder extends Component {
     } = this.props;
     const {
       setTemplateBackground,
+      updateTemplateForeground,
       setTemplateForeground,
+      updateTemplateDetails,
       setTemplateDetails,
       goBack
     } = actions;
@@ -51,7 +55,9 @@ export default class TemplateBuilder extends Component {
             {React.cloneElement(sidebar, {
               record,
               setTemplateBackground,
+              updateTemplateForeground,
               setTemplateForeground,
+              updateTemplateDetails,
               setTemplateDetails
             })}
           </section>
@@ -61,7 +67,9 @@ export default class TemplateBuilder extends Component {
           {React.cloneElement(content, {
             record,
             setTemplateBackground,
+            updateTemplateForeground,
             setTemplateForeground,
+            updateTemplateDetails,
             setTemplateDetails
           })}
         </PreviewArea>

@@ -8,23 +8,16 @@ import colors from 'constants/colors';
 @Radium
 export default class FormInput extends Component {
   static propTypes = {
+    type: PropTypes.string,
     value: PropTypes.any,
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired
   };
 
   render() {
-    const {
-      value,
-      placeholder,
-      onChange
-    } = this.props;
-
     return (
       <input
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
+        {...this.props}
         style={styles.base}
       />
     );
@@ -38,6 +31,6 @@ const styles = {
     marginBottom: '.3em',
     fontSize: '.9em',
     color: colors.black,
-    border: `1px solid ${colors.pink}`,
+    border: `1px solid ${colors.pink}`
   },
 };

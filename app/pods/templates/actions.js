@@ -70,7 +70,10 @@ export function updateNewTemplateBackground(path, callback) {
 
         dimensions: {
           width,
-          height
+          height,
+
+          foreground: {
+          }
         }
       }));
 

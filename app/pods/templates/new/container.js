@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { routeActions } from 'react-router-redux';
+import { mapValues } from 'lodash';
 
 import {
   addTemplate,
@@ -50,22 +51,22 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         loadingCb();
         updateNewTemplateBackground(path, () => transition('templates/new/foreground'));
       },
-      setTemplateForeground: (width, height, left, top) => {
+      updateTemplateForeground: (props) =>{
+        const propsToNumbers = mapValues(props, prop => prop ? Number(prop) : 0);
+
         updateNewTemplate({
           dimensions: {
-            foreground: {
-              width: Number(width),
-              height: Number(height),
-              left: Number(left),
-              top: Number(top)
-            }
+            foreground: propsToNumbers
           }
         });
-
+      },
+      setTemplateForeground: () => {
         transition('templates/new/details')
       },
-      setTemplateDetails: (props) => {
+      updateTemplateDetails: (props) => {
         updateNewTemplate(props);
+      },
+      setTemplateDetails: (props) => {
         addTemplate(() => transition('templates/user'));
       },
       goBack

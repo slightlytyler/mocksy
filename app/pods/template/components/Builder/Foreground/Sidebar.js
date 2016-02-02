@@ -13,56 +13,23 @@ import Button from 'components/Form/Button'
 @Radium
 export default class TemplateBuilderForegroundSidebar extends Component {
   static propTypes = {
+    record: PropTypes.object.isRequired,
+    updateTemplateForeground: PropTypes.func.isRequired,
     setTemplateForeground: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      form: {
-        foregroundWidth: '',
-        foregroundHeight: '',
-        foregroundLeft: '',
-        foregroundTop: ''
-      }
-    };
-  }
-
-  updateForm(state, prop, value) {
-    const newState = update(state, {
-      form: {
-        [prop]: { $set: value }
-      }
-    });
-
-    this.setState(newState);
-  }
-
-  submit() {
-    const { setTemplateForeground } = this.props;
-    const {
-      foregroundWidth,
-      foregroundHeight,
-      foregroundLeft,
-      foregroundTop
-    } = this.state.form;
-
-    setTemplateForeground(
-      foregroundWidth,
-      foregroundHeight,
-      foregroundLeft,
-      foregroundTop
-    );
-  }
-
   render() {
     const {
-      foregroundLeft,
-      foregroundTop,
-      foregroundWidth,
-      foregroundHeight,
-    } = this.state.form;
+      record,
+      updateTemplateForeground,
+      setTemplateForeground
+    } = this.props;
+    const {
+      left,
+      top,
+      width,
+      height
+    } = record.dimensions.foreground;
 
     return (
       <div style={styles.base}>
@@ -98,10 +65,13 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               labelColor="white"
             >
               <Input
-                value={foregroundLeft}
+                type="number"
+                value={left}
                 placeholder="0"
                 onChange={e =>
-                  this.updateForm(this.state, 'foregroundLeft', e.target.value)
+                  updateTemplateForeground({
+                    left: e.target.value
+                  })
                 }
               />
             </Field>
@@ -110,10 +80,13 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               labelColor="white"
             >
               <Input
-                value={foregroundTop}
+                type="number"
+                value={top}
                 placeholder="0"
                 onChange={e =>
-                  this.updateForm(this.state, 'foregroundTop', e.target.value)
+                  updateTemplateForeground({
+                    top: e.target.value
+                  })
                 }
               />
             </Field>
@@ -129,10 +102,13 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               labelColor="white"
             >
               <Input
-                value={foregroundWidth}
+                type="number"
+                value={width}
                 placeholder="0"
                 onChange={e =>
-                  this.updateForm(this.state, 'foregroundWidth', e.target.value)
+                 updateTemplateForeground({
+                    width: e.target.value
+                  })
                 }
               />
             </Field>
@@ -141,10 +117,13 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               labelColor="white"
             >
               <Input
-                value={foregroundHeight}
+                type="number"
+                value={height}
                 placeholder="0"
                 onChange={e =>
-                  this.updateForm(this.state, 'foregroundHeight', e.target.value)
+                  updateTemplateForeground({
+                    height: e.target.value
+                  })
                 }
               />
             </Field>
@@ -152,7 +131,7 @@ export default class TemplateBuilderForegroundSidebar extends Component {
         </ul>
 
         <Button
-          onClick={() => this.submit()}
+          onClick={() => setTemplateForeground()}
           fluid={true}
         >
           Next Step

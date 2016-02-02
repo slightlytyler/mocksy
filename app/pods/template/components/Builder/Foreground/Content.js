@@ -13,44 +13,26 @@ export default class TemplateBuilderForegroundContent extends Component {
       height: PropTypes.number.isRequired
     }),
     record: PropTypes.object.isRequired,
+    updateTemplateForeground: PropTypes.func.isRequired,
     setTemplateForeground: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      form: {
-        foregroundWidth: '',
-        foregroundHeight: '',
-        foregroundLeft: '',
-        foregroundTop: ''
-      }
-    };
-  }
 
   render() {
     const {
-      record,
-      canvasDimensions
+      canvasDimensions,
+      record
     } = this.props;
     const {
-      foregroundWidth,
-      foregroundHeight,
-      foregroundLeft,
-      foregroundTop
-    } = this.state.form;
+      backgroundPath,
+      dimensions
+    } = record;
 
     return (
       <Editor
-        backgroundPath={record.backgroundPath}
-        dimensions={record.dimensions}
-        foregroundDimensions={{
-          left: 44,
-          top: 58,
-          width: 199,
-          height: 353
-        }}
+        backgroundPath={backgroundPath}
+        dimensions={dimensions}
+        foregroundDimensions={dimensions.foreground}
         canvasDimensions={canvasDimensions}
       />
     );

@@ -54,7 +54,7 @@ function removeTemplate(state, id) {
 function newRecordReducer(state={}, action) {
   switch (action.type) {
       case UPDATE_NEW_TEMPLATE:
-        return merge(state, action.props);
+        return merge({}, state, action.props);
 
       case CLEAR_NEW_TEMPLATE:
         return {};
