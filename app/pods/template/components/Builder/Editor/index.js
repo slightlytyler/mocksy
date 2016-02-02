@@ -31,6 +31,7 @@ export default class TemplateBuilderEditor extends Component {
         canvasDimensions={canvasDimensions}
         style={styles.container}
       >
+        <div style={styles.border} />
         <img
           src={backgroundPath}
           style={styles.background}
@@ -46,7 +47,16 @@ export default class TemplateBuilderEditor extends Component {
 
 const styles = {
   container: {
-    //border: `2px solid ${colors.gray}`
+  },
+
+  border: {
+    boxSizing: 'content-box',
+    position: 'absolute',
+    left: 'calc(0% - 2px)',
+    top: 'calc(0% - 2px)',
+    width: '100%',
+    height: '100%',
+    border: `2px solid ${colors.gray}`,
   },
 
   background: {
