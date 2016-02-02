@@ -1,15 +1,11 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react';
-import {
-  Surface,
-  ClippingRectangle,
-  LinearGradient } from 'react-art';
-import Rectangle from 'react-art/shapes/rectangle';
 import Radium from 'radium';
 
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
+import Canvas from 'pods/template/components/Builder/Editor/Canvas';
 
 @Radium
 export default class TemplateBuilderEditor extends Component {
@@ -26,6 +22,7 @@ export default class TemplateBuilderEditor extends Component {
 
     return (
       <AspectContainer
+        ref="container"
         dimensions={dimensions}
         canvasDimensions={canvasDimensions}
         style={styles.container}
@@ -34,30 +31,10 @@ export default class TemplateBuilderEditor extends Component {
           src={backgroundPath}
           style={styles.background}
         />
-        <Surface
-          width={500}
-          height={500}
-          style={styles.surface}
-        >
-          <ClippingRectangle
-            x={foregroundDimensions.left}
-            y={foregroundDimensions.top}
-            width={foregroundDimensions.width}
-            height={foregroundDimensions.height}
-          >
-            <Rectangle
-              x={foregroundDimensions.left}
-              y={foregroundDimensions.top}
-              width={foregroundDimensions.width}
-              height={foregroundDimensions.height}
-              fill={new LinearGradient([colors.pink, colors.orange])}
-              stroke={colors.white}
-              strokeWidth={4}
-              strokeDash={[9, 10]}
-              strokeCap="square"
-            />
-          </ClippingRectangle>
-        </Surface>
+        <Canvas
+          dimensions={foregroundDimensions}
+          backgroundDimensions={dimensions}
+        />
       </AspectContainer>
     )
   }
@@ -65,7 +42,7 @@ export default class TemplateBuilderEditor extends Component {
 
 const styles = {
   container: {
-    border: `2px solid ${colors.gray}`
+    //border: `2px solid ${colors.gray}`
   },
 
   background: {

@@ -21,10 +21,10 @@ export default class AspectContainer extends Component {
     const aspectRatio = width / height;
 
     if (aspectRatio > (canvasDimensions.width / canvasDimensions.height)) {
-      return '100%';
+      return canvasDimensions.width;
     }
     else {
-      return `${(aspectRatio * canvasDimensions.height) / canvasDimensions.width * 100}%`;
+      return aspectRatio * canvasDimensions.height;
     }
   }
 
@@ -33,31 +33,37 @@ export default class AspectContainer extends Component {
     const aspectRatio = height / width;
 
     if (aspectRatio > (canvasDimensions.height / canvasDimensions.width)) {
-      return '100%';
+      return canvasDimensions.height;
     }
     else {
-      return `${(aspectRatio * canvasDimensions.width) / canvasDimensions.height * 100}%`;
+      return aspectRatio * canvasDimensions.width;
     }
   }
 
   render() {
     const {
       dimensions,
-      canvasDimensions
+      canvasDimensions,
+      children
     } = this.props;
+    const containerDimensions = {
+      width: this.width(dimensions, canvasDimensions),
+      height: this.height(dimensions, canvasDimensions)
+    };
 
     return(
       <div
+        ref="node"
         style={[
           styles.base,
           this.props.style,
-          {
-            width: this.width(dimensions, canvasDimensions),
-            height: this.height(dimensions, canvasDimensions)
-          }
+          containerDimensions
         ]}
       >
-        {this.props.children}
+        {children.map(child => React.cloneElement(child, {
+          containerDimensions,
+          'test': 'test'
+        }))}
       </div>
     );
   }
