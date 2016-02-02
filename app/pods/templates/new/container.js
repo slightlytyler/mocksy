@@ -52,11 +52,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         updateNewTemplateBackground(path, () => transition('templates/new/foreground'));
       },
       updateTemplateForeground: (props) =>{
-        const propsToNumbers = mapValues(props, prop => prop ? Number(prop) : 0);
-
         updateNewTemplate({
           dimensions: {
-            foreground: propsToNumbers
+            foreground: props
           }
         });
       },

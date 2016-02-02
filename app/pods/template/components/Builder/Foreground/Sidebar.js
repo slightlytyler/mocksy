@@ -7,7 +7,7 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 import Row from 'components/Form/Row';
 import Field from 'components/Form/Field';
-import Input from 'components/Form/Input';
+import InputNumber from 'components/Form/Input/Number';
 import Button from 'components/Form/Button'
 
 @Radium
@@ -64,13 +64,12 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               label="X"
               labelColor="white"
             >
-              <Input
-                type="number"
+              <InputNumber
                 value={left}
                 placeholder="0"
-                onChange={e =>
+                handleChange={val =>
                   updateTemplateForeground({
-                    left: e.target.value
+                    left: val
                   })
                 }
               />
@@ -79,13 +78,12 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               label="Y"
               labelColor="white"
             >
-              <Input
-                type="number"
+              <InputNumber
                 value={top}
                 placeholder="0"
-                onChange={e =>
+                handleChange={val =>
                   updateTemplateForeground({
-                    top: e.target.value
+                    top: val
                   })
                 }
               />
@@ -101,13 +99,12 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               label="Width"
               labelColor="white"
             >
-              <Input
-                type="number"
+              <InputNumber
                 value={width}
                 placeholder="0"
-                onChange={e =>
-                 updateTemplateForeground({
-                    width: e.target.value
+                handleChange={val =>
+                  updateTemplateForeground({
+                    width: val
                   })
                 }
               />
@@ -116,13 +113,12 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               label="Height"
               labelColor="white"
             >
-              <Input
-                type="number"
+              <InputNumber
                 value={height}
                 placeholder="0"
-                onChange={e =>
+                handleChange={val =>
                   updateTemplateForeground({
-                    height: e.target.value
+                    height: val
                   })
                 }
               />
