@@ -12,40 +12,21 @@ import Button from 'components/Form/Button'
 @Radium
 export default class TemplateBuilderDetailsSidebar extends Component {
   static propTypes = {
+    record: PropTypes.object.isRequired,
+    updateTemplateDetails: PropTypes.func.isRequired,
     setTemplateDetails: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      form: {
-        name: ''
-      }
-    };
-  }
-
-  updateForm(state, prop, value) {
-    const newState = update(state, {
-      form: {
-        [prop]: { $set: value }
-      }
-    });
-
-    this.setState(newState);
-  }
-
-  submit() {
-    const { setTemplateDetails } = this.props;
-    const { name } = this.state.form;
-
-    setTemplateDetails({
-      name
-    });
-  }
 
   render() {
-    const { name } = this.state.form;
+    const {
+      record,
+      updateTemplateDetails,
+      setTemplateDetails
+    } = this.props;
+    const {
+      name
+    } = record;
 
     return (
       <div style={styles.base}>
@@ -63,7 +44,9 @@ export default class TemplateBuilderDetailsSidebar extends Component {
                 value={name}
                 placeholder="Template Name"
                 onChange={e =>
-                  this.updateForm(this.state, 'name', e.target.value)
+                  updateTemplateDetails({
+                    name: e.target.value
+                  })
                 }
               />
             </Field>
@@ -71,7 +54,7 @@ export default class TemplateBuilderDetailsSidebar extends Component {
         </ul>
 
          <Button
-          onClick={() => this.submit()}
+          onClick={() => setTemplateDetails()}
           fluid={true}
         >
           Save Template
