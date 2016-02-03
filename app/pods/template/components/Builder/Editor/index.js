@@ -13,7 +13,8 @@ export default class TemplateBuilderEditor extends Component {
     backgroundPath: PropTypes.string.isRequired,
     dimensions: PropTypes.object.isRequired,
     foregroundDimensions: PropTypes.object.isRequired,
-    canvasDimensions: PropTypes.object.isRequired
+    canvasDimensions: PropTypes.object.isRequired,
+    updateTemplateForeground: PropTypes.func.isRequired
   };
 
   render() {
@@ -22,6 +23,7 @@ export default class TemplateBuilderEditor extends Component {
       dimensions,
       foregroundDimensions,
       canvasDimensions,
+      updateTemplateForeground
     } = this.props;
 
     return (
@@ -39,6 +41,7 @@ export default class TemplateBuilderEditor extends Component {
         <Canvas
           dimensions={foregroundDimensions}
           backgroundDimensions={dimensions}
+          updateTemplateForeground={updateTemplateForeground}
         />
       </AspectContainer>
     )

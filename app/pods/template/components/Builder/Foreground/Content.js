@@ -21,7 +21,8 @@ export default class TemplateBuilderForegroundContent extends Component {
   render() {
     const {
       canvasDimensions,
-      record
+      record,
+      updateTemplateForeground
     } = this.props;
     const {
       backgroundPath,
@@ -34,6 +35,7 @@ export default class TemplateBuilderForegroundContent extends Component {
         dimensions={dimensions}
         foregroundDimensions={dimensions.foreground}
         canvasDimensions={canvasDimensions}
+        updateTemplateForeground={updateTemplateForeground}
       />
     );
   }
