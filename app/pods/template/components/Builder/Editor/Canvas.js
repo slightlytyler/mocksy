@@ -47,12 +47,26 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
   componentWillReceiveProps(newProps) {
     const { props } = this;
-    const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
+    const updatedDimensions = props.dimensions !== newProps.dimensions;
     const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
+    const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
 
-    if (updatedContainer || updatedBackground) {
+    if (updatedBackground || updatedContainer) {
       this.setState({
         ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
+      });
+    }
+
+    if (updatedDimensions) {
+      this.setState({
+        rectDimensions: {
+          width: newProps.dimensions.width * this.state.ratio,
+          height: newProps.dimensions.height * this.state.ratio
+        },
+        rectOffset: {
+          x: newProps.dimensions.left * this.state.ratio,
+          y: newProps.dimensions.top * this.state.ratio
+        }
       });
     }
   }
@@ -207,8 +221,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
       e.preventDefault();
 
       const newOffset = {
-        x: Math.round(xDiff + this.state.rectOffset.x),
-        y: Math.round(yDiff + this.state.rectOffset.y)
+        x: Math.round(rectOffset.x + xDiff),
+        y: Math.round(rectOffset.y + yDiff)
       };
 
       this.setState({
