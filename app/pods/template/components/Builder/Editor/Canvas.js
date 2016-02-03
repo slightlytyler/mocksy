@@ -85,7 +85,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     document.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
   }
 
-  handleMouseDown(e) {
+  startEditing(e) {
     const edgesClicked = this.checkEdge(
       {
         x: e.offsetX,
@@ -164,137 +164,18 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const {
       scaling,
       dragging,
-      marquee,
-      marqueeDirection,
-      ratio,
-      rectDimensions,
-      rectOffset,
-      mouseCords
+      marquee
     } = this.state;
-    const {
-      width,
-      height
-    } = rectDimensions;
-    const {
-      x,
-      y
-    } = rectOffset;
-    const xDiff = e.pageX - mouseCords.x;
-    const yDiff = e.pageY - mouseCords.y;
-    const currentWidth = this.state.rectDimensions.width || 0;
-    const currentHeight = this.state.rectDimensions.height || 0;
 
     if (marquee) {
-      console.log(currentWidth);
-      this.setState({
-        marqueeDirection: {
-          x: e.offsetX < this.state.mouseDownCords.x ? 'negative' : 'positive',
-          y: e.offsetY < this.state.mouseDownCords.y ? 'negative' : 'positive'
-        }
-      });
-
-      if (this.state.marqueeDirection.x === 'negative' || this.state.marqueeDirection.y === 'negative') {
-        if (this.state.marqueeDirection.x === 'negative' && this.state.marqueeDirection.y === 'positive') {
-          this.setState(merge({}, this.state, {
-            rectDimensions: {
-              width: this.state.mouseDownCords.x - e.offsetX,
-              height: e.offsetY - this.state.mouseDownCords.y
-            },
-            rectOffset: {
-              x: this.state.mouseDownCords.x - (this.state.mouseDownCords.x - e.offsetX)
-            }
-          }));
-        }
-        else if (this.state.marqueeDirection.x === 'positive' && this.state.marqueeDirection.y === 'negative') {
-          this.setState(merge({}, this.state, {
-            rectDimensions: {
-              width: e.offsetX - this.state.mouseDownCords.x,
-              height: this.state.mouseDownCords.y - e.offsetY
-            },
-            rectOffset: {
-              y: this.state.mouseDownCords.y - (this.state.mouseDownCords.y - e.offsetY)
-            }
-          }));
-        }
-        else {
-          this.setState(merge({}, this.state, {
-            rectDimensions: {
-              width: this.state.mouseDownCords.x - e.offsetX,
-              height: this.state.mouseDownCords.y - e.offsetY
-            },
-            rectOffset: {
-              x: this.state.mouseDownCords.x - (this.state.mouseDownCords.x - e.offsetX),
-              y: this.state.mouseDownCords.y - (this.state.mouseDownCords.y - e.offsetY)
-            }
-          }));
-        }
-      }
-      else {
-        this.setState({
-          rectDimensions: {
-            width: e.offsetX - this.state.mouseDownCords.x,
-            height: e.offsetY - this.state.mouseDownCords.y
-          }
-        });
-      }
+      this.handleMarquee(e)
     }
     else if (scaling) {
-      e.preventDefault();
-
-      if (scaling.indexOf('left') !== -1) {
-        this.setState(merge({}, this.state, {
-          rectDimensions: {
-            width: Math.round(width - xDiff)
-          },
-          rectOffset: {
-            x: Math.round(x + xDiff)
-          }
-        }));
-      }
-      if (scaling.indexOf('right') !== -1) {
-        this.setState(merge({}, this.state, {
-          rectDimensions: {
-            width: Math.round(width + xDiff)
-          }
-        }));
-      }
-      if (scaling.indexOf('top') !== -1) {
-        this.setState(merge({}, this.state, {
-          rectDimensions: {
-            height: Math.round(height - yDiff)
-          },
-          rectOffset: {
-            y: Math.round(y + yDiff)
-          }
-        }));
-      }
-      if (scaling.indexOf('bottom') !== -1) {
-        this.setState(merge({}, this.state, {
-          rectDimensions: {
-            height: Math.round(height + yDiff)
-          }
-        }));
-      }
+      this.handleScale(e)
     }
     else if (dragging) {
-      e.preventDefault();
-
-      const newOffset = {
-        x: Math.round(rectOffset.x + xDiff),
-        y: Math.round(rectOffset.y + yDiff)
-      };
-
-      this.setState({
-        rectOffset: newOffset
-      });
+      this.handleDrag(e)
     }
-
-    this.setState({
-      mouseCords: {
-        x: e.pageX,
-        y: e.pageY
-      }
-    });
   }
 
   startMarquee(e) {
@@ -315,6 +196,151 @@ export default class TemplateBuilderEditorCanvas extends Component {
       mouseDownCords: {
         x: e.offsetX,
         y: e.offsetY
+      }
+    });
+  }
+
+  handleMarquee(e) {
+    e.preventDefault();
+
+    const { mouseDownCords } = this.state;
+    const startX = mouseDownCords.x;
+    const startY = mouseDownCords.y;
+    const currentX = e.offsetX;
+    const currentY = e.offsetY;
+
+    // First we need to calculate the direction of the marquee
+    const xDirectionPositive = currentX >= startX;
+    const yDirectionPositive = currentY >= startY;
+
+    // Handle x / width
+    this.setState(merge({}, this.state, {
+      rectDimensions: {
+        width: (
+          xDirectionPositive
+          ? currentX - startX
+          : startX - currentX
+        )
+      },
+      rectOffset: {
+        x: (
+          xDirectionPositive
+          ? startX
+          : currentX
+        )
+      }
+    }));
+
+    // Handle y / height
+    this.setState(merge({}, this.state, {
+      rectDimensions: {
+        height: (
+          yDirectionPositive
+          ? currentY - startY
+          : startY - currentY
+        )
+      },
+      rectOffset: {
+        y: (
+          yDirectionPositive
+          ? startY
+          : currentY
+        )
+      }
+    }));
+  }
+
+  handleScale(e) {
+    e.preventDefault();
+
+    const {
+      scaling,
+      rectDimensions,
+      rectOffset,
+      mouseCords
+    } = this.state;
+    const {
+      width,
+      height
+    } = rectDimensions;
+    const {
+      x,
+      y
+    } = rectOffset;
+
+    const xDiff = e.pageX - mouseCords.x;
+    const yDiff = e.pageY - mouseCords.y;
+
+    if (scaling.indexOf('left') !== -1) {
+      this.setState(merge({}, this.state, {
+        rectDimensions: {
+          width: Math.round(width - xDiff)
+        },
+        rectOffset: {
+          x: Math.round(x + xDiff)
+        }
+      }));
+    }
+
+    if (scaling.indexOf('right') !== -1) {
+      this.setState(merge({}, this.state, {
+        rectDimensions: {
+          width: Math.round(width + xDiff)
+        }
+      }));
+    }
+
+    if (scaling.indexOf('top') !== -1) {
+      this.setState(merge({}, this.state, {
+        rectDimensions: {
+          height: Math.round(height - yDiff)
+        },
+        rectOffset: {
+          y: Math.round(y + yDiff)
+        }
+      }));
+    }
+
+    if (scaling.indexOf('bottom') !== -1) {
+      this.setState(merge({}, this.state, {
+        rectDimensions: {
+          height: Math.round(height + yDiff)
+        }
+      }));
+    }
+
+    this.setState({
+      mouseCords: {
+        x: e.pageX,
+        y: e.pageY
+      }
+    });
+  }
+
+  handleDrag(e) {
+    e.preventDefault();
+
+    const {
+      rectOffset,
+      mouseCords
+    } = this.state;
+
+    const xDiff = e.pageX - mouseCords.x;
+    const yDiff = e.pageY - mouseCords.y;
+
+    const newOffset = {
+      x: Math.round(rectOffset.x + xDiff),
+      y: Math.round(rectOffset.y + yDiff)
+    };
+
+    this.setState({
+      rectOffset: newOffset
+    });
+
+    this.setState({
+      mouseCords: {
+        x: e.pageX,
+        y: e.pageY
       }
     });
   }
@@ -348,7 +374,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
               ref="preview"
               x={rectOffset.x}
               y={rectOffset.y}
-              onMouseDown={(e) => this.handleMouseDown(e)}
+              onMouseDown={(e) => this.startEditing(e)}
               onMouseUp={(e) => this.handleMouseUp(e)}
             >
               <ClippingRectangle
