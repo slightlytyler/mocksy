@@ -30,6 +30,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
       dragging: false,
       scaling: false,
       marquee: false,
+      marqueeDirection: false,
       ratio,
       rectDimensions: {
         width: props.dimensions.width * ratio,
@@ -40,6 +41,10 @@ export default class TemplateBuilderEditorCanvas extends Component {
         y: props.dimensions.top * ratio,
       },
       mouseCords: {
+        x: 0,
+        y: 0
+      },
+      mouseDownCords: {
         x: 0,
         y: 0
       }
@@ -101,7 +106,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
       });
     }
 
-
     this.setState({
       mouseCords: {
         x: e.pageX,
@@ -151,7 +155,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
     this.setState({
       scaling: false,
       dragging: false,
-      marquee: false
+      marquee: false,
+      marqueeDirection: false
     });
   }
 
@@ -160,6 +165,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
       scaling,
       dragging,
       marquee,
+      marqueeDirection,
       ratio,
       rectDimensions,
       rectOffset,
@@ -175,17 +181,62 @@ export default class TemplateBuilderEditorCanvas extends Component {
     } = rectOffset;
     const xDiff = e.pageX - mouseCords.x;
     const yDiff = e.pageY - mouseCords.y;
+    const currentWidth = this.state.rectDimensions.width || 0;
+    const currentHeight = this.state.rectDimensions.height || 0;
 
     if (marquee) {
-      const currentWidth = this.state.rectDimensions.width || 0;
-      const currentHeight = this.state.rectDimensions.height || 0;
-
+      console.log(currentWidth);
       this.setState({
-        rectDimensions: {
-          width: currentWidth + xDiff,
-          height: currentHeight + yDiff
+        marqueeDirection: {
+          x: e.offsetX < this.state.mouseDownCords.x ? 'negative' : 'positive',
+          y: e.offsetY < this.state.mouseDownCords.y ? 'negative' : 'positive'
         }
       });
+
+      if (this.state.marqueeDirection.x === 'negative' || this.state.marqueeDirection.y === 'negative') {
+        if (this.state.marqueeDirection.x === 'negative' && this.state.marqueeDirection.y === 'positive') {
+          this.setState(merge({}, this.state, {
+            rectDimensions: {
+              width: this.state.mouseDownCords.x - e.offsetX,
+              height: e.offsetY - this.state.mouseDownCords.y
+            },
+            rectOffset: {
+              x: this.state.mouseDownCords.x - (this.state.mouseDownCords.x - e.offsetX)
+            }
+          }));
+        }
+        else if (this.state.marqueeDirection.x === 'positive' && this.state.marqueeDirection.y === 'negative') {
+          this.setState(merge({}, this.state, {
+            rectDimensions: {
+              width: e.offsetX - this.state.mouseDownCords.x,
+              height: this.state.mouseDownCords.y - e.offsetY
+            },
+            rectOffset: {
+              y: this.state.mouseDownCords.y - (this.state.mouseDownCords.y - e.offsetY)
+            }
+          }));
+        }
+        else {
+          this.setState(merge({}, this.state, {
+            rectDimensions: {
+              width: this.state.mouseDownCords.x - e.offsetX,
+              height: this.state.mouseDownCords.y - e.offsetY
+            },
+            rectOffset: {
+              x: this.state.mouseDownCords.x - (this.state.mouseDownCords.x - e.offsetX),
+              y: this.state.mouseDownCords.y - (this.state.mouseDownCords.y - e.offsetY)
+            }
+          }));
+        }
+      }
+      else {
+        this.setState({
+          rectDimensions: {
+            width: e.offsetX - this.state.mouseDownCords.x,
+            height: e.offsetY - this.state.mouseDownCords.y
+          }
+        });
+      }
     }
     else if (scaling) {
       e.preventDefault();
@@ -260,6 +311,10 @@ export default class TemplateBuilderEditorCanvas extends Component {
       mouseCords: {
         x: e.pageX,
         y: e.pageY
+      },
+      mouseDownCords: {
+        x: e.offsetX,
+        y: e.offsetY
       }
     });
   }
