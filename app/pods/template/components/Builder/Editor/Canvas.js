@@ -8,7 +8,7 @@ import {
   ClippingRectangle,
   LinearGradient } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
-import { some, chain, pickBy, keys, reduce } from 'lodash';
+import { some, chain, pickBy, keys, merge } from 'lodash';
 
 import colors from 'constants/colors';
 
@@ -38,7 +38,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
         x: props.dimensions.left * ratio,
         y: props.dimensions.top * ratio,
       },
-      mouseDownCords: {
+      mouseCords: {
         x: 0,
         y: 0
       }
@@ -66,7 +66,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   handleMouseDown(e) {
-    const edgeClicked = this.checkEdge(
+    const edgesClicked = this.checkEdge(
       {
         x: e.offsetX,
         y: e.offsetY
@@ -75,18 +75,23 @@ export default class TemplateBuilderEditorCanvas extends Component {
       this.state.rectOffset
     );
 
-    if (edgeClicked) {
-      console.log(edgeClicked)
+    if (edgesClicked) {
+      this.setState({
+        scaling: edgesClicked
+      });
     }
     else {
       this.setState({
-        dragging: true,
-        mouseCords: {
-          x: e.pageX,
-          y: e.pageY
-        }
+        dragging: true
       });
     }
+
+    this.setState({
+      mouseCords: {
+        x: e.pageX,
+        y: e.pageY
+      }
+    });
   }
 
   checkEdge(mouseOffset, rectDimensions, rectOffset) {
@@ -101,7 +106,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
       return chain(edges)
         .pickBy(val => val)
         .keys()
-        .reduce((result, val) => `${val}-${result}`)
         .value()
       ;
     }
@@ -113,28 +117,95 @@ export default class TemplateBuilderEditorCanvas extends Component {
   handleMouseUp() {
     const {
       ratio,
+      rectDimensions,
       rectOffset
     } = this.state;
+    const width = Math.round(rectDimensions.width / ratio);
+    const height = Math.round(rectDimensions.height / ratio);
     const x = Math.round(rectOffset.x / ratio);
     const y = Math.round(rectOffset.y / ratio);
 
     this.props.updateTemplateForeground({
+      width,
+      height,
       left: x,
       top: y
     });
 
     this.setState({
+      scaling: false,
       dragging: false
     });
   }
 
   handleMouseMove(e) {
-    if (this.state.dragging) {
+    const {
+      scaling,
+      dragging,
+      ratio,
+      rectDimensions,
+      rectOffset,
+      mouseCords
+    } = this.state;
+    const {
+      width,
+      height
+    } = rectDimensions;
+    const {
+      x,
+      y
+    } = rectOffset;
+    const xDiff = e.pageX - mouseCords.x;
+    const yDiff = e.pageY - mouseCords.y;
+
+    if (scaling) {
       e.preventDefault();
 
-      const { mouseCords } = this.state;
-      const xDiff = e.pageX - mouseCords.x;
-      const yDiff = e.pageY - mouseCords.y;
+      if (scaling.indexOf('left') !== -1) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            width: Math.round(width - xDiff)
+          },
+          rectOffset: {
+            x: Math.round(x + xDiff)
+          }
+        }));
+      }
+      if (scaling.indexOf('right') !== -1) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            width: Math.round(width + xDiff)
+          }
+        }));
+      }
+      if (scaling.indexOf('top') !== -1) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            height: Math.round(height - yDiff)
+          },
+          rectOffset: {
+            y: Math.round(y + yDiff)
+          }
+        }));
+      }
+      if (scaling.indexOf('bottom') !== -1) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            height: Math.round(height + yDiff)
+          }
+        }));
+      }
+
+      this.setState({
+        mouseCords: {
+          x: e.pageX,
+          y: e.pageY
+        }
+      });
+    }
+    else if (dragging) {
+      e.preventDefault();
+
       const newOffset = {
         x: Math.round(xDiff + this.state.rectOffset.x),
         y: Math.round(yDiff + this.state.rectOffset.y)
