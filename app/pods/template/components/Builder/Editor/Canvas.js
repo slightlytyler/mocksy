@@ -8,6 +8,7 @@ import {
   ClippingRectangle,
   LinearGradient } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
+import { some, chain, pickBy, keys, reduce } from 'lodash';
 
 import colors from 'constants/colors';
 
@@ -65,13 +66,48 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   handleMouseDown(e) {
-    this.setState({
-      dragging: true,
-      mouseCords: {
-        x: e.pageX,
-        y: e.pageY
-      }
-    });
+    const edgeClicked = this.checkEdge(
+      {
+        x: e.offsetX,
+        y: e.offsetY
+      },
+      this.state.rectDimensions,
+      this.state.rectOffset
+    );
+
+    if (edgeClicked) {
+      console.log(edgeClicked)
+    }
+    else {
+      this.setState({
+        dragging: true,
+        mouseCords: {
+          x: e.pageX,
+          y: e.pageY
+        }
+      });
+    }
+  }
+
+  checkEdge(mouseOffset, rectDimensions, rectOffset) {
+    const edges = {
+      left: mouseOffset.x - rectOffset.x <= 10,
+      right: mouseOffset.x - rectOffset.x >= rectDimensions.width - 10,
+      top: mouseOffset.y - rectOffset.y <= 10,
+      bottom: mouseOffset.y - rectOffset.y >= rectDimensions.height - 10
+    };
+
+    if (some(edges, val => val)) {
+      return chain(edges)
+        .pickBy(val => val)
+        .keys()
+        .reduce((result, val) => `${val}-${result}`)
+        .value()
+      ;
+    }
+    else {
+      return false;
+    }
   }
 
   handleMouseUp() {
