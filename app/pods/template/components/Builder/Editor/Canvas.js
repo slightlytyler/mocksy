@@ -29,6 +29,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     this.state = {
       dragging: false,
       scaling: false,
+      marquee: false,
       ratio,
       rectDimensions: {
         width: props.dimensions.width * ratio,
@@ -100,6 +101,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
       });
     }
 
+
     this.setState({
       mouseCords: {
         x: e.pageX,
@@ -148,7 +150,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
     this.setState({
       scaling: false,
-      dragging: false
+      dragging: false,
+      marquee: false
     });
   }
 
@@ -156,6 +159,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const {
       scaling,
       dragging,
+      marquee,
       ratio,
       rectDimensions,
       rectOffset,
@@ -172,7 +176,18 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const xDiff = e.pageX - mouseCords.x;
     const yDiff = e.pageY - mouseCords.y;
 
-    if (scaling) {
+    if (marquee) {
+      const currentWidth = this.state.rectDimensions.width || 0;
+      const currentHeight = this.state.rectDimensions.height || 0;
+
+      this.setState({
+        rectDimensions: {
+          width: currentWidth + xDiff,
+          height: currentHeight + yDiff
+        }
+      });
+    }
+    else if (scaling) {
       e.preventDefault();
 
       if (scaling.indexOf('left') !== -1) {
@@ -209,13 +224,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
           }
         }));
       }
-
-      this.setState({
-        mouseCords: {
-          x: e.pageX,
-          y: e.pageY
-        }
-      });
     }
     else if (dragging) {
       e.preventDefault();
@@ -226,13 +234,34 @@ export default class TemplateBuilderEditorCanvas extends Component {
       };
 
       this.setState({
-        rectOffset: newOffset,
-        mouseCords: {
-          x: e.pageX,
-          y: e.pageY
-        }
+        rectOffset: newOffset
       });
     }
+
+    this.setState({
+      mouseCords: {
+        x: e.pageX,
+        y: e.pageY
+      }
+    });
+  }
+
+  startMarquee(e) {
+    this.setState({
+      marquee: true,
+      rectDimensions: {
+        width: 0,
+        height: 0
+      },
+      rectOffset: {
+        x: e.offsetX,
+        y: e.offsetY
+      },
+      mouseCords: {
+        x: e.pageX,
+        y: e.pageY
+      }
+    });
   }
 
   render() {
@@ -250,7 +279,18 @@ export default class TemplateBuilderEditorCanvas extends Component {
             height={containerDimensions.height}
             style={styles.surface}
           >
+            <Rectangle
+              ref="marquee"
+              x={0}
+              y={0}
+              width={containerDimensions.width}
+              height={containerDimensions.height}
+              onMouseDown={(e) => this.startMarquee(e)}
+              onMouseUp={(e) => this.handleMouseUp(e)}
+              fill="rgba(0,0,0,0)"
+            />
             <Group
+              ref="preview"
               x={rectOffset.x}
               y={rectOffset.y}
               onMouseDown={(e) => this.handleMouseDown(e)}
