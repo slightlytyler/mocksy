@@ -15,6 +15,7 @@ import colors from 'constants/colors';
 export default class TemplateBuilderEditorCanvas extends Component {
   static propTypes = {
     dimensions: PropTypes.object.isRequired,
+    backgroundDimensions: PropTypes.object.isRequired,
     containerDimensions: PropTypes.object,
     updateTemplateForeground: PropTypes.func.isRequired
   };
@@ -22,17 +23,37 @@ export default class TemplateBuilderEditorCanvas extends Component {
   constructor(props) {
     super(props);
 
+    const ratio = props.containerDimensions.width / props.backgroundDimensions.width;
+
     this.state = {
       dragging: false,
+      scaling: false,
+      ratio,
+      rectDimensions: {
+        width: props.dimensions.width * ratio,
+        height: props.dimensions.height * ratio,
+      },
+      rectOffset: {
+        x: props.dimensions.left * ratio,
+        y: props.dimensions.top * ratio,
+      },
       mouseDownCords: {
         x: 0,
         y: 0
-      },
-      offset: {
-        x: this.props.dimensions.left,
-        y: this.props.dimensions.top
       }
     };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { props } = this;
+    const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
+    const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
+
+    if (updatedContainer || updatedBackground) {
+      this.setState({
+        ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
+      });
+    }
   }
 
   componentDidMount() {
@@ -54,20 +75,20 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   handleMouseUp() {
-    const x = Math.round(this.state.offset.x);
-    const y = Math.round(this.state.offset.y);
+    const {
+      ratio,
+      rectOffset
+    } = this.state;
+    const x = Math.round(rectOffset.x / ratio);
+    const y = Math.round(rectOffset.y / ratio);
+
     this.props.updateTemplateForeground({
       left: x,
       top: y
     });
 
     this.setState({
-      dragging: false,
-
-      offset: {
-        x,
-        y
-      }
+      dragging: false
     });
   }
 
@@ -75,18 +96,16 @@ export default class TemplateBuilderEditorCanvas extends Component {
     if (this.state.dragging) {
       e.preventDefault();
 
-      const ratio = this.props.containerDimensions.width / this.props.backgroundDimensions.width;
       const { mouseCords } = this.state;
-      const xDiff = (e.pageX - mouseCords.x) / ratio;
-      const yDiff = (e.pageY - mouseCords.y) / ratio;
+      const xDiff = e.pageX - mouseCords.x;
+      const yDiff = e.pageY - mouseCords.y;
       const newOffset = {
-        x: Math.round(xDiff + this.state.offset.x),
-        y: Math.round(yDiff + this.state.offset.y)
+        x: Math.round(xDiff + this.state.rectOffset.x),
+        y: Math.round(yDiff + this.state.rectOffset.y)
       };
 
       this.setState({
-        offset: newOffset,
-
+        rectOffset: newOffset,
         mouseCords: {
           x: e.pageX,
           y: e.pageY
@@ -96,41 +115,37 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   render() {
+    const { containerDimensions } = this.props;
     const {
-      dimensions,
-      backgroundDimensions,
-      containerDimensions
-    } = this.props;
-    const ratio = containerDimensions.width / backgroundDimensions.width;
-
-    const left = dimensions.left * ratio;
-    const top = dimensions.top * ratio;
-    const width = dimensions.width * ratio;
-    const height =dimensions.height * ratio;
+      rectDimensions,
+      rectOffset
+    } = this.state;
 
     if (containerDimensions) {
       return (
-        <div
-          onMouseDown={(e) => this.handleMouseDown(e)}
-          onMouseUp={(e) => this.handleMouseUp(e)}
-        >
+        <div>
           <Surface
             width={containerDimensions.width}
             height={containerDimensions.height}
             style={styles.surface}
           >
-            <Group x={this.state.offset.x * ratio} y={this.state.offset.y * ratio}>
+            <Group
+              x={rectOffset.x}
+              y={rectOffset.y}
+              onMouseDown={(e) => this.handleMouseDown(e)}
+              onMouseUp={(e) => this.handleMouseUp(e)}
+            >
               <ClippingRectangle
                 x={0}
                 y={0}
-                width={width}
-                height={height}
+                width={rectDimensions.width}
+                height={rectDimensions.height}
               >
                 <Rectangle
                   x={0}
                   y={0}
-                  width={width}
-                  height={height}
+                  width={rectDimensions.width}
+                  height={rectDimensions.height}
                   fill={new LinearGradient([colors.pink, colors.orange])}
                   stroke={colors.white}
                   strokeWidth={4}
@@ -154,5 +169,5 @@ const styles = {
     position: 'absolute',
     left: 0,
     top: 0
-  }
+  },
 };
