@@ -29,6 +29,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const ratio = props.containerDimensions.width / props.backgroundDimensions.width;
 
     this.state = {
+      mode: 'transform',
+      navigating: false,
       dragging: false,
       scaling: false,
       marquee: false,
@@ -61,33 +63,33 @@ export default class TemplateBuilderEditorCanvas extends Component {
     this.handleZoom = this.handleZoom.bind(this);
   }
 
-  // componentWillReceiveProps(newProps) {
-  //   const { props } = this;
-  //   const updatedDimensions = props.dimensions !== newProps.dimensions;
-  //   const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
-  //   const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
-//
-  //   if (updatedBackground || updatedContainer) {
-  //     this.setState({
-  //       ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
-  //     });
-  //   }
-//
-  //   if (updatedDimensions) {
-  //     let ratio = this.state.ratio;
-//
-  //     this.setState({
-  //       rectDimensions: {
-  //         width: newProps.dimensions.width * ratio,
-  //         height: newProps.dimensions.height * ratio
-  //       },
-  //       rectOffset: {
-  //         x: newProps.dimensions.left * ratio,
-  //         y: newProps.dimensions.top * ratio
-  //       }
-  //     });
-  //   }
-  // }
+  componentWillReceiveProps(newProps) {
+    const { props } = this;
+    const updatedDimensions = props.dimensions !== newProps.dimensions;
+    const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
+    const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
+
+    if (updatedBackground || updatedContainer) {
+      this.setState({
+        ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
+      });
+    }
+
+    if (updatedDimensions) {
+      let ratio = this.state.ratio;
+
+      this.setState({
+        rectDimensions: {
+          width: newProps.dimensions.width * ratio,
+          height: newProps.dimensions.height * ratio
+        },
+        rectOffset: {
+          x: newProps.dimensions.left * ratio,
+          y: newProps.dimensions.top * ratio
+        }
+      });
+    }
+  }
 
   componentDidMount() {
     document.addEventListener('mousemove', this.handleMouseMove, false);
@@ -103,7 +105,9 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const {
       scaling,
       dragging,
-      marquee
+      marquee,
+      zoom,
+      zoomOffset
     } = this.state;
 
     if (marquee) {
@@ -118,38 +122,54 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
     this.setState({
       mouseCords: {
-        x: e.offsetX,
-        y: e.offsetY
+        x: (e.offsetX - zoomOffset.x) / zoom,
+        y: (e.offsetY - zoomOffset.y) / zoom
       }
     });
   }
 
   startMarquee(e) {
-    this.setState({
-      marquee: true,
-      rectDimensions: {
-        width: 0,
-        height: 0
-      },
-      rectOffset: {
-        x: e.offsetX,
-        y: e.offsetY
-      },
-      mouseDownCords: {
-        x: e.offsetX,
-        y: e.offsetY
-      }
-    });
+    const {
+      mode,
+      zoom,
+      zoomOffset
+    } = this.state;
+
+    if (mode === 'transform') {
+      this.setState({
+        marquee: true,
+        rectDimensions: {
+          width: 0,
+          height: 0
+        },
+        mouseDownCords: {
+          x: (e.offsetX - zoomOffset.x) / zoom,
+          y: (e.offsetY - zoomOffset.y) / zoom
+        }
+      });
+    }
+    else if (mode === 'navigate') {
+      this.setState({
+        navigating: true,
+        mouseDownCords: {
+          x: (e.offsetX - zoomOffset.x) / zoom,
+          y: (e.offsetY - zoomOffset.y) / zoom
+        }
+      });
+    }
   }
 
   handleMarquee(e) {
     e.preventDefault();
 
-    const { mouseDownCords } = this.state;
+    const {
+      mouseDownCords,
+      mouseCords
+    } = this.state;
     const startX = mouseDownCords.x;
     const startY = mouseDownCords.y;
-    const currentX = e.offsetX;
-    const currentY = e.offsetY;
+    const currentX = mouseCords.x;
+    const currentY = mouseCords.y;
 
     // First we need to calculate the direction of the marquee
     const xDirectionPositive = currentX >= startX;
