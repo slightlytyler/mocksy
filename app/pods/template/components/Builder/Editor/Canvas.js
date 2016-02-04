@@ -213,10 +213,15 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   startTransform(e) {
+    const {
+      zoom,
+      zoomOffset
+    } = this.state;
+
     const edgesClicked = this.checkEdge(
       {
-        x: e.offsetX,
-        y: e.offsetY
+        x: (e.offsetX - zoomOffset.x) / zoom,
+        y: (e.offsetY - zoomOffset.y) / zoom
       },
       this.state.rectDimensions,
       this.state.rectOffset
@@ -235,11 +240,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   checkEdge(mouseOffset, rectDimensions, rectOffset) {
+    const buffer = 5;
+
     const edges = {
-      left: mouseOffset.x - rectOffset.x <= 10,
-      right: mouseOffset.x - rectOffset.x >= rectDimensions.width - 10,
-      top: mouseOffset.y - rectOffset.y <= 10,
-      bottom: mouseOffset.y - rectOffset.y >= rectDimensions.height - 10
+      left: mouseOffset.x - rectOffset.x <= buffer,
+      right: mouseOffset.x - rectOffset.x >= rectDimensions.width - buffer,
+      top: mouseOffset.y - rectOffset.y <= buffer,
+      bottom: mouseOffset.y - rectOffset.y >= rectDimensions.height - buffer
     };
 
     if (some(edges, val => val)) {
@@ -287,6 +294,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
       scaling,
       rectDimensions,
       rectOffset,
+      zoom,
+      zoomOffset,
       mouseCords
     } = this.state;
     const {
@@ -298,8 +307,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
       y
     } = rectOffset;
 
-    const xDiff = e.offsetX - mouseCords.x;
-    const yDiff = e.offsetY - mouseCords.y;
+    const xDiff = ((e.offsetX - zoomOffset.x) / zoom) - mouseCords.x;
+    const yDiff = ((e.offsetY - zoomOffset.y) / zoom) - mouseCords.y;
 
     if (scaling.indexOf('left') !== -1) {
       if (width - xDiff >= 0) {
@@ -395,11 +404,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
     const {
       rectOffset,
+      zoom,
+      zoomOffset,
       mouseCords
     } = this.state;
 
-    const xDiff = e.offsetX - mouseCords.x;
-    const yDiff = e.offsetY - mouseCords.y;
+    const xDiff = ((e.offsetX - zoomOffset.x) / zoom) - mouseCords.x;
+    const yDiff = ((e.offsetY - zoomOffset.y) / zoom) - mouseCords.y;
 
     this.setState({
       rectOffset: {
