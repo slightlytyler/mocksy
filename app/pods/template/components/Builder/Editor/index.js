@@ -34,11 +34,8 @@ export default class TemplateBuilderEditor extends Component {
         style={styles.container}
       >
         <div style={styles.border} />
-        <img
-          src={backgroundPath}
-          style={styles.background}
-        />
         <Canvas
+          backgroundPath={backgroundPath}
           dimensions={foregroundDimensions}
           backgroundDimensions={dimensions}
           updateTemplateForeground={updateTemplateForeground}
@@ -60,14 +57,6 @@ const styles = {
     width: '100%',
     height: '100%',
     border: `2px solid ${colors.gray}`,
-  },
-
-  background: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%'
   },
 
   surface: {

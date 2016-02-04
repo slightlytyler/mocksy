@@ -6,7 +6,9 @@ import {
   Surface,
   Group,
   ClippingRectangle,
-  LinearGradient } from 'react-art';
+  LinearGradient,
+  Pattern
+} from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
 import { some, chain, pickBy, keys, merge } from 'lodash';
 
@@ -47,44 +49,54 @@ export default class TemplateBuilderEditorCanvas extends Component {
       mouseDownCords: {
         x: 0,
         y: 0
+      },
+      zoom: 1,
+      zoomOffset: {
+        x: 0,
+        y: 0
       }
     };
+
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleZoom = this.handleZoom.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    const { props } = this;
-    const updatedDimensions = props.dimensions !== newProps.dimensions;
-    const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
-    const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
-
-    if (updatedBackground || updatedContainer) {
-      this.setState({
-        ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
-      });
-    }
-
-    if (updatedDimensions) {
-      let ratio = this.state.ratio;
-
-      this.setState({
-        rectDimensions: {
-          width: newProps.dimensions.width * ratio,
-          height: newProps.dimensions.height * ratio
-        },
-        rectOffset: {
-          x: newProps.dimensions.left * ratio,
-          y: newProps.dimensions.top * ratio
-        }
-      });
-    }
-  }
+  // componentWillReceiveProps(newProps) {
+  //   const { props } = this;
+  //   const updatedDimensions = props.dimensions !== newProps.dimensions;
+  //   const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
+  //   const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
+//
+  //   if (updatedBackground || updatedContainer) {
+  //     this.setState({
+  //       ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
+  //     });
+  //   }
+//
+  //   if (updatedDimensions) {
+  //     let ratio = this.state.ratio;
+//
+  //     this.setState({
+  //       rectDimensions: {
+  //         width: newProps.dimensions.width * ratio,
+  //         height: newProps.dimensions.height * ratio
+  //       },
+  //       rectOffset: {
+  //         x: newProps.dimensions.left * ratio,
+  //         y: newProps.dimensions.top * ratio
+  //       }
+  //     });
+  //   }
+  // }
 
   componentDidMount() {
-    document.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
+    document.addEventListener('mousemove', this.handleMouseMove, false);
+    document.addEventListener('keydown', this.handleZoom, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
+    document.removeEventListener('mousemove', this.handleMouseMove, false);
+    document.removeEventListener('keydown', this.handleZoom, false);
   }
 
   handleMouseMove(e) {
@@ -377,11 +389,39 @@ export default class TemplateBuilderEditorCanvas extends Component {
     });
   }
 
+  handleZoom(e) {
+    const zoomScale = .15;
+    const zoomIn = e.keyCode === 187
+    const zoomOut = e.keyCode === 189
+
+    if (zoomIn || zoomOut) {
+      const increment = zoomIn ? zoomScale : -zoomScale;
+      const {
+        zoom,
+        zoomOffset
+      } = this.state;
+
+      const { containerDimensions } = this.props;
+      this.setState({
+        zoom: zoom + increment,
+        zoomOffset: {
+          x: zoomOffset.x - ((containerDimensions.width * increment) / 2),
+          y: zoomOffset.y - ((containerDimensions.height * increment) / 2),
+        }
+      });
+    }
+  }
+
   render() {
-    const { containerDimensions } = this.props;
+    const {
+      backgroundPath,
+      containerDimensions
+    } = this.props;
     const {
       rectDimensions,
-      rectOffset
+      rectOffset,
+      zoom,
+      zoomOffset
     } = this.state;
 
     if (containerDimensions) {
@@ -392,41 +432,54 @@ export default class TemplateBuilderEditorCanvas extends Component {
             height={containerDimensions.height}
             style={styles.surface}
           >
-            <Rectangle
-              ref="marquee"
-              x={0}
-              y={0}
-              width={containerDimensions.width}
-              height={containerDimensions.height}
-              onMouseDown={(e) => this.startMarquee(e)}
-              onMouseUp={(e) => this.finishTransform(e)}
-              fill="rgba(0,0,0,0)"
-            />
             <Group
-              ref="preview"
-              x={rectOffset.x}
-              y={rectOffset.y}
-              onMouseDown={(e) => this.startTransform(e)}
-              onMouseUp={(e) => this.finishTransform(e)}
+              ref="zoom-group"
+              x={zoomOffset.x}
+              y={zoomOffset.y}
+              scaleX={zoom}
+              scaleY={zoom}
             >
-              <ClippingRectangle
+              <Rectangle
+                width={containerDimensions.width}
+                height={containerDimensions.height}
+                fill={new Pattern(backgroundPath, containerDimensions.width , containerDimensions.height, 0, 0)}
+              />
+              <Rectangle
+                ref="marquee"
                 x={0}
                 y={0}
-                width={rectDimensions.width}
-                height={rectDimensions.height}
+                width={containerDimensions.width}
+                height={containerDimensions.height}
+                onMouseDown={(e) => this.startMarquee(e)}
+                onMouseUp={(e) => this.finishTransform(e)}
+                fill="rgba(0,0,0,0)"
+              />
+              <Group
+                ref="preview"
+                x={rectOffset.x}
+                y={rectOffset.y}
+                onMouseDown={(e) => this.startTransform(e)}
+                onMouseUp={(e) => this.finishTransform(e)}
               >
-                <Rectangle
+                <ClippingRectangle
                   x={0}
                   y={0}
                   width={rectDimensions.width}
                   height={rectDimensions.height}
-                  fill={new LinearGradient([colors.pink, colors.orange])}
-                  stroke={colors.white}
-                  strokeWidth={4}
-                  strokeDash={[9, 10]}
-                  strokeCap="square"
-                />
-              </ClippingRectangle>
+                >
+                  <Rectangle
+                    x={0}
+                    y={0}
+                    width={rectDimensions.width}
+                    height={rectDimensions.height}
+                    fill={new LinearGradient([colors.pink, colors.orange])}
+                    stroke={colors.white}
+                    strokeWidth={4}
+                    strokeDash={[9, 10]}
+                    strokeCap="square"
+                  />
+                </ClippingRectangle>
+              </Group>
             </Group>
           </Surface>
         </div>
