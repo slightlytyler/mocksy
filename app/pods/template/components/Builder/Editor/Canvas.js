@@ -180,7 +180,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     }));
   }
 
-  startEditing(e) {
+  startTransform(e) {
     const edgesClicked = this.checkEdge(
       {
         x: e.offsetX,
@@ -222,7 +222,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     }
   }
 
-  finishEditing() {
+  finishTransform() {
     const {
       ratio,
       rectDimensions,
@@ -270,41 +270,91 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const yDiff = e.offsetY - mouseCords.y;
 
     if (scaling.indexOf('left') !== -1) {
-      this.setState(merge({}, this.state, {
-        rectDimensions: {
-          width: width - xDiff
-        },
-        rectOffset: {
-          x: x + xDiff
-        }
-      }));
+      if (width - xDiff >= 0) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            width: width - xDiff
+          },
+          rectOffset: {
+            x: x + xDiff
+          }
+        }));
+      }
+      else {
+        this.setState(merge({}, this.state, {
+          scaling: this.state.scaling.map(val => val === 'left' ? 'right' : val),
+          rectDimensions: {
+            width: xDiff - width
+          },
+          rectOffset: {
+            x: x + width
+          }
+        }));
+      }
     }
-
-    if (scaling.indexOf('right') !== -1) {
-      this.setState(merge({}, this.state, {
-        rectDimensions: {
-          width: width + xDiff
-        }
-      }));
+    else if (scaling.indexOf('right') !== -1) {
+      if (width + xDiff >= 0) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            width: width + xDiff
+          }
+        }));
+      }
+      else {
+        this.setState(merge({}, this.state, {
+          scaling: this.state.scaling.map(val => val === 'right' ? 'left' : val),
+          rectDimensions: {
+            width: -(width + xDiff)
+          },
+          rectOffset: {
+            x: x + (width + xDiff)
+          }
+        }));
+      }
     }
 
     if (scaling.indexOf('top') !== -1) {
-      this.setState(merge({}, this.state, {
-        rectDimensions: {
-          height: height - yDiff
-        },
-        rectOffset: {
-          y: y + yDiff
-        }
-      }));
+      if (height - yDiff >= 0) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            height: height - yDiff
+          },
+          rectOffset: {
+            y: y + yDiff
+          }
+        }));
+      }
+      else {
+        this.setState(merge({}, this.state, {
+          scaling: this.state.scaling.map(val => val === 'top' ? 'bottom' : val),
+          rectDimensions: {
+            height: yDiff - height
+          },
+          rectOffset: {
+            y: y + height
+          }
+        }));
+      }
     }
-
-    if (scaling.indexOf('bottom') !== -1) {
-      this.setState(merge({}, this.state, {
-        rectDimensions: {
-          height: height + yDiff
-        }
-      }));
+    else if (scaling.indexOf('bottom') !== -1) {
+      if (height + yDiff >= 0) {
+        this.setState(merge({}, this.state, {
+          rectDimensions: {
+            height: height + yDiff
+          }
+        }));
+      }
+      else {
+        this.setState(merge({}, this.state, {
+          scaling: this.state.scaling.map(val => val === 'bottom' ? 'top' : val),
+          rectDimensions: {
+            height: -(height + yDiff)
+          },
+          rectOffset: {
+            y: y + (height + yDiff)
+          }
+        }));
+      }
     }
   }
 
@@ -349,15 +399,15 @@ export default class TemplateBuilderEditorCanvas extends Component {
               width={containerDimensions.width}
               height={containerDimensions.height}
               onMouseDown={(e) => this.startMarquee(e)}
-              onMouseUp={(e) => this.finishEditing(e)}
+              onMouseUp={(e) => this.finishTransform(e)}
               fill="rgba(0,0,0,0)"
             />
             <Group
               ref="preview"
               x={rectOffset.x}
               y={rectOffset.y}
-              onMouseDown={(e) => this.startEditing(e)}
-              onMouseUp={(e) => this.finishEditing(e)}
+              onMouseDown={(e) => this.startTransform(e)}
+              onMouseUp={(e) => this.finishTransform(e)}
             >
               <ClippingRectangle
                 x={0}
