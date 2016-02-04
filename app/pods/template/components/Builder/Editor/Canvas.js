@@ -64,14 +64,16 @@ export default class TemplateBuilderEditorCanvas extends Component {
     }
 
     if (updatedDimensions) {
+      let ratio = this.state.ratio;
+
       this.setState({
         rectDimensions: {
-          width: newProps.dimensions.width * this.state.ratio,
-          height: newProps.dimensions.height * this.state.ratio
+          width: newProps.dimensions.width * ratio,
+          height: newProps.dimensions.height * ratio
         },
         rectOffset: {
-          x: newProps.dimensions.left * this.state.ratio,
-          y: newProps.dimensions.top * this.state.ratio
+          x: newProps.dimensions.left * ratio,
+          y: newProps.dimensions.top * ratio
         }
       });
     }
@@ -83,81 +85,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
-  }
-
-  startEditing(e) {
-    const edgesClicked = this.checkEdge(
-      {
-        x: e.offsetX,
-        y: e.offsetY
-      },
-      this.state.rectDimensions,
-      this.state.rectOffset
-    );
-
-    if (edgesClicked) {
-      this.setState({
-        scaling: edgesClicked
-      });
-    }
-    else {
-      this.setState({
-        dragging: true
-      });
-    }
-
-    this.setState({
-      mouseCords: {
-        x: e.pageX,
-        y: e.pageY
-      }
-    });
-  }
-
-  checkEdge(mouseOffset, rectDimensions, rectOffset) {
-    const edges = {
-      left: mouseOffset.x - rectOffset.x <= 10,
-      right: mouseOffset.x - rectOffset.x >= rectDimensions.width - 10,
-      top: mouseOffset.y - rectOffset.y <= 10,
-      bottom: mouseOffset.y - rectOffset.y >= rectDimensions.height - 10
-    };
-
-    if (some(edges, val => val)) {
-      return chain(edges)
-        .pickBy(val => val)
-        .keys()
-        .value()
-      ;
-    }
-    else {
-      return false;
-    }
-  }
-
-  handleMouseUp() {
-    const {
-      ratio,
-      rectDimensions,
-      rectOffset
-    } = this.state;
-    const width = Math.round(rectDimensions.width / ratio);
-    const height = Math.round(rectDimensions.height / ratio);
-    const x = Math.round(rectOffset.x / ratio);
-    const y = Math.round(rectOffset.y / ratio);
-
-    this.props.updateTemplateForeground({
-      width,
-      height,
-      left: x,
-      top: y
-    });
-
-    this.setState({
-      scaling: false,
-      dragging: false,
-      marquee: false,
-      marqueeDirection: false
-    });
   }
 
   handleMouseMove(e) {
@@ -176,6 +103,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
     else if (dragging) {
       this.handleDrag(e)
     }
+
+    this.setState({
+      mouseCords: {
+        x: e.offsetX,
+        y: e.offsetY
+      }
+    });
   }
 
   startMarquee(e) {
@@ -188,10 +122,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
       rectOffset: {
         x: e.offsetX,
         y: e.offsetY
-      },
-      mouseCords: {
-        x: e.pageX,
-        y: e.pageY
       },
       mouseDownCords: {
         x: e.offsetX,
@@ -250,6 +180,74 @@ export default class TemplateBuilderEditorCanvas extends Component {
     }));
   }
 
+  startEditing(e) {
+    const edgesClicked = this.checkEdge(
+      {
+        x: e.offsetX,
+        y: e.offsetY
+      },
+      this.state.rectDimensions,
+      this.state.rectOffset
+    );
+
+    if (edgesClicked) {
+      this.setState({
+        scaling: edgesClicked
+      });
+    }
+    else {
+      this.setState({
+        dragging: true
+      });
+    }
+  }
+
+  checkEdge(mouseOffset, rectDimensions, rectOffset) {
+    const edges = {
+      left: mouseOffset.x - rectOffset.x <= 10,
+      right: mouseOffset.x - rectOffset.x >= rectDimensions.width - 10,
+      top: mouseOffset.y - rectOffset.y <= 10,
+      bottom: mouseOffset.y - rectOffset.y >= rectDimensions.height - 10
+    };
+
+    if (some(edges, val => val)) {
+      return chain(edges)
+        .pickBy(val => val)
+        .keys()
+        .value()
+      ;
+    }
+    else {
+      return false;
+    }
+  }
+
+  finishEditing() {
+    const {
+      ratio,
+      rectDimensions,
+      rectOffset
+    } = this.state;
+    const width = Math.round(rectDimensions.width / ratio);
+    const height = Math.round(rectDimensions.height / ratio);
+    const x = Math.round(rectOffset.x / ratio);
+    const y = Math.round(rectOffset.y / ratio);
+
+    this.props.updateTemplateForeground({
+      width,
+      height,
+      left: x,
+      top: y
+    });
+
+    this.setState({
+      scaling: false,
+      dragging: false,
+      marquee: false,
+      marqueeDirection: false
+    });
+  }
+
   handleScale(e) {
     e.preventDefault();
 
@@ -268,16 +266,16 @@ export default class TemplateBuilderEditorCanvas extends Component {
       y
     } = rectOffset;
 
-    const xDiff = e.pageX - mouseCords.x;
-    const yDiff = e.pageY - mouseCords.y;
+    const xDiff = e.offsetX - mouseCords.x;
+    const yDiff = e.offsetY - mouseCords.y;
 
     if (scaling.indexOf('left') !== -1) {
       this.setState(merge({}, this.state, {
         rectDimensions: {
-          width: Math.round(width - xDiff)
+          width: width - xDiff
         },
         rectOffset: {
-          x: Math.round(x + xDiff)
+          x: x + xDiff
         }
       }));
     }
@@ -285,7 +283,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     if (scaling.indexOf('right') !== -1) {
       this.setState(merge({}, this.state, {
         rectDimensions: {
-          width: Math.round(width + xDiff)
+          width: width + xDiff
         }
       }));
     }
@@ -293,10 +291,10 @@ export default class TemplateBuilderEditorCanvas extends Component {
     if (scaling.indexOf('top') !== -1) {
       this.setState(merge({}, this.state, {
         rectDimensions: {
-          height: Math.round(height - yDiff)
+          height: height - yDiff
         },
         rectOffset: {
-          y: Math.round(y + yDiff)
+          y: y + yDiff
         }
       }));
     }
@@ -304,17 +302,10 @@ export default class TemplateBuilderEditorCanvas extends Component {
     if (scaling.indexOf('bottom') !== -1) {
       this.setState(merge({}, this.state, {
         rectDimensions: {
-          height: Math.round(height + yDiff)
+          height: height + yDiff
         }
       }));
     }
-
-    this.setState({
-      mouseCords: {
-        x: e.pageX,
-        y: e.pageY
-      }
-    });
   }
 
   handleDrag(e) {
@@ -325,22 +316,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
       mouseCords
     } = this.state;
 
-    const xDiff = e.pageX - mouseCords.x;
-    const yDiff = e.pageY - mouseCords.y;
-
-    const newOffset = {
-      x: Math.round(rectOffset.x + xDiff),
-      y: Math.round(rectOffset.y + yDiff)
-    };
+    const xDiff = e.offsetX - mouseCords.x;
+    const yDiff = e.offsetY - mouseCords.y;
 
     this.setState({
-      rectOffset: newOffset
-    });
-
-    this.setState({
-      mouseCords: {
-        x: e.pageX,
-        y: e.pageY
+      rectOffset: {
+        x: rectOffset.x + xDiff,
+        y: rectOffset.y + yDiff
       }
     });
   }
@@ -367,7 +349,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
               width={containerDimensions.width}
               height={containerDimensions.height}
               onMouseDown={(e) => this.startMarquee(e)}
-              onMouseUp={(e) => this.handleMouseUp(e)}
+              onMouseUp={(e) => this.finishEditing(e)}
               fill="rgba(0,0,0,0)"
             />
             <Group
@@ -375,7 +357,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
               x={rectOffset.x}
               y={rectOffset.y}
               onMouseDown={(e) => this.startEditing(e)}
-              onMouseUp={(e) => this.handleMouseUp(e)}
+              onMouseUp={(e) => this.finishEditing(e)}
             >
               <ClippingRectangle
                 x={0}
