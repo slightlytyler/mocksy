@@ -101,13 +101,23 @@ export default class TemplateBuilderEditorCanvas extends Component {
     document.removeEventListener('keydown', this.handleZoom, false);
   }
 
+  zoomTransformedCoordinates(coords) {
+    const {
+      zoom,
+      zoomOffset
+    } = this.state;
+
+    return {
+      x: (coords.x - zoomOffset.x) / zoom,
+      y: (coords.y - zoomOffset.y) / zoom
+    };
+  }
+
   handleMouseMove(e) {
     const {
       scaling,
       dragging,
-      marquee,
-      zoom,
-      zoomOffset
+      marquee
     } = this.state;
 
     if (marquee) {
@@ -120,20 +130,28 @@ export default class TemplateBuilderEditorCanvas extends Component {
       this.handleDrag(e)
     }
 
+    const coords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
+
     this.setState({
       mouseCords: {
-        x: (e.offsetX - zoomOffset.x) / zoom,
-        y: (e.offsetY - zoomOffset.y) / zoom
+        x: coords.x,
+        y: coords.y
       }
     });
   }
 
   startMarquee(e) {
     const {
-      mode,
-      zoom,
-      zoomOffset
+      mode
     } = this.state;
+
+    const coords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
 
     if (mode === 'transform') {
       this.setState({
@@ -143,8 +161,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
           height: 0
         },
         mouseDownCords: {
-          x: (e.offsetX - zoomOffset.x) / zoom,
-          y: (e.offsetY - zoomOffset.y) / zoom
+          x: coords.x,
+          y: coords.y
         }
       });
     }
@@ -152,8 +170,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
       this.setState({
         navigating: true,
         mouseDownCords: {
-          x: (e.offsetX - zoomOffset.x) / zoom,
-          y: (e.offsetY - zoomOffset.y) / zoom
+          x: coords.x,
+          y: coords.y
         }
       });
     }
@@ -213,15 +231,14 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   startTransform(e) {
-    const {
-      zoom,
-      zoomOffset
-    } = this.state;
-
+    const coords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
     const edgesClicked = this.checkEdge(
       {
-        x: (e.offsetX - zoomOffset.x) / zoom,
-        y: (e.offsetY - zoomOffset.y) / zoom
+        x: coords.x,
+        y: coords.y
       },
       this.state.rectDimensions,
       this.state.rectOffset
@@ -240,6 +257,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   checkEdge(mouseOffset, rectDimensions, rectOffset) {
+    // Determines if a click on a the preview rectangle is
+    // on the edge or within buffer
     const buffer = 5;
 
     const edges = {
@@ -250,6 +269,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
     };
 
     if (some(edges, val => val)) {
+      // Returns an array of edge keys that are true for
+      // the above checks
       return chain(edges)
         .pickBy(val => val)
         .keys()
@@ -294,8 +315,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
       scaling,
       rectDimensions,
       rectOffset,
-      zoom,
-      zoomOffset,
       mouseCords
     } = this.state;
     const {
@@ -306,9 +325,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
       x,
       y
     } = rectOffset;
+    const currentMouseCoords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
 
-    const xDiff = ((e.offsetX - zoomOffset.x) / zoom) - mouseCords.x;
-    const yDiff = ((e.offsetY - zoomOffset.y) / zoom) - mouseCords.y;
+    const xDiff = currentMouseCoords.x - mouseCords.x;
+    const yDiff = currentMouseCoords.y - mouseCords.y;
 
     if (scaling.indexOf('left') !== -1) {
       if (width - xDiff >= 0) {
@@ -404,13 +427,14 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
     const {
       rectOffset,
-      zoom,
-      zoomOffset,
       mouseCords
     } = this.state;
-
-    const xDiff = ((e.offsetX - zoomOffset.x) / zoom) - mouseCords.x;
-    const yDiff = ((e.offsetY - zoomOffset.y) / zoom) - mouseCords.y;
+    const currentMouseCoords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
+    const xDiff = currentMouseCoords.x - mouseCords.x;
+    const yDiff = currentMouseCoords.y - mouseCords.y;
 
     this.setState({
       rectOffset: {
