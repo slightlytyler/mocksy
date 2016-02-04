@@ -44,11 +44,11 @@ export default class TemplateBuilderEditorCanvas extends Component {
         x: props.dimensions.left * ratio,
         y: props.dimensions.top * ratio,
       },
-      mouseCords: {
+      mouseCoords: {
         x: 0,
         y: 0
       },
-      mouseDownCords: {
+      mouseDownCoords: {
         x: 0,
         y: 0
       },
@@ -136,7 +136,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     });
 
     this.setState({
-      mouseCords: {
+      mouseCoords: {
         x: coords.x,
         y: coords.y
       }
@@ -160,7 +160,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
           width: 0,
           height: 0
         },
-        mouseDownCords: {
+        mouseDownCoords: {
           x: coords.x,
           y: coords.y
         }
@@ -169,7 +169,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     else if (mode === 'navigate') {
       this.setState({
         navigating: true,
-        mouseDownCords: {
+        mouseDownCoords: {
           x: coords.x,
           y: coords.y
         }
@@ -181,13 +181,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
     e.preventDefault();
 
     const {
-      mouseDownCords,
-      mouseCords
+      mouseDownCoords,
+      mouseCoords
     } = this.state;
-    const startX = mouseDownCords.x;
-    const startY = mouseDownCords.y;
-    const currentX = mouseCords.x;
-    const currentY = mouseCords.y;
+    const startX = mouseDownCoords.x;
+    const startY = mouseDownCoords.y;
+    const currentX = mouseCoords.x;
+    const currentY = mouseCoords.y;
 
     // First we need to calculate the direction of the marquee
     const xDirectionPositive = currentX >= startX;
@@ -315,7 +315,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
       scaling,
       rectDimensions,
       rectOffset,
-      mouseCords
+      mouseCoords
     } = this.state;
     const {
       width,
@@ -330,8 +330,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
       y: e.offsetY
     });
 
-    const xDiff = currentMouseCoords.x - mouseCords.x;
-    const yDiff = currentMouseCoords.y - mouseCords.y;
+    const xDiff = currentMouseCoords.x - mouseCoords.x;
+    const yDiff = currentMouseCoords.y - mouseCoords.y;
 
     if (scaling.indexOf('left') !== -1) {
       if (width - xDiff >= 0) {
@@ -427,14 +427,14 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
     const {
       rectOffset,
-      mouseCords
+      mouseCoords
     } = this.state;
     const currentMouseCoords = this.zoomTransformedCoordinates({
       x: e.offsetX,
       y: e.offsetY
     });
-    const xDiff = currentMouseCoords.x - mouseCords.x;
-    const yDiff = currentMouseCoords.y - mouseCords.y;
+    const xDiff = currentMouseCoords.x - mouseCoords.x;
+    const yDiff = currentMouseCoords.y - mouseCoords.y;
 
     this.setState({
       rectOffset: {
