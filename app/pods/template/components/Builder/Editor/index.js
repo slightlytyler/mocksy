@@ -5,7 +5,7 @@ import Radium from 'radium';
 
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
-import Canvas from 'pods/template/components/Builder/Editor/Canvas';
+import Surface from 'pods/template/components/Builder/Editor/Surface';
 
 @Radium
 export default class TemplateBuilderEditor extends Component {
@@ -34,7 +34,7 @@ export default class TemplateBuilderEditor extends Component {
         style={styles.container}
       >
         <div style={styles.border} />
-        <Canvas
+        <Surface
           backgroundPath={backgroundPath}
           dimensions={foregroundDimensions}
           backgroundDimensions={dimensions}
