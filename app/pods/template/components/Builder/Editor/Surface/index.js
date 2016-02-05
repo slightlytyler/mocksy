@@ -2,12 +2,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import {
-  Surface,
-  Group
-} from 'react-art';
+import { Surface } from 'react-art';
 import { merge } from 'lodash';
 
+import ZoomGroup from './ZoomGroup'
 import Background from './Background';
 import Foreground from './Foreground';
 import Canvas from './Canvas';
@@ -52,7 +50,6 @@ export default class TemplateBuilderEditorSurface extends Component {
     };
 
     this.handleMouseMove = this.handleMouseMove.bind(this);
-    this.handleZoom = this.handleZoom.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -83,12 +80,10 @@ export default class TemplateBuilderEditorSurface extends Component {
 
   componentDidMount() {
     document.addEventListener('mousemove', this.handleMouseMove, false);
-    document.addEventListener('keydown', this.handleZoom, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handleMouseMove, false);
-    document.removeEventListener('keydown', this.handleZoom, false);
   }
 
   zoomTransformCoordinates(coords) {
@@ -136,31 +131,6 @@ export default class TemplateBuilderEditorSurface extends Component {
     });
   }
 
-  handleZoom(e) {
-    const step = .15;
-    const zoomIn = e.keyCode === 187
-    const zoomOut = e.keyCode === 189
-
-    if (zoomIn || zoomOut) {
-      e.preventDefault();
-
-      const increment = zoomIn ? step : -step;
-      const {
-        zoomScale,
-        zoomOffset
-      } = this.state;
-
-      const { containerDimensions } = this.props;
-      this.setState({
-        zoomScale: zoomScale + increment,
-        zoomOffset: {
-          x: zoomOffset.x - ((containerDimensions.width * increment) / 2),
-          y: zoomOffset.y - ((containerDimensions.height * increment) / 2),
-        }
-      });
-    }
-  }
-
   render() {
     const {
       backgroundPath,
@@ -183,12 +153,11 @@ export default class TemplateBuilderEditorSurface extends Component {
           height={containerDimensions.height}
           style={styles.surface}
         >
-          <Group
-            ref="zoom-group"
-            x={zoomOffset.x}
-            y={zoomOffset.y}
-            scaleX={zoomScale}
-            scaleY={zoomScale}
+          <ZoomGroup
+            scale={zoomScale}
+            offset={zoomOffset}
+            dimensions={containerDimensions}
+            updateState={(props) => this.setState(merge({}, this.state, props))}
           >
             <Background
               imagePath={backgroundPath}
@@ -214,7 +183,7 @@ export default class TemplateBuilderEditorSurface extends Component {
               updateState={(props) => this.setState(merge({}, this.state, props))}
               finishTransform={this.finishTransform.bind(this)}
             />
-          </Group>
+          </ZoomGroup>
         </Surface>
       );
     }
