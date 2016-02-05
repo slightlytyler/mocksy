@@ -15,7 +15,7 @@ import colors from 'constants/colors';
 @Radium
 export default class TemplateBuilderEditorSurfaceForeground extends Component {
   static propTypes = {
-    transforming: PropTypes.oneOfType([
+    transform: PropTypes.oneOfType([
       PropTypes.shape({
         type: PropTypes.string.isRequired,
         args: PropTypes.array
@@ -33,7 +33,8 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
       y: PropTypes.number
     }),
     zoomTransformCoordinates: PropTypes.func.isRequired,
-    updateState: PropTypes.func.isRequired,
+    updateTransform: PropTypes.func.isRequired,
+    updateDimensions: PropTypes.func.isRequired,
     finishTransform: PropTypes.func.isRequired
   };
 
@@ -52,7 +53,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
   }
 
   handleMouseMove(e) {
-    const transformType = this.props.transforming.type;
+    const transformType = this.props.transform.type;
 
     switch (transformType) {
       case 'scaling':
@@ -67,7 +68,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
     const {
       dimensions,
       zoomTransformCoordinates,
-      updateState
+      updateTransform
     } = this.props;
     const coords = zoomTransformCoordinates({
       x: e.offsetX,
@@ -82,18 +83,14 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
     );
 
     if (edgesClicked) {
-      updateState({
-        transforming: {
-          type: 'scaling',
-          args: [edgesClicked]
-        }
+      updateTransform({
+        type: 'scaling',
+        args: [edgesClicked]
       });
     }
     else {
-      updateState({
-        transforming: {
-          type: 'dragging'
-        }
+      updateTransform({
+        type: 'dragging'
       });
     }
   }
@@ -102,13 +99,13 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
     e.preventDefault();
 
     const {
-      transforming,
+      transform,
       dimensions,
       loggedMouseCoords,
       zoomTransformCoordinates,
-      updateState
+      updateDimensions
     } = this.props;
-    const edges = transforming.args[0];
+    const edges = transform.args[0];
     const {
       width,
       height,
@@ -125,89 +122,73 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
 
     if (edges.indexOf('left') !== -1) {
       if (width - xDiff >= 0) {
-        updateState({
-          rectDimensions: {
-            width: width - xDiff,
-            x: x + xDiff
-          }
+        updateDimensions({
+          width: width - xDiff,
+          x: x + xDiff
         })
       }
       else {
-        updateState({
-          transforming: {
-            type: 'scaling',
-            args: [edges.map(val => val === 'left' ? 'right' : val)]
-          },
-          rectDimensions: {
-            width: xDiff - width,
-            x: x + width
-          }
-        })
+        updateDimensions({
+          width: xDiff - width,
+          x: x + width
+        });
+
+        updateTransform({
+          args: [edges.map(val => val === 'left' ? 'right' : val)]
+        });
       }
     }
     else if (edges.indexOf('right') !== -1) {
       if (width + xDiff >= 0) {
-        updateState({
-          rectDimensions: {
-            width: width + xDiff
-          }
+        updateDimensions({
+          width: width + xDiff
         });
       }
       else {
-        updateState({
-          transforming: {
-            type: 'scaling',
-            args: [edges.map(val => val === 'right' ? 'left' : val)]
-          },
-          rectDimensions: {
-            width: -(width + xDiff),
-            x: x + (width + xDiff)
-          }
+        updateDimensions({
+          width: -(width + xDiff),
+          x: x + (width + xDiff)
+        });
+
+        updateTransform({
+          args: [edges.map(val => val === 'right' ? 'left' : val)]
         });
       }
     }
 
     if (edges.indexOf('top') !== -1) {
       if (height - yDiff >= 0) {
-        updateState({
-          rectDimensions: {
-            height: height - yDiff,
-            y: y + yDiff
-          }
+        updateDimensions({
+          height: height - yDiff,
+          y: y + yDiff
         });
       }
       else {
-        updateState({
-          transforming: {
-            type: 'scaling',
-            args: [edges.map(val => val === 'top' ? 'bottom' : val)]
-          },
-          rectDimensions: {
-            height: yDiff - height,
-            y: y + height
-          }
+        updateDimensions({
+          height: yDiff - height,
+          y: y + height
+        });
+
+        updateTransform({
+          args: [edges.map(val => val === 'top' ? 'bottom' : val)]
         });
       }
     }
     else if (edges.indexOf('bottom') !== -1) {
       if (height + yDiff >= 0) {
-        updateState({
-          rectDimensions: {
-            height: height + yDiff
-          }
+        updateDimensions({
+          height: height + yDiff
         });
       }
       else {
-        updateState({
-          transforming: {
-            type: 'scaling',
-            args: [edges.map(val => val === 'bottom' ? 'top' : val)]
-          },
-          rectDimensions: {
-            height: -(height + yDiff),
-            y: y + (height + yDiff)
-          }
+        updateDimensions({
+          height: -(height + yDiff),
+          y: y + (height + yDiff)
         });
+
+        updateTransform({
+          args: [edges.map(val => val === 'bottom' ? 'top' : val)]
+        })
       }
     }
   }
@@ -219,7 +200,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
       dimensions,
       loggedMouseCoords,
       zoomTransformCoordinates,
-      updateState
+      updateDimensions
     } = this.props;
     const currentMouseCoords = zoomTransformCoordinates({
       x: e.offsetX,
@@ -228,11 +209,9 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
     const xDiff = currentMouseCoords.x - loggedMouseCoords.x;
     const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
 
-    updateState({
-      rectDimensions: {
-        x: dimensions.x + xDiff,
-        y: dimensions.y + yDiff
-      }
+    updateDimensions({
+      x: dimensions.x + xDiff,
+      y: dimensions.y + yDiff
     });
   }
 

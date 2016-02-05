@@ -16,7 +16,7 @@ export default class TemplateBuilderEditorSurfaceZoomGroup extends Component {
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
-    updateState: PropTypes.func.isRequired
+    updateZoom: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -46,16 +46,15 @@ export default class TemplateBuilderEditorSurfaceZoomGroup extends Component {
         scale,
         offset,
         dimensions,
-        updateState
+        updateZoom
       } = this.props;
+      const newScale = scale + increment;
+      const newOffset = {
+        x: offset.x - ((dimensions.width * increment) / 2),
+        y: offset.y - ((dimensions.height * increment) / 2),
+      }
 
-      updateState({
-        zoomScale: scale + increment,
-        zoomOffset: {
-          x: offset.x - ((dimensions.width * increment) / 2),
-          y: offset.y - ((dimensions.height * increment) / 2),
-        }
-      });
+      updateZoom(newScale, newOffset);
     }
   }
 

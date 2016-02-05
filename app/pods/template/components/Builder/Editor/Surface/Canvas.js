@@ -8,7 +8,7 @@ import Rectangle from 'react-art/shapes/rectangle';
 @Radium
 export default class TemplateBuilderEditorSurfaceCanvas extends Component {
   static propTypes = {
-    transforming: PropTypes.oneOfType([
+    transform: PropTypes.oneOfType([
       PropTypes.shape({
         type: PropTypes.string.isRequired,
         args: PropTypes.array
@@ -45,13 +45,13 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
   handleMouseMove(e) {
     const {
       mode,
-      transforming
+      transform
     } = this.props;
 
-    if (mode === 'navigate' && transforming.type === 'navigating') {
+    if (mode === 'navigate' && transform.type === 'navigating') {
       this.handleNavigation(e);
     }
-    else if (mode === 'transform' && transforming.type === 'marquee') {
+    else if (mode === 'transform' && transform.type === 'marquee') {
       this.handleMarquee(e);
     }
   }
@@ -69,22 +69,26 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
 
     if (mode === 'transform') {
       updateState({
-        transforming: {
+        currentTransform: {
           type: 'marquee'
         },
-        rectDimensions: {
+        foregroundDimensions: {
           width: 0,
           height: 0
         },
-        mouseDownCoords: coords
+        mouseCoords: {
+          start: coords
+        }
       });
     }
     else if (mode === 'navigate') {
       updateState({
-        transforming: {
+        currentTransform: {
           type: 'navigating'
         },
-        mouseDownCoords: coords
+        mouseCoords: {
+          start: coords
+        }
       });
     }
   }
@@ -108,7 +112,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
 
     // Handle x / width
     updateState({
-      rectDimensions: {
+      foregroundDimensions: {
         width: (
           xDirectionPositive
           ? currentX - startX
@@ -124,7 +128,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
 
     // Handle y / height
     updateState({
-      rectDimensions: {
+      foregroundDimensions: {
         height: (
           yDirectionPositive
           ? currentY - startY
@@ -156,9 +160,11 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
 
     updateState({
-      zoomOffset: {
-        x: zoomOffset.x + xDiff,
-        y: zoomOffset.y + yDiff
+      zoom: {
+        offset: {
+          x: zoomOffset.x + xDiff,
+          y: zoomOffset.y + yDiff
+        }
       }
     });
   }
