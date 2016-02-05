@@ -183,19 +183,32 @@ export default class TemplateBuilderEditorSurface extends Component {
               mode={mode}
               transform={currentTransform}
               dimensions={containerDimensions}
-              zoomOffset={zoom.offset}
-              zoomScale={zoom.scale}
               loggedMouseCoords={mouseCoords.current}
               mouseDownCoords={mouseCoords.start}
-              zoomTransformCoordinates={this.zoomTransformCoordinates.bind(this)}
-              updateState={(props) => this.setState(merge({}, this.state, props))}
+              zoomOffset={zoom.offset}
+              updateTransform={transform => this.updateState({
+                currentTransform: transform
+              })}
+              updateDimensions={dimensions => this.updateState({
+                foregroundDimensions: dimensions
+              })}
+              updateMouseDownCoords={coords => this.updateState({
+                mouseCoords: {
+                  start: coords
+                }
+              })}
+              updateZoomOffset={offset => this.updateState({
+                zoom: {
+                  offset
+                }
+              })}
               finishTransform={this.finishTransform.bind(this)}
+              zoomTransformCoordinates={this.zoomTransformCoordinates.bind(this)}
             />
             <Foreground
               transform={currentTransform}
               dimensions={foregroundDimensions}
               loggedMouseCoords={mouseCoords.current}
-              zoomTransformCoordinates={this.zoomTransformCoordinates.bind(this)}
               updateTransform={transform => this.updateState({
                 currentTransform: transform
               })}
@@ -203,6 +216,7 @@ export default class TemplateBuilderEditorSurface extends Component {
                 foregroundDimensions: dimensions
               })}
               finishTransform={this.finishTransform.bind(this)}
+              zoomTransformCoordinates={this.zoomTransformCoordinates.bind(this)}
             />
           </ZoomGroup>
         </Surface>

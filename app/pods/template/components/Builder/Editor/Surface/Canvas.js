@@ -8,6 +8,7 @@ import Rectangle from 'react-art/shapes/rectangle';
 @Radium
 export default class TemplateBuilderEditorSurfaceCanvas extends Component {
   static propTypes = {
+    mode: PropTypes.string.isRequired,
     transform: PropTypes.oneOfType([
       PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -23,9 +24,20 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
       x: PropTypes.number,
       y: PropTypes.number
     }),
-    zoomTransformCoordinates: PropTypes.func.isRequired,
-    updateState: PropTypes.func.isRequired,
-    finishTransform: PropTypes.func.isRequired
+    mouseDownCoords: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
+    }),
+    zoomOffset: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired
+    }),
+    updateTransform: PropTypes.func.isRequired,
+    updateDimensions: PropTypes.func.isRequired,
+    updateMouseDownCoords: PropTypes.func.isRequired,
+    updateZoomOffset: PropTypes.func.isRequired,
+    finishTransform: PropTypes.func.isRequired,
+    zoomTransformCoordinates: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -60,7 +72,9 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     const {
       mode,
       zoomTransformCoordinates,
-      updateState
+      updateTransform,
+      updateDimensions,
+      updateMouseDownCoords
     } = this.props;
     const coords = zoomTransformCoordinates({
       x: e.offsetX,
@@ -68,28 +82,23 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     });
 
     if (mode === 'transform') {
-      updateState({
-        currentTransform: {
-          type: 'marquee'
-        },
-        foregroundDimensions: {
-          width: 0,
-          height: 0
-        },
-        mouseCoords: {
-          start: coords
-        }
+      updateTransform({
+        type: 'marquee'
       });
+
+      updateDimensions({
+        width: 0,
+        height: 0
+      });
+
+       updateMouseDownCoords(coords);
     }
     else if (mode === 'navigate') {
-      updateState({
-        currentTransform: {
-          type: 'navigating'
-        },
-        mouseCoords: {
-          start: coords
-        }
+      updateTransform({
+        type: 'navigating'
       });
+
+      updateMouseDownCoords(coords);
     }
   }
 
@@ -99,7 +108,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     const {
       loggedMouseCoords,
       mouseDownCoords,
-      updateState
+      updateDimensions
     } = this.props;
     const startX = mouseDownCoords.x;
     const startY = mouseDownCoords.y;
@@ -111,35 +120,31 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     const yDirectionPositive = currentY >= startY;
 
     // Handle x / width
-    updateState({
-      foregroundDimensions: {
-        width: (
-          xDirectionPositive
-          ? currentX - startX
-          : startX - currentX
-        ),
-        x: (
-          xDirectionPositive
-          ? startX
-          : currentX
-        )
-      }
+    updateDimensions({
+      width: (
+        xDirectionPositive
+        ? currentX - startX
+        : startX - currentX
+      ),
+      x: (
+        xDirectionPositive
+        ? startX
+        : currentX
+      )
     });
 
     // Handle y / height
-    updateState({
-      foregroundDimensions: {
-        height: (
-          yDirectionPositive
-          ? currentY - startY
-          : startY - currentY
-        ),
-        y: (
-          yDirectionPositive
-          ? startY
-          : currentY
-        )
-      }
+    updateDimensions({
+      height: (
+        yDirectionPositive
+        ? currentY - startY
+        : startY - currentY
+      ),
+      y: (
+        yDirectionPositive
+        ? startY
+        : currentY
+      )
     });
   }
 
@@ -150,7 +155,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
       zoomOffset,
       loggedMouseCoords,
       zoomTransformCoordinates,
-      updateState
+      updateZoomOffset
     } = this.props;
     const currentMouseCoords = zoomTransformCoordinates({
       x: e.offsetX,
@@ -159,13 +164,9 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     const xDiff = currentMouseCoords.x - loggedMouseCoords.x;
     const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
 
-    updateState({
-      zoom: {
-        offset: {
-          x: zoomOffset.x + xDiff,
-          y: zoomOffset.y + yDiff
-        }
-      }
+    updateZoomOffset({
+      x: zoomOffset.x + xDiff,
+      y: zoomOffset.y + yDiff
     });
   }
 

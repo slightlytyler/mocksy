@@ -32,10 +32,10 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
       x: PropTypes.number,
       y: PropTypes.number
     }),
-    zoomTransformCoordinates: PropTypes.func.isRequired,
     updateTransform: PropTypes.func.isRequired,
     updateDimensions: PropTypes.func.isRequired,
-    finishTransform: PropTypes.func.isRequired
+    finishTransform: PropTypes.func.isRequired,
+    zoomTransformCoordinates: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -188,7 +188,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
 
         updateTransform({
           args: [edges.map(val => val === 'bottom' ? 'top' : val)]
-        })
+        });
       }
     }
   }
