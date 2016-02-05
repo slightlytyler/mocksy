@@ -32,7 +32,6 @@ export default class TemplateBuilderEditorCanvas extends Component {
       mode: 'transform',
       transforming: false,
       navigating: false,
-
       ratio,
       rectDimensions: {
         width: props.dimensions.width * ratio,
@@ -112,26 +111,26 @@ export default class TemplateBuilderEditorCanvas extends Component {
       transforming,
       navigating
     } = this.state;
+    const coords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
 
     if (transforming) {
-      if (transforming.type === 'marquee') {
-        this.handleMarquee(e)
-      }
-      else if (transforming.type === 'scaling') {
-        this.handleScale(e)
-      }
-      else if (transforming.type === 'dragging') {
-        this.handleDrag(e)
+      switch (transforming.type) {
+        case 'marquee':
+          this.handleMarquee(e);
+          break;
+        case 'scaling':
+          this.handleScale(e);
+          break;
+        case 'dragging':
+          this.handleDrag(e);
       }
     }
     else if (navigating) {
       this.handleNavigation(e);
     }
-
-    const coords = this.zoomTransformedCoordinates({
-      x: e.offsetX,
-      y: e.offsetY
-    });
 
     this.setState({
       mouseCoords: coords
@@ -428,13 +427,13 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   handleZoom(e) {
-    e.preventDefault();
-
     const step = .15;
     const zoomIn = e.keyCode === 187
     const zoomOut = e.keyCode === 189
 
     if (zoomIn || zoomOut) {
+      e.preventDefault();
+
       const increment = zoomIn ? step : -step;
       const {
         zoomScale,
