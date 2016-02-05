@@ -29,20 +29,16 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const ratio = props.containerDimensions.width / props.backgroundDimensions.width;
 
     this.state = {
-      mode: 'navigate',
+      mode: 'transform',
+      transforming: false,
       navigating: false,
-      dragging: false,
-      scaling: false,
-      marquee: false,
-      marqueeDirection: false,
+
       ratio,
       rectDimensions: {
         width: props.dimensions.width * ratio,
         height: props.dimensions.height * ratio,
-      },
-      rectOffset: {
         x: props.dimensions.left * ratio,
-        y: props.dimensions.top * ratio,
+        y: props.dimensions.top * ratio
       },
       mouseCoords: {
         x: 0,
@@ -52,7 +48,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
         x: 0,
         y: 0
       },
-      zoom: 1,
+      zoomScale: 1,
       zoomOffset: {
         x: 0,
         y: 0
@@ -81,9 +77,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
       this.setState({
         rectDimensions: {
           width: newProps.dimensions.width * ratio,
-          height: newProps.dimensions.height * ratio
-        },
-        rectOffset: {
+          height: newProps.dimensions.height * ratio,
           x: newProps.dimensions.left * ratio,
           y: newProps.dimensions.top * ratio
         }
@@ -103,35 +97,35 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
   zoomTransformedCoordinates(coords) {
     const {
-      zoom,
+      zoomScale,
       zoomOffset
     } = this.state;
 
     return {
-      x: (coords.x - zoomOffset.x) / zoom,
-      y: (coords.y - zoomOffset.y) / zoom
+      x: (coords.x - zoomOffset.x) / zoomScale,
+      y: (coords.y - zoomOffset.y) / zoomScale
     };
   }
 
   handleMouseMove(e) {
     const {
-      navigating,
-      scaling,
-      dragging,
-      marquee
+      transforming,
+      navigating
     } = this.state;
 
-    if (marquee) {
-      this.handleMarquee(e)
+    if (transforming) {
+      if (transforming.type === 'marquee') {
+        this.handleMarquee(e)
+      }
+      else if (transforming.type === 'scaling') {
+        this.handleScale(e)
+      }
+      else if (transforming.type === 'dragging') {
+        this.handleDrag(e)
+      }
     }
     else if (navigating) {
       this.handleNavigation(e);
-    }
-    else if (scaling) {
-      this.handleScale(e)
-    }
-    else if (dragging) {
-      this.handleDrag(e)
     }
 
     const coords = this.zoomTransformedCoordinates({
@@ -140,18 +134,12 @@ export default class TemplateBuilderEditorCanvas extends Component {
     });
 
     this.setState({
-      mouseCoords: {
-        x: coords.x,
-        y: coords.y
-      }
+      mouseCoords: coords
     });
   }
 
   startMarquee(e) {
-    const {
-      mode
-    } = this.state;
-
+    const { mode } = this.state;
     const coords = this.zoomTransformedCoordinates({
       x: e.offsetX,
       y: e.offsetY
@@ -159,24 +147,20 @@ export default class TemplateBuilderEditorCanvas extends Component {
 
     if (mode === 'transform') {
       this.setState({
-        marquee: true,
+        transforming: {
+          type: 'marquee'
+        },
         rectDimensions: {
           width: 0,
           height: 0
         },
-        mouseDownCoords: {
-          x: coords.x,
-          y: coords.y
-        }
+        mouseDownCoords: coords
       });
     }
     else if (mode === 'navigate') {
       this.setState({
         navigating: true,
-        mouseDownCoords: {
-          x: coords.x,
-          y: coords.y
-        }
+        mouseDownCoords: coords
       });
     }
   }
@@ -204,9 +188,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
           xDirectionPositive
           ? currentX - startX
           : startX - currentX
-        )
-      },
-      rectOffset: {
+        ),
         x: (
           xDirectionPositive
           ? startX
@@ -222,9 +204,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
           yDirectionPositive
           ? currentY - startY
           : startY - currentY
-        )
-      },
-      rectOffset: {
+        ),
         y: (
           yDirectionPositive
           ? startY
@@ -234,42 +214,16 @@ export default class TemplateBuilderEditorCanvas extends Component {
     }));
   }
 
-  startTransform(e) {
-    const coords = this.zoomTransformedCoordinates({
-      x: e.offsetX,
-      y: e.offsetY
-    });
-    const edgesClicked = this.checkEdge(
-      {
-        x: coords.x,
-        y: coords.y
-      },
-      this.state.rectDimensions,
-      this.state.rectOffset
-    );
-
-    if (edgesClicked) {
-      this.setState({
-        scaling: edgesClicked
-      });
-    }
-    else {
-      this.setState({
-        dragging: true
-      });
-    }
-  }
-
-  checkEdge(mouseOffset, rectDimensions, rectOffset) {
+  checkEdge(mouseOffset, rectDimensions) {
     // Determines if a click on a the preview rectangle is
     // on the edge or within buffer
     const buffer = 5;
 
     const edges = {
-      left: mouseOffset.x - rectOffset.x <= buffer,
-      right: mouseOffset.x - rectOffset.x >= rectDimensions.width - buffer,
-      top: mouseOffset.y - rectOffset.y <= buffer,
-      bottom: mouseOffset.y - rectOffset.y >= rectDimensions.height - buffer
+      left: mouseOffset.x - rectDimensions.x <= buffer,
+      right: mouseOffset.x - rectDimensions.x >= rectDimensions.width - buffer,
+      top: mouseOffset.y - rectDimensions.y <= buffer,
+      bottom: mouseOffset.y - rectDimensions.y >= rectDimensions.height - buffer
     };
 
     if (some(edges, val => val)) {
@@ -286,16 +240,45 @@ export default class TemplateBuilderEditorCanvas extends Component {
     }
   }
 
+  startTransform(e) {
+    const coords = this.zoomTransformedCoordinates({
+      x: e.offsetX,
+      y: e.offsetY
+    });
+    const edgesClicked = this.checkEdge(
+      {
+        x: coords.x,
+        y: coords.y
+      },
+      this.state.rectDimensions
+    );
+
+    if (edgesClicked) {
+      this.setState({
+        transforming: {
+          type: 'scaling',
+          args: [edgesClicked]
+        }
+      });
+    }
+    else {
+      this.setState({
+        transforming: {
+          type: 'dragging'
+        }
+      });
+    }
+  }
+
   finishTransform() {
     const {
       ratio,
-      rectDimensions,
-      rectOffset
+      rectDimensions
     } = this.state;
     const width = Math.round(rectDimensions.width / ratio);
     const height = Math.round(rectDimensions.height / ratio);
-    const x = Math.round(rectOffset.x / ratio);
-    const y = Math.round(rectOffset.y / ratio);
+    const x = Math.round(rectDimensions.x / ratio);
+    const y = Math.round(rectDimensions.y / ratio);
 
     this.props.updateTemplateForeground({
       width,
@@ -305,11 +288,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
     });
 
     this.setState({
-      navigating: false,
-      scaling: false,
-      dragging: false,
-      marquee: false,
-      marqueeDirection: false
+      transforming: false,
+      navigating: false
     });
   }
 
@@ -317,19 +297,17 @@ export default class TemplateBuilderEditorCanvas extends Component {
     e.preventDefault();
 
     const {
-      scaling,
+      transforming,
       rectDimensions,
-      rectOffset,
       mouseCoords
     } = this.state;
+    const edges = transforming.args[0];
     const {
       width,
-      height
-    } = rectDimensions;
-    const {
+      height,
       x,
       y
-    } = rectOffset;
+    } = rectDimensions;
     const currentMouseCoords = this.zoomTransformedCoordinates({
       x: e.offsetX,
       y: e.offsetY
@@ -338,30 +316,29 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const xDiff = currentMouseCoords.x - mouseCoords.x;
     const yDiff = currentMouseCoords.y - mouseCoords.y;
 
-    if (scaling.indexOf('left') !== -1) {
+    if (edges.indexOf('left') !== -1) {
       if (width - xDiff >= 0) {
         this.setState(merge({}, this.state, {
           rectDimensions: {
-            width: width - xDiff
-          },
-          rectOffset: {
+            width: width - xDiff,
             x: x + xDiff
           }
         }));
       }
       else {
         this.setState(merge({}, this.state, {
-          scaling: this.state.scaling.map(val => val === 'left' ? 'right' : val),
-          rectDimensions: {
-            width: xDiff - width
+          transforming: {
+            type: 'scaling',
+            args: [edges.map(val => val === 'left' ? 'right' : val)]
           },
-          rectOffset: {
+          rectDimensions: {
+            width: xDiff - width,
             x: x + width
           }
         }));
       }
     }
-    else if (scaling.indexOf('right') !== -1) {
+    else if (edges.indexOf('right') !== -1) {
       if (width + xDiff >= 0) {
         this.setState(merge({}, this.state, {
           rectDimensions: {
@@ -371,41 +348,41 @@ export default class TemplateBuilderEditorCanvas extends Component {
       }
       else {
         this.setState(merge({}, this.state, {
-          scaling: this.state.scaling.map(val => val === 'right' ? 'left' : val),
-          rectDimensions: {
-            width: -(width + xDiff)
+          transforming: {
+            type: 'scaling',
+            args: [edges.map(val => val === 'right' ? 'left' : val)]
           },
-          rectOffset: {
+          rectDimensions: {
+            width: -(width + xDiff),
             x: x + (width + xDiff)
           }
         }));
       }
     }
 
-    if (scaling.indexOf('top') !== -1) {
+    if (edges.indexOf('top') !== -1) {
       if (height - yDiff >= 0) {
         this.setState(merge({}, this.state, {
           rectDimensions: {
-            height: height - yDiff
-          },
-          rectOffset: {
+            height: height - yDiff,
             y: y + yDiff
           }
         }));
       }
       else {
         this.setState(merge({}, this.state, {
-          scaling: this.state.scaling.map(val => val === 'top' ? 'bottom' : val),
-          rectDimensions: {
-            height: yDiff - height
+          transforming: {
+            type: 'scaling',
+            args: [edges.map(val => val === 'top' ? 'bottom' : val)]
           },
-          rectOffset: {
+          rectDimensions: {
+            height: yDiff - height,
             y: y + height
           }
         }));
       }
     }
-    else if (scaling.indexOf('bottom') !== -1) {
+    else if (edges.indexOf('bottom') !== -1) {
       if (height + yDiff >= 0) {
         this.setState(merge({}, this.state, {
           rectDimensions: {
@@ -415,11 +392,12 @@ export default class TemplateBuilderEditorCanvas extends Component {
       }
       else {
         this.setState(merge({}, this.state, {
-          scaling: this.state.scaling.map(val => val === 'bottom' ? 'top' : val),
-          rectDimensions: {
-            height: -(height + yDiff)
+          transforming: {
+            type: 'scaling',
+            args: [edges.map(val => val === 'bottom' ? 'top' : val)]
           },
-          rectOffset: {
+          rectDimensions: {
+            height: -(height + yDiff),
             y: y + (height + yDiff)
           }
         }));
@@ -431,7 +409,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     e.preventDefault();
 
     const {
-      rectOffset,
+      rectDimensions,
       mouseCoords
     } = this.state;
     const currentMouseCoords = this.zoomTransformedCoordinates({
@@ -441,29 +419,31 @@ export default class TemplateBuilderEditorCanvas extends Component {
     const xDiff = currentMouseCoords.x - mouseCoords.x;
     const yDiff = currentMouseCoords.y - mouseCoords.y;
 
-    this.setState({
-      rectOffset: {
-        x: rectOffset.x + xDiff,
-        y: rectOffset.y + yDiff
+    this.setState(merge({}, this.state, {
+      rectDimensions: {
+        x: rectDimensions.x + xDiff,
+        y: rectDimensions.y + yDiff
       }
-    });
+    }));
   }
 
   handleZoom(e) {
-    const zoomScale = .15;
+    e.preventDefault();
+
+    const step = .15;
     const zoomIn = e.keyCode === 187
     const zoomOut = e.keyCode === 189
 
     if (zoomIn || zoomOut) {
-      const increment = zoomIn ? zoomScale : -zoomScale;
+      const increment = zoomIn ? step : -step;
       const {
-        zoom,
+        zoomScale,
         zoomOffset
       } = this.state;
 
       const { containerDimensions } = this.props;
       this.setState({
-        zoom: zoom + increment,
+        zoomScale: zoomScale + increment,
         zoomOffset: {
           x: zoomOffset.x - ((containerDimensions.width * increment) / 2),
           y: zoomOffset.y - ((containerDimensions.height * increment) / 2),
@@ -473,6 +453,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
   }
 
   handleNavigation(e) {
+    e.preventDefault();
+
     const {
       zoomOffset,
       mouseCoords
@@ -499,8 +481,7 @@ export default class TemplateBuilderEditorCanvas extends Component {
     } = this.props;
     const {
       rectDimensions,
-      rectOffset,
-      zoom,
+      zoomScale,
       zoomOffset
     } = this.state;
 
@@ -516,8 +497,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
               ref="zoom-group"
               x={zoomOffset.x}
               y={zoomOffset.y}
-              scaleX={zoom}
-              scaleY={zoom}
+              scaleX={zoomScale}
+              scaleY={zoomScale}
             >
               <Rectangle
                 width={containerDimensions.width}
@@ -536,8 +517,8 @@ export default class TemplateBuilderEditorCanvas extends Component {
               />
               <Group
                 ref="preview"
-                x={rectOffset.x}
-                y={rectOffset.y}
+                x={rectDimensions.x}
+                y={rectDimensions.y}
                 onMouseDown={(e) => this.startTransform(e)}
                 onMouseUp={(e) => this.finishTransform(e)}
               >
