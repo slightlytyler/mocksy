@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
+import { merge } from 'lodash';
 
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
@@ -16,6 +17,30 @@ export default class TemplateBuilderEditor extends Component {
     canvasDimensions: PropTypes.object.isRequired,
     updateTemplateForeground: PropTypes.func.isRequired
   };
+
+  state = {
+    mode: 'transform',
+    currentTransform: false,
+    foregroundDimensions: {
+      width: this.props.foregroundDimensions.width,
+      height: this.props.foregroundDimensions.height,
+      x: this.props.foregroundDimensions.left,
+      y: this.props.foregroundDimensions.top
+    },
+    zoom: {
+      scale: 1,
+      offset: {
+        x: 0,
+        y: 0
+      }
+    }
+  };
+
+  updateState(props) {
+    this.setState(
+      merge({}, this.state, props)
+    );
+  }
 
   render() {
     const {
@@ -35,6 +60,8 @@ export default class TemplateBuilderEditor extends Component {
       >
         <div style={styles.border} />
         <Surface
+          editorState={this.state}
+          updateEditorState={this.updateState.bind(this)}
           backgroundPath={backgroundPath}
           dimensions={foregroundDimensions}
           backgroundDimensions={dimensions}

@@ -28,6 +28,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
       width: PropTypes.number,
       height: PropTypes.number
     }),
+    ratio: PropTypes.number.isRequired,
     loggedMouseCoords: PropTypes.shape({
       x: PropTypes.number,
       y: PropTypes.number
@@ -67,6 +68,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
   startTransform(e) {
     const {
       dimensions,
+      ratio,
       zoomTransformCoordinates,
       updateTransform
     } = this.props;
@@ -79,7 +81,8 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
         x: coords.x,
         y: coords.y
       },
-      dimensions
+      dimensions,
+      ratio
     );
 
     if (edgesClicked) {
@@ -101,6 +104,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
     const {
       transform,
       dimensions,
+      ratio,
       loggedMouseCoords,
       zoomTransformCoordinates,
       updateDimensions
@@ -117,8 +121,8 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
       y: e.offsetY
     });
 
-    const xDiff = currentMouseCoords.x - loggedMouseCoords.x;
-    const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
+    const xDiff = (currentMouseCoords.x - loggedMouseCoords.x) / ratio;
+    const yDiff = (currentMouseCoords.y - loggedMouseCoords.y) / ratio;
 
     if (edges.indexOf('left') !== -1) {
       if (width - xDiff >= 0) {
@@ -198,6 +202,7 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
 
     const {
       dimensions,
+      ratio,
       loggedMouseCoords,
       zoomTransformCoordinates,
       updateDimensions
@@ -206,8 +211,8 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
       x: e.offsetX,
       y: e.offsetY
     });
-    const xDiff = currentMouseCoords.x - loggedMouseCoords.x;
-    const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
+    const xDiff = (currentMouseCoords.x - loggedMouseCoords.x) / ratio;
+    const yDiff = (currentMouseCoords.y - loggedMouseCoords.y) / ratio;
 
     updateDimensions({
       x: dimensions.x + xDiff,
@@ -215,16 +220,16 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
     });
   }
 
-  checkEdge(mouseCoords, dimensions) {
+  checkEdge(mouseCoords, dimensions, ratio) {
     // Determines if a click on a the preview rectangle is
     // on the edge or within buffer
-    const buffer = 5;
+    const buffer = 5 / ratio;
 
     const edges = {
-      left: mouseCoords.x - dimensions.x <= buffer,
-      right: mouseCoords.x - dimensions.x >= dimensions.width - buffer,
-      top: mouseCoords.y - dimensions.y <= buffer,
-      bottom: mouseCoords.y - dimensions.y >= dimensions.height - buffer
+      left: (mouseCoords.x / ratio) - dimensions.x <= buffer,
+      right: (mouseCoords.x / ratio) - dimensions.x >= dimensions.width - buffer,
+      top: (mouseCoords.y / ratio) - dimensions.y <= buffer,
+      bottom: (mouseCoords.y / ratio) - dimensions.y >= dimensions.height - buffer
     };
 
     if (some(edges, val => val)) {
@@ -244,27 +249,28 @@ export default class TemplateBuilderEditorSurfaceForeground extends Component {
   render() {
     const {
       dimensions,
+      ratio,
       finishTransform
     } = this.props;
 
     return (
       <Group
-        x={dimensions.x}
-        y={dimensions.y}
+        x={dimensions.x * ratio}
+        y={dimensions.y * ratio}
         onMouseDown={(e) => this.startTransform(e)}
         onMouseUp={finishTransform}
       >
         <ClippingRectangle
           x={0}
           y={0}
-          width={dimensions.width}
-          height={dimensions.height}
+          width={dimensions.width * ratio}
+          height={dimensions.height * ratio}
         >
           <Rectangle
             x={0}
             y={0}
-            width={dimensions.width}
-            height={dimensions.height}
+            width={dimensions.width * ratio}
+            height={dimensions.height * ratio}
             fill={new LinearGradient([colors.pink, colors.orange])}
             stroke={colors.white}
             strokeWidth={4}

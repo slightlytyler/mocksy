@@ -13,6 +13,9 @@ import Canvas from './Canvas';
 @Radium
 export default class TemplateBuilderEditorSurface extends Component {
   static propTypes = {
+    editorState: PropTypes.object.isRequired,
+    updateEditorState: PropTypes.func.isRequired,
+    backgroundPath: PropTypes.string.isRequired,
     dimensions: PropTypes.object.isRequired,
     backgroundDimensions: PropTypes.object.isRequired,
     containerDimensions: PropTypes.object,
@@ -25,15 +28,7 @@ export default class TemplateBuilderEditorSurface extends Component {
     const ratio = props.containerDimensions.width / props.backgroundDimensions.width;
 
     this.state = {
-      mode: 'transform',
-      currentTransform: false,
       ratio,
-      foregroundDimensions: {
-        width: props.dimensions.width * ratio,
-        height: props.dimensions.height * ratio,
-        x: props.dimensions.left * ratio,
-        y: props.dimensions.top * ratio
-      },
       mouseCoords: {
         start: {
           x: 0,
@@ -41,13 +36,6 @@ export default class TemplateBuilderEditorSurface extends Component {
         },
 
         current: {
-          x: 0,
-          y: 0
-        }
-      },
-      zoom: {
-        scale: 1,
-        offset: {
           x: 0,
           y: 0
         }
@@ -63,50 +51,12 @@ export default class TemplateBuilderEditorSurface extends Component {
     );
   }
 
-  componentWillReceiveProps(newProps) {
-    const { props } = this;
-    const updatedDimensions = props.dimensions !== newProps.dimensions;
-    const updatedBackground = props.backgroundDimensions !== newProps.backgroundDimensions;
-    const updatedContainer = props.containerDimensions !== newProps.containerDimensions;
-
-    if (updatedBackground || updatedContainer) {
-      this.setState({
-        ratio: newProps.containerDimensions.width / newProps.backgroundDimensions.width
-      });
-    }
-
-    if (updatedDimensions) {
-      let ratio = this.state.ratio;
-
-      this.setState({
-        foregroundDimensions: {
-          width: newProps.dimensions.width * ratio,
-          height: newProps.dimensions.height * ratio,
-          x: newProps.dimensions.left * ratio,
-          y: newProps.dimensions.top * ratio
-        }
-      });
-    }
-  }
-
   componentDidMount() {
     document.addEventListener('mousemove', this.handleMouseMove, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handleMouseMove, false);
-  }
-
-  zoomTransformCoordinates(coords) {
-    const {
-      scale,
-      offset
-    } = this.state.zoom;
-
-    return {
-      x: (coords.x - offset.x) / scale,
-      y: (coords.y - offset.y) / scale
-    };
   }
 
   handleMouseMove(e) {
@@ -122,15 +72,26 @@ export default class TemplateBuilderEditorSurface extends Component {
     });
   }
 
-  finishTransform() {
+  zoomTransformCoordinates(coords) {
     const {
-      ratio,
-      foregroundDimensions
-    } = this.state;
-    const width = Math.round(foregroundDimensions.width / ratio);
-    const height = Math.round(foregroundDimensions.height / ratio);
-    const x = Math.round(foregroundDimensions.x / ratio);
-    const y = Math.round(foregroundDimensions.y / ratio);
+      scale,
+      offset
+    } = this.props.editorState.zoom;
+
+    return {
+      x: (coords.x - offset.x) / scale,
+      y: (coords.y - offset.y) / scale
+    };
+  }
+
+  finishTransform() {
+    const { ratio } = this.state;
+    const {
+      width,
+      height,
+      x,
+      y
+    } = this.props.editorState.foregroundDimensions;
 
     this.props.updateTemplateForeground({
       width,
@@ -139,13 +100,15 @@ export default class TemplateBuilderEditorSurface extends Component {
       top: y
     });
 
-    this.setState({
+    this.props.updateEditorState({
       currentTransform: false
     });
   }
 
   render() {
     const {
+      editorState,
+      updateEditorState,
       backgroundPath,
       containerDimensions
     } = this.props;
@@ -153,8 +116,11 @@ export default class TemplateBuilderEditorSurface extends Component {
       mode,
       currentTransform,
       foregroundDimensions,
-      mouseCoords,
       zoom
+    } = editorState;
+    const {
+      ratio,
+      mouseCoords
     } = this.state;
 
     if (containerDimensions) {
@@ -208,11 +174,12 @@ export default class TemplateBuilderEditorSurface extends Component {
             <Foreground
               transform={currentTransform}
               dimensions={foregroundDimensions}
+              ratio={ratio}
               loggedMouseCoords={mouseCoords.current}
-              updateTransform={transform => this.updateState({
+              updateTransform={transform => updateEditorState({
                 currentTransform: transform
               })}
-              updateDimensions={dimensions => this.updateState({
+              updateDimensions={dimensions => updateEditorState({
                 foregroundDimensions: dimensions
               })}
               finishTransform={this.finishTransform.bind(this)}
