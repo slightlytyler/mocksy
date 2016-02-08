@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import { merge } from 'lodash';
+import { merge, mapValues } from 'lodash';
 
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
@@ -42,18 +42,22 @@ export default class TemplateBuilderEditor extends Component {
     );
   }
 
+  updateTemplateForeground(props) {
+    this.props.updateTemplateForeground(
+      mapValues(props, prop => Math.round(prop))
+    );
+  }
+
   render() {
     const {
       backgroundPath,
       dimensions,
       foregroundDimensions,
-      canvasDimensions,
-      updateTemplateForeground
+      canvasDimensions
     } = this.props;
 
     return (
       <AspectContainer
-        ref="container"
         dimensions={dimensions}
         canvasDimensions={canvasDimensions}
         style={styles.container}
@@ -65,7 +69,7 @@ export default class TemplateBuilderEditor extends Component {
           backgroundPath={backgroundPath}
           dimensions={foregroundDimensions}
           backgroundDimensions={dimensions}
-          updateTemplateForeground={updateTemplateForeground}
+          updateTemplateForeground={this.updateTemplateForeground.bind(this)}
         />
       </AspectContainer>
     )
