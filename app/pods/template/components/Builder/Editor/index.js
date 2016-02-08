@@ -6,7 +6,7 @@ import { merge, mapValues } from 'lodash';
 
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
-import Surface from 'pods/template/components/Builder/Editor/Surface';
+import ArtBoard from './ArtBoard';
 
 @Radium
 export default class TemplateBuilderEditor extends Component {
@@ -63,7 +63,7 @@ export default class TemplateBuilderEditor extends Component {
         style={styles.container}
       >
         <div style={styles.border} />
-        <Surface
+        <ArtBoard
           editorState={this.state}
           updateEditorState={this.updateState.bind(this)}
           backgroundPath={backgroundPath}

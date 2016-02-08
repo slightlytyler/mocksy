@@ -15,6 +15,7 @@ const {
   UPDATE_NEW_TEMPLATE,
   CLEAR_NEW_TEMPLATE,
   SET_CURRENT_TEMPLATE,
+  UPDATE_TEMPLATE_EDITOR
 } = actionTypes;
 
 export function addTemplate(callback) {
