@@ -8,7 +8,7 @@ import { merge } from 'lodash';
 import ZoomGroup from './ZoomGroup'
 import Background from './Background';
 import Foreground from './Foreground';
-import Canvas from './Canvas';
+import ArtBoard from './ArtBoard';
 
 @Radium
 export default class TemplateBuilderEditorSurface extends Component {
@@ -145,7 +145,7 @@ export default class TemplateBuilderEditorSurface extends Component {
               imagePath={backgroundPath}
               dimensions={containerDimensions}
             />
-            <Canvas
+            <ArtBoard
               mode={mode}
               transform={currentTransform}
               dimensions={containerDimensions}

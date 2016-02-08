@@ -1,5 +1,4 @@
 'use strict'
-// templates need to fix bluprint...
 
 import { routeActions } from 'react-router-redux';
 import shortId from 'shortid';

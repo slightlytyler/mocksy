@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Editor from 'pods/template/components/Builder/Editor';
+import Editor from 'pods/template/components/Builder/Foreground/Editor';
 
 @Radium
 export default class TemplateBuilderForegroundContent extends Component {

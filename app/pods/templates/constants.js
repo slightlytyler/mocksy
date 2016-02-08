@@ -1,5 +1,4 @@
 'use strict'
-// templates need to fix bluprint...
 
 export const actionTypes = {
   ADD_TEMPLATE: 'ADD_TEMPLATE',
