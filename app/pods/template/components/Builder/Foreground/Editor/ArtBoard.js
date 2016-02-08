@@ -6,7 +6,7 @@ import Radium from 'radium';
 import Rectangle from 'react-art/shapes/rectangle';
 
 @Radium
-export default class TemplateBuilderEditorSurfaceCanvas extends Component {
+export default class TemplateBuilderForegroundEditorArtBoard extends Component {
   static propTypes = {
     mode: PropTypes.string.isRequired,
     transform: PropTypes.oneOfType([
@@ -38,12 +38,6 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     updateZoomOffset: PropTypes.func.isRequired,
     finishTransform: PropTypes.func.isRequired,
     zoomTransformCoordinates: PropTypes.func.isRequired
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +48,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     document.removeEventListener('mousemove', this.handleMouseMove, false);
   }
 
-  handleMouseMove(e) {
+  handleMouseMove = e => {
     const {
       mode,
       transform
@@ -68,7 +62,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     }
   }
 
-  startTransform(e) {
+  startTransform = e => {
     const {
       mode,
       zoomTransformCoordinates,
@@ -81,6 +75,8 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
       y: e.offsetY
     });
 
+    updateMouseDownCoords(coords);
+
     if (mode === 'transform') {
       updateTransform({
         type: 'marquee'
@@ -90,15 +86,11 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
         width: 0,
         height: 0
       });
-
-       updateMouseDownCoords(coords);
     }
     else if (mode === 'navigate') {
       updateTransform({
         type: 'navigating'
       });
-
-      updateMouseDownCoords(coords);
     }
   }
 
@@ -106,6 +98,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     e.preventDefault();
 
     const {
+      ratio,
       loggedMouseCoords,
       mouseDownCoords,
       updateDimensions
@@ -123,13 +116,13 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     updateDimensions({
       width: (
         xDirectionPositive
-        ? currentX - startX
-        : startX - currentX
+        ? (currentX - startX) / ratio
+        : (startX - currentX) / ratio
       ),
       x: (
         xDirectionPositive
-        ? startX
-        : currentX
+        ? startX / ratio
+        : currentX / ratio
       )
     });
 
@@ -137,13 +130,13 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
     updateDimensions({
       height: (
         yDirectionPositive
-        ? currentY - startY
-        : startY - currentY
+        ? (currentY - startY) / ratio
+        : (startY - currentY) / ratio
       ),
       y: (
         yDirectionPositive
-        ? startY
-        : currentY
+        ? startY / ratio
+        : currentY / ratio
       )
     });
   }
@@ -171,6 +164,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
   }
 
   render() {
+    const { startTransform } = this;
     const {
       dimensions,
       finishTransform
@@ -182,7 +176,7 @@ export default class TemplateBuilderEditorSurfaceCanvas extends Component {
         y={0}
         width={dimensions.width}
         height={dimensions.height}
-        onMouseDown={(e) => this.startTransform(e)}
+        onMouseDown={startTransform}
         onMouseUp={finishTransform}
         fill="rgba(0,0,0,0)"
       />

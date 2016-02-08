@@ -9,24 +9,18 @@ import AspectContainer from 'components/AspectContainer';
 import Canvas from './Canvas';
 
 @Radium
-export default class TemplateBuilderEditor extends Component {
+export default class TemplateBuilderForegroundEditor extends Component {
   static propTypes = {
-    backgroundPath: PropTypes.string.isRequired,
-    dimensions: PropTypes.object.isRequired,
     foregroundDimensions: PropTypes.object.isRequired,
+    backgroundDimensions: PropTypes.object.isRequired,
     canvasDimensions: PropTypes.object.isRequired,
+    backgroundImagePath: PropTypes.string.isRequired,
     updateTemplateForeground: PropTypes.func.isRequired
-  };
+  }
 
   state = {
     mode: 'transform',
     currentTransform: false,
-    foregroundDimensions: {
-      width: this.props.foregroundDimensions.width,
-      height: this.props.foregroundDimensions.height,
-      x: this.props.foregroundDimensions.left,
-      y: this.props.foregroundDimensions.top
-    },
     zoom: {
       scale: 1,
       offset: {
@@ -34,15 +28,15 @@ export default class TemplateBuilderEditor extends Component {
         y: 0
       }
     }
-  };
+  }
 
-  updateState(props) {
+  updateState = props => {
     this.setState(
       merge({}, this.state, props)
     );
   }
 
-  updateTemplateForeground(props) {
+  updateTemplateForeground = props => {
     this.props.updateTemplateForeground(
       mapValues(props, prop => Math.round(prop))
     );
@@ -50,26 +44,30 @@ export default class TemplateBuilderEditor extends Component {
 
   render() {
     const {
-      backgroundPath,
-      dimensions,
+      state,
+      updateState,
+      updateTemplateForeground
+    } = this;
+    const {
       foregroundDimensions,
-      canvasDimensions
+      backgroundDimensions,
+      canvasDimensions,
+      backgroundImagePath
     } = this.props;
 
     return (
       <AspectContainer
-        dimensions={dimensions}
+        dimensions={backgroundDimensions}
         canvasDimensions={canvasDimensions}
-        style={styles.container}
       >
         <div style={styles.border} />
         <Canvas
-          editorState={this.state}
-          updateEditorState={this.updateState.bind(this)}
-          backgroundPath={backgroundPath}
-          dimensions={foregroundDimensions}
-          backgroundDimensions={dimensions}
-          updateTemplateForeground={this.updateTemplateForeground.bind(this)}
+          editorState={state}
+          updateEditorState={updateState}
+          foregroundDimensions={foregroundDimensions}
+          backgroundDimensions={backgroundDimensions}
+          backgroundPath={backgroundImagePath}
+          updateTemplateForeground={updateTemplateForeground}
         />
       </AspectContainer>
     )
@@ -77,9 +75,6 @@ export default class TemplateBuilderEditor extends Component {
 }
 
 const styles = {
-  container: {
-  },
-
   border: {
     boxSizing: 'content-box',
     position: 'absolute',
@@ -88,11 +83,5 @@ const styles = {
     width: '100%',
     height: '100%',
     border: `2px solid ${colors.gray}`,
-  },
-
-  surface: {
-    position: 'absolute',
-    left: 0,
-    top: 0
   }
 };

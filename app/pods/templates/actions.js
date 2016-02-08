@@ -13,8 +13,7 @@ const {
   REMOVE_TEMPLATE,
   UPDATE_NEW_TEMPLATE,
   CLEAR_NEW_TEMPLATE,
-  SET_CURRENT_TEMPLATE,
-  UPDATE_TEMPLATE_EDITOR
+  SET_CURRENT_TEMPLATE
 } = actionTypes;
 
 export function addTemplate(callback) {

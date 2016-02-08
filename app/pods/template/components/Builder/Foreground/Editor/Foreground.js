@@ -13,7 +13,7 @@ import { some, chain, pickBy, keys } from 'lodash';
 import colors from 'constants/colors';
 
 @Radium
-export default class TemplateBuilderEditorSurfaceForeground extends Component {
+export default class TemplateBuilderForegroundEditorForeground extends Component {
   static propTypes = {
     transform: PropTypes.oneOfType([
       PropTypes.shape({

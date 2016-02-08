@@ -11,44 +11,30 @@ import Foreground from './Foreground';
 import ArtBoard from './ArtBoard';
 
 @Radium
-export default class TemplateBuilderEditorSurface extends Component {
+export default class TemplateBuilderForegroundEditorCanvas extends Component {
   static propTypes = {
     editorState: PropTypes.object.isRequired,
     updateEditorState: PropTypes.func.isRequired,
-    backgroundPath: PropTypes.string.isRequired,
-    dimensions: PropTypes.object.isRequired,
+    foregroundDimensions: PropTypes.object.isRequired,
     backgroundDimensions: PropTypes.object.isRequired,
     containerDimensions: PropTypes.object,
+    backgroundPath: PropTypes.string.isRequired,
     updateTemplateForeground: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
+  state = {
+    ratio: this.props.containerDimensions.width / this.props.backgroundDimensions.width,
+    mouseCoords: {
+      start: {
+        x: 0,
+        y: 0
+      },
 
-    const ratio = props.containerDimensions.width / props.backgroundDimensions.width;
-
-    this.state = {
-      ratio,
-      mouseCoords: {
-        start: {
-          x: 0,
-          y: 0
-        },
-
-        current: {
-          x: 0,
-          y: 0
-        }
+      current: {
+        x: 0,
+        y: 0
       }
-    };
-
-    this.handleMouseMove = this.handleMouseMove.bind(this);
-  }
-
-  updateState(props) {
-    this.setState(
-      merge({}, this.state, props)
-    );
+    }
   }
 
   componentDidMount() {
@@ -59,7 +45,7 @@ export default class TemplateBuilderEditorSurface extends Component {
     document.removeEventListener('mousemove', this.handleMouseMove, false);
   }
 
-  handleMouseMove(e) {
+  handleMouseMove = e => {
     const coords = this.zoomTransformCoordinates({
       x: e.offsetX,
       y: e.offsetY
@@ -72,7 +58,13 @@ export default class TemplateBuilderEditorSurface extends Component {
     });
   }
 
-  zoomTransformCoordinates(coords) {
+  updateState = props => {
+    this.setState(
+      merge({}, this.state, props)
+    );
+  }
+
+  zoomTransformCoordinates = coords => {
     const {
       scale,
       offset
@@ -84,22 +76,7 @@ export default class TemplateBuilderEditorSurface extends Component {
     };
   }
 
-  finishTransform() {
-    const { ratio } = this.state;
-    const {
-      width,
-      height,
-      x,
-      y
-    } = this.props.editorState.foregroundDimensions;
-
-    this.props.updateTemplateForeground({
-      width,
-      height,
-      left: x,
-      top: y
-    });
-
+  finishTransform = () => {
     this.props.updateEditorState({
       currentTransform: false
     });
@@ -107,15 +84,22 @@ export default class TemplateBuilderEditorSurface extends Component {
 
   render() {
     const {
+      state,
+      updateState,
+      zoomTransformCoordinates,
+      finishTransform
+    } = this;
+    const {
       editorState,
       updateEditorState,
+      foregroundDimensions,
+      containerDimensions,
       backgroundPath,
-      containerDimensions
+      updateTemplateForeground
     } = this.props;
     const {
       mode,
       currentTransform,
-      foregroundDimensions,
       zoom
     } = editorState;
     const {
@@ -134,7 +118,7 @@ export default class TemplateBuilderEditorSurface extends Component {
             scale={zoom.scale}
             offset={zoom.offset}
             dimensions={containerDimensions}
-            updateZoom={(scale, offset) => this.setState(merge({}, this.state, {
+            updateZoom={(scale, offset) => updateEditorState(merge({}, state, {
               zoom: {
                 scale,
                 offset
@@ -149,27 +133,26 @@ export default class TemplateBuilderEditorSurface extends Component {
               mode={mode}
               transform={currentTransform}
               dimensions={containerDimensions}
+              ratio={ratio}
               loggedMouseCoords={mouseCoords.current}
               mouseDownCoords={mouseCoords.start}
               zoomOffset={zoom.offset}
-              updateTransform={transform => this.updateState({
+              updateTransform={transform => updateEditorState({
                 currentTransform: transform
               })}
-              updateDimensions={dimensions => this.updateState({
-                foregroundDimensions: dimensions
-              })}
-              updateMouseDownCoords={coords => this.updateState({
+              updateDimensions={updateTemplateForeground}
+              updateMouseDownCoords={coords => updateState({
                 mouseCoords: {
                   start: coords
                 }
               })}
-              updateZoomOffset={offset => this.updateState({
+              updateZoomOffset={offset => updateEditorState({
                 zoom: {
                   offset
                 }
               })}
-              finishTransform={this.finishTransform.bind(this)}
-              zoomTransformCoordinates={this.zoomTransformCoordinates.bind(this)}
+              finishTransform={finishTransform}
+              zoomTransformCoordinates={zoomTransformCoordinates}
             />
             <Foreground
               transform={currentTransform}
@@ -179,11 +162,9 @@ export default class TemplateBuilderEditorSurface extends Component {
               updateTransform={transform => updateEditorState({
                 currentTransform: transform
               })}
-              updateDimensions={dimensions => updateEditorState({
-                foregroundDimensions: dimensions
-              })}
-              finishTransform={this.finishTransform.bind(this)}
-              zoomTransformCoordinates={this.zoomTransformCoordinates.bind(this)}
+              updateDimensions={updateTemplateForeground}
+              finishTransform={finishTransform}
+              zoomTransformCoordinates={zoomTransformCoordinates}
             />
           </ZoomGroup>
         </Surface>

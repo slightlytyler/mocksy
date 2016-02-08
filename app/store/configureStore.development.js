@@ -25,7 +25,8 @@ const engineComposers = [
 const engine = compose(...engineComposers)(createEngine('mocksy'));
 const storageMiddleware = storage.createMiddleware(engine, [
   UPDATE_LOCATION,
-  TRANSITION
+  TRANSITION,
+  'UPDATE_NEW_TEMPLATE'
 ]);
 const load = storage.createLoader(engine);
 

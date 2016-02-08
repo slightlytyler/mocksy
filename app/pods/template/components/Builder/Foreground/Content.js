@@ -8,21 +8,20 @@ import Editor from 'pods/template/components/Builder/Foreground/Editor';
 @Radium
 export default class TemplateBuilderForegroundContent extends Component {
   static propTypes = {
+    record: PropTypes.object,
+    updateTemplateForeground: PropTypes.func,
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
-    }),
-    record: PropTypes.object,
-    updateTemplateForeground: PropTypes.func,
-    setTemplateForeground: PropTypes.func
+    })
   };
 
 
   render() {
     const {
-      canvasDimensions,
       record,
-      updateTemplateForeground
+      updateTemplateForeground,
+      canvasDimensions
     } = this.props;
     const {
       backgroundPath,
@@ -31,10 +30,10 @@ export default class TemplateBuilderForegroundContent extends Component {
 
     return (
       <Editor
-        backgroundPath={backgroundPath}
-        dimensions={dimensions}
         foregroundDimensions={dimensions.foreground}
+        backgroundDimensions={dimensions}
         canvasDimensions={canvasDimensions}
+        backgroundImagePath={backgroundPath}
         updateTemplateForeground={updateTemplateForeground}
       />
     );

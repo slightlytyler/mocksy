@@ -5,7 +5,7 @@ import Radium from 'radium';
 import { Group } from 'react-art';
 
 @Radium
-export default class TemplateBuilderEditorSurfaceZoomGroup extends Component {
+export default class TemplateBuilderForegroundEditorZoomGroup extends Component {
   static propTypes = {
     scale: PropTypes.number.isRequired,
     offset: PropTypes.shape({

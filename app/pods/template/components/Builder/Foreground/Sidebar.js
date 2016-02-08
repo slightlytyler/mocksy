@@ -25,8 +25,8 @@ export default class TemplateBuilderForegroundSidebar extends Component {
       setTemplateForeground
     } = this.props;
     const {
-      left,
-      top,
+      x,
+      y,
       width,
       height
     } = record.dimensions.foreground;
@@ -65,11 +65,11 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               labelColor="white"
             >
               <InputNumber
-                value={left}
+                value={x}
                 placeholder="0"
                 handleChange={val =>
                   updateTemplateForeground({
-                    left: val
+                    x: val
                   })
                 }
               />
@@ -79,11 +79,11 @@ export default class TemplateBuilderForegroundSidebar extends Component {
               labelColor="white"
             >
               <InputNumber
-                value={top}
+                value={y}
                 placeholder="0"
                 handleChange={val =>
                   updateTemplateForeground({
-                    top: val
+                    y: val
                   })
                 }
               />

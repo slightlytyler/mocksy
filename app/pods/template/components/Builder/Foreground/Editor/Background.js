@@ -7,7 +7,7 @@ import { Pattern } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
 
 @Radium
-export default class TemplateBuilderEditorSurfaceBackground extends Component {
+export default class TemplateBuilderForegroundEditorBackground extends Component {
   static propTypes = {
     imagePath: PropTypes.string.isRequired,
     dimensions: PropTypes.shape({
