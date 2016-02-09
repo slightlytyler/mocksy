@@ -8,9 +8,9 @@ import colors from 'constants/colors';
 import Button from 'components/Form/Button';
 
 @Radium
-export default class IndexSideBarExportPanelExportButton extends Component {
+export default class ExportPanelExportButton extends Component {
   static propTypes = {
-    currentTemplate: PropTypes.object.isRequired,
+    currentTemplate: PropTypes.object,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired
   };

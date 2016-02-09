@@ -9,9 +9,9 @@ import SizeList from 'pods/size/components/List';
 import Actions from './Actions';
 
 @Radium
-export default class IndexSideBarExportPanel extends Component {
+export default class ExportPanel extends Component {
   static propTypes = {
-    currentTemplate: PropTypes.object.isRequired,
+    currentTemplate: PropTypes.object,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     addSize: PropTypes.func.isRequired,

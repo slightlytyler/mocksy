@@ -6,9 +6,9 @@ import Radium from 'radium';
 import ExportButton from './ExportButton';
 
 @Radium
-export default class IndexSideBarExportPanelActions extends Component {
+export default class ExportPanelActions extends Component {
   static propTypes = {
-    currentTemplate: PropTypes.object.isRequired,
+    currentTemplate: PropTypes.object,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired
   };

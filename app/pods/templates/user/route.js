@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router';
 
-import MockupBuilder from 'pods/mockup/builder/container';
+import TemplatesDefaultContainer from 'pods/templates/default/container';
 
 export default (dispatch, getState) => (
-  <Route path="user" component={MockupBuilder} />
+  <Route path="user" component={TemplatesDefaultContainer} />
 );

@@ -12,19 +12,15 @@ import {
   currentTemplateSetIdSelector,
   currentTemplateSetSelector
 } from 'pods/templates/selectors';
-
 import { setCurrentScreenshot } from 'pods/screenshots/actions';
 import { currentScreenshotSelector } from 'pods/screenshots/selectors';
-
 import {
   addSize,
   removeSize,
   updateSize
 } from 'pods/sizes/actions';
 import { sizesRecordsSelector } from 'pods/sizes/selectors';
-
-import IndexComponent from './component';
-
+import MockupBuilder from 'pods/mockup/Builder/component';;
 
 function mapStateToProps(state) {
   const { present } = state;
@@ -60,4 +56,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(IndexComponent);
+)(MockupBuilder);

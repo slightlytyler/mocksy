@@ -6,7 +6,7 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 
 @Radium
-export default class IndexSideBarExportPanelHeader extends Component {
+export default class ExportPanelHeader extends Component {
   static propTypes = {
     addSize: PropTypes.func.isRequired
   };

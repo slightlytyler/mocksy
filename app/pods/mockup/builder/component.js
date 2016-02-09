@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
+import colors from 'constants/colors';
+import Spinner from 'components/Spinner';
+
 import Sidebar from 'components/Sidebar';
 import TemplateList from 'pods/template/components/List';
 import TemplateTabs from 'pods/template/components/Tabs';
@@ -66,25 +69,20 @@ export default class MockupBuilder extends Component {
             setCurrentTemplate={setCurrentTemplate}
           />
 
-          {
-            currentTemplate
-            && (
-              <ExportPanel
-                currentTemplate={currentTemplate}
-                screenshot={currentScreenshot}
-                sizes={sizes}
-                addSize={addSize}
-                removeSize={removeSize}
-                updateSize={updateSize}
-              />
-            )
-          }
+          <ExportPanel
+            currentTemplate={currentTemplate}
+            screenshot={currentScreenshot}
+            sizes={sizes}
+            addSize={addSize}
+            removeSize={removeSize}
+            updateSize={updateSize}
+          />
         </Sidebar>
 
         <PreviewArea>
           {
             currentTemplate
-            && (
+            ? (
               <TemplatePreview
                 dimensions={currentTemplate.dimensions}
                 backgroundPath={computeTemplateImages(
@@ -100,6 +98,12 @@ export default class MockupBuilder extends Component {
                   expectedDimensions={currentTemplate.dimensions}
                 />
               </TemplatePreview>
+            )
+            : (
+              <Spinner
+                text="Loading Template..."
+                color={colors.pink}
+              />
             )
           }
         </PreviewArea>

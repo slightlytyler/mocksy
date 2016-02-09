@@ -6,25 +6,45 @@ import Radium from 'radium';
 @Radium
 export default class Spinner extends Component {
   static propTypes = {
+    text: PropTypes.string,
+    color: PropTypes.string
   };
 
   render() {
-    const { color } = this.props;
+    const {
+      text,
+      color
+    } = this.props;
 
     return (
       <div style={styles.container}>
-        <span style={[
-          styles.loader,
-          color && {
-            borderColor: color
-          }
-        ]}>
-          <span style={[
-            styles.loaderInner,
+        <span
+          style={[
+            styles.loader,
             color && {
-              backgroundColor: color
+              borderColor: color
             }
-          ]} />
+          ]}
+        >
+          <span
+            style={[
+              styles.loaderInner,
+              color && {
+                backgroundColor: color
+              }
+            ]}
+          />
+        </span>
+
+        <span
+          style={[
+            styles.text,
+            color && {
+              color: color
+            }
+          ]}
+        >
+          {text}
         </span>
       </div>
     );
@@ -77,6 +97,9 @@ const loaderInnerKeyframes = Radium.keyframes({
 
 const styles = {
   container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -99,5 +122,11 @@ const styles = {
     width: '100%',
     backgroundColor: 'white',
     animation: `${loaderInnerKeyframes} 2s infinite ease-in`
+  },
+
+  text: {
+    color: 'white',
+    marginTop: '1em',
+    fontSize: '1.5em'
   }
 };
