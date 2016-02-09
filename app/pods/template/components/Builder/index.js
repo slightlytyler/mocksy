@@ -10,12 +10,15 @@ import backIcon from 'assets/icons/back.svg';
 @Radium
 export default class TemplateBuilder extends Component {
   static propTypes = {
+    record: PropTypes.object.isRequired,
+    editor: PropTypes.object.isRequired,
     actions: PropTypes.shape({
       setTemplateBackground: PropTypes.func.isRequired,
       updateTemplateForeground: PropTypes.func.isRequired,
       setTemplateForeground: PropTypes.func.isRequired,
       updateTemplateDetails: PropTypes.func.isRequired,
       setTemplateDetails: PropTypes.func.isRequired,
+      updateTemplateEditor: PropTypes.func.isRequired,
       goBack: PropTypes.func.isRequired
     })
   };
@@ -25,6 +28,7 @@ export default class TemplateBuilder extends Component {
       content,
       sidebar,
       record,
+      editor,
       actions
     } = this.props;
     const {
@@ -33,6 +37,7 @@ export default class TemplateBuilder extends Component {
       setTemplateForeground,
       updateTemplateDetails,
       setTemplateDetails,
+      updateTemplateEditor,
       goBack
     } = actions;
 
@@ -54,11 +59,13 @@ export default class TemplateBuilder extends Component {
           <section style={styles.sidebar.content}>
             {React.cloneElement(sidebar, {
               record,
+              editor,
               setTemplateBackground,
               updateTemplateForeground,
               setTemplateForeground,
               updateTemplateDetails,
-              setTemplateDetails
+              setTemplateDetails,
+              updateTemplateEditor
             })}
           </section>
         </Sidebar>
@@ -66,11 +73,13 @@ export default class TemplateBuilder extends Component {
         <PreviewArea>
           {React.cloneElement(content, {
             record,
+            editor,
             setTemplateBackground,
             updateTemplateForeground,
             setTemplateForeground,
             updateTemplateDetails,
-            setTemplateDetails
+            setTemplateDetails,
+            updateTemplateEditor
           })}
         </PreviewArea>
       </div>

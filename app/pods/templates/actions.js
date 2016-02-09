@@ -13,7 +13,8 @@ const {
   REMOVE_TEMPLATE,
   UPDATE_NEW_TEMPLATE,
   CLEAR_NEW_TEMPLATE,
-  SET_CURRENT_TEMPLATE
+  SET_CURRENT_TEMPLATE,
+  UPDATE_TEMPLATE_EDITOR
 } = actionTypes;
 
 export function addTemplate(callback) {
@@ -87,4 +88,8 @@ export function clearNewTemplate() {
 
 export function setCurrentTemplate(id) {
   return { type: SET_CURRENT_TEMPLATE, id };
+}
+
+export function updateTemplateEditor(props) {
+  return { type: UPDATE_TEMPLATE_EDITOR, props };
 }

@@ -11,8 +11,14 @@ import * as actions from 'pods/templates/actions';
 import Component from 'pods/template/components/Builder';
 
 function mapStateToProps(state) {
+  const {
+    newRecord,
+    editor
+  } = state.present.templates;
+
   return {
-    record: state.present.templates.newRecord
+    record: newRecord,
+    editor
   };
 }
 
@@ -21,6 +27,7 @@ function mapDispatchToProps(dispatch) {
     addTemplate: actions.addTemplate,
     updateNewTemplate: actions.updateNewTemplate,
     updateNewTemplateBackground: actions.updateNewTemplateBackground,
+    updateTemplateEditor: actions.updateTemplateEditor,
     transition: routeActions.push,
     goBack: routeActions.goBack
   }, dispatch);
@@ -28,6 +35,7 @@ function mapDispatchToProps(dispatch) {
     addTemplate,
     updateNewTemplate,
     updateNewTemplateBackground,
+    updateTemplateEditor,
     transition,
     goBack
   } = boundActions;
@@ -57,7 +65,8 @@ function mapDispatchToProps(dispatch) {
         transition('templates/user')
       );
     },
-    goBack: goBack
+    updateTemplateEditor,
+    goBack
   };
 }
 

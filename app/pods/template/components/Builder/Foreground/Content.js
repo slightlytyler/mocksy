@@ -9,7 +9,9 @@ import Editor from 'pods/template/components/Builder/Foreground/Editor';
 export default class TemplateBuilderForegroundContent extends Component {
   static propTypes = {
     record: PropTypes.object,
+    editor: PropTypes.object,
     updateTemplateForeground: PropTypes.func,
+    updateTemplateEditor: PropTypes.func,
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
@@ -20,7 +22,9 @@ export default class TemplateBuilderForegroundContent extends Component {
   render() {
     const {
       record,
+      editor,
       updateTemplateForeground,
+      updateTemplateEditor,
       canvasDimensions
     } = this.props;
     const {
@@ -30,11 +34,13 @@ export default class TemplateBuilderForegroundContent extends Component {
 
     return (
       <Editor
+        editorState={editor}
         foregroundDimensions={dimensions.foreground}
         backgroundDimensions={dimensions}
         canvasDimensions={canvasDimensions}
         backgroundImagePath={backgroundPath}
         updateTemplateForeground={updateTemplateForeground}
+        updateTemplateEditor={updateTemplateEditor}
       />
     );
   }

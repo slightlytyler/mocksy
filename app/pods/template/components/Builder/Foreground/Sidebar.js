@@ -14,15 +14,19 @@ import Button from 'components/Form/Button'
 export default class TemplateBuilderForegroundSidebar extends Component {
   static propTypes = {
     record: PropTypes.object,
+    editor: PropTypes.object,
     updateTemplateForeground: PropTypes.func,
-    setTemplateForeground: PropTypes.func
+    setTemplateForeground: PropTypes.func,
+    updateTemplateEditor: PropTypes.func
   };
 
   render() {
     const {
       record,
+      editor,
       updateTemplateForeground,
-      setTemplateForeground
+      setTemplateForeground,
+      updateTemplateEditor
     } = this.props;
     const {
       x,
@@ -45,13 +49,24 @@ export default class TemplateBuilderForegroundSidebar extends Component {
             <div style={{flex: 1, marginRight: '1.5em'}}>
               <Button
                 fluid={true}
-                active={true}
+                active={editor.mode === 'transform'}
+                onClick={() => updateTemplateEditor({
+                  mode: 'transform'
+                })}
               >
-                Marquee
+                Transform
               </Button>
             </div>
             <div style={{flex: 1}}>
-              <Button fluid={true}>Free</Button>
+              <Button
+                fluid={true}
+                active={editor.mode === 'navigate'}
+                onClick={() => updateTemplateEditor({
+                  mode: 'navigate'
+                })}
+              >
+                Move
+              </Button>
             </div>
           </Row>
 

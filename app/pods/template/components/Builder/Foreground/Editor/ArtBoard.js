@@ -32,6 +32,7 @@ export default class TemplateBuilderForegroundEditorArtBoard extends Component {
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     }),
+    zoomScale: PropTypes.number.isRequired,
     updateTransform: PropTypes.func.isRequired,
     updateDimensions: PropTypes.func.isRequired,
     updateMouseDownCoords: PropTypes.func.isRequired,
@@ -146,6 +147,7 @@ export default class TemplateBuilderForegroundEditorArtBoard extends Component {
 
     const {
       zoomOffset,
+      zoomScale,
       loggedMouseCoords,
       zoomTransformCoordinates,
       updateZoomOffset
@@ -154,8 +156,8 @@ export default class TemplateBuilderForegroundEditorArtBoard extends Component {
       x: e.offsetX,
       y: e.offsetY
     });
-    const xDiff = currentMouseCoords.x - loggedMouseCoords.x;
-    const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
+    const xDiff = (currentMouseCoords.x - loggedMouseCoords.x) * zoomScale;
+    const yDiff = (currentMouseCoords.y - loggedMouseCoords.y) * zoomScale;
 
     updateZoomOffset({
       x: zoomOffset.x + xDiff,

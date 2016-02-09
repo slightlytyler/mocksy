@@ -137,6 +137,7 @@ export default class TemplateBuilderForegroundEditorCanvas extends Component {
               loggedMouseCoords={mouseCoords.current}
               mouseDownCoords={mouseCoords.start}
               zoomOffset={zoom.offset}
+              zoomScale={zoom.scale}
               updateTransform={transform => updateEditorState({
                 currentTransform: transform
               })}
