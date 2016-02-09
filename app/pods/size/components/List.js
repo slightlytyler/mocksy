@@ -2,7 +2,6 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-
 import { map, last, size as _size } from 'lodash';
 
 import SizeItem from './Item';
@@ -25,7 +24,6 @@ export default class SizeList extends Component {
       sizes,
       removeSize,
       updateSize,
-      sectionStyle
     } = this.props;
     const sizesLength = _size(sizes);
     const singleSize = sizesLength === 1;
@@ -35,10 +33,7 @@ export default class SizeList extends Component {
       <ul
         ref="list"
         className="list"
-        style={[
-          sectionStyle,
-          styles.base,
-        ]}
+        style={styles.base}
       >
         {map(sizes, (size, i) =>
           <SizeItem

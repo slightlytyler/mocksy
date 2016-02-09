@@ -5,6 +5,7 @@ import Radium from 'radium';
 
 import acceptedFormats from 'constants/accepted-image-formats';
 import colors from 'constants/colors';
+import removeIcon from 'assets/icons/remove-size.svg';
 import Row from 'components/Form/Row';
 import Field from 'components/Form/Field';
 import Input from 'components/Form/Input';
@@ -109,7 +110,7 @@ export default class SizeItem extends Component {
           ]}
         >
           <img
-            src="assets/icons/remove-size.svg"
+            src={removeIcon}
             style={styles.remove.icon}
           />
         </div>

@@ -6,7 +6,7 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 import Header from './Header';
 import SizeList from 'pods/size/components/List';
-import Actions from './Actions';
+import ExportButton from './ExportButton';
 
 @Radium
 export default class ExportPanel extends Component {
@@ -34,22 +34,28 @@ export default class ExportPanel extends Component {
         className="export-panel"
         style={styles.base}
       >
-        <Header
-          addSize={addSize}
-          sectionStyle={styles.section}
-        />
-        <SizeList
-          sizes={sizes}
-          removeSize={removeSize}
-          updateSize={updateSize}
-          sectionStyle={styles.section}
-        />
-        <Actions
-          currentTemplate={currentTemplate}
-          screenshot={screenshot}
-          sizes={sizes}
-          sectionStyle={styles.section}
-        />
+        <div style={styles.section}>
+          <Header addSize={addSize} />
+        </div>
+        <div style={styles.section}>
+          <SizeList
+            sizes={sizes}
+            removeSize={removeSize}
+            updateSize={updateSize}
+          />
+        </div>
+        <div
+          style={[
+            styles.section,
+            styles.actions
+          ]}
+        >
+          <ExportButton
+            currentTemplate={currentTemplate}
+            screenshot={screenshot}
+            sizes={sizes}
+          />
+        </div>
       </section>
     );
   }
@@ -71,4 +77,10 @@ const styles = {
     paddingRight: '.75em',
     borderBottom: `1px solid ${colors.pink}`,
   },
+
+  actions: {
+    paddingTop: '.5em',
+    paddingBottom: '.5em',
+    borderBottom: 'none'
+  }
 };

@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import colors from 'constants/colors';
+import addIcon from 'assets/icons/add-size.svg';
 
 @Radium
 export default class ExportPanelHeader extends Component {
@@ -12,26 +13,18 @@ export default class ExportPanelHeader extends Component {
   };
 
   render() {
-    const {
-      addSize,
-      sectionStyle
-    } = this.props;
+    const { addSize } = this.props;
 
     return (
-      <header
-        style={[
-          sectionStyle,
-          styles.base
-        ]}
-      >
+      <header style={styles.base}>
         <span style={styles.text}>
           Export
         </span>
 
         <img
-          src="assets/icons/add-size.svg"
-          onClick={() => addSize()}
-          style={styles.addSizeIcon}
+          src={addIcon}
+          onClick={addSize}
+          style={styles.icon}
         />
       </header>
     );
@@ -40,6 +33,10 @@ export default class ExportPanelHeader extends Component {
 
 const styles = {
   base: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
     paddingTop: '.25em',
     paddingBottom: '.25em',
   },
@@ -50,7 +47,7 @@ const styles = {
     color: colors.black
   },
 
-  addSizeIcon: {
+  icon: {
     width: '1.25em',
     cursor: 'pointer',
   }

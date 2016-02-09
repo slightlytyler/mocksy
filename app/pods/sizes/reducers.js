@@ -6,7 +6,7 @@ import { actionTypes } from './constants'
 
 import {
   mapValues,
-  pick,
+  pickBy,
   reduce
 } from 'lodash';
 
@@ -50,17 +50,19 @@ const addSize = (state) => {
   }
 }
 
-const removeSize = (state, id) =>
-  pick(state, size =>
+const removeSize = (state, id) => (
+  pickBy(state, size =>
     size.id !== id
-  );
+  )
+);
 
-const updateSize = (state, id, props) =>
+const updateSize = (state, id, props) => (
   mapValues(state, size =>
     id === size.id ?
     Object.assign({}, size, props):
     size
-  );
+  )
+);
 
 function conditionReducer(state={}, action) {
   switch (action.type) {
