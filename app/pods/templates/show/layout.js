@@ -90,7 +90,7 @@ export default class TemplatesShowLayout extends Component {
                 <ScreenshotPreview
                   screenshot={currentScreenshot}
                   setCurrentScreenshot={setCurrentScreenshot}
-                  expectedDimensions={currentTemplate.dimensions}
+                  expectedDimensions={currentTemplate.dimensions.foreground}
                 />
               </TemplatePreview>
             )
