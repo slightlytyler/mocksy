@@ -40,16 +40,34 @@ export default class AspectContainer extends Component {
     }
   }
 
+  containerDimensions(dimensions, canvasDimensions) {
+    return {
+      width: this.width(dimensions, canvasDimensions),
+      height: this.height(dimensions, canvasDimensions)
+    }
+  }
+
+  renderChildren(children, containerDimensions) {
+    const manyChildren = Array.isArray(children);
+
+    if (manyChildren) {
+      return children.map(child => React.cloneElement(child, {
+        containerDimensions
+      }));
+    } else {
+      return React.cloneElement(children, {
+        containerDimensions
+      })
+    }
+  }
+
   render() {
     const {
       dimensions,
       canvasDimensions,
       children
     } = this.props;
-    const containerDimensions = {
-      width: this.width(dimensions, canvasDimensions),
-      height: this.height(dimensions, canvasDimensions)
-    };
+    const containerDimensions = this.containerDimensions(dimensions, canvasDimensions);
 
     return(
       <div
@@ -60,9 +78,7 @@ export default class AspectContainer extends Component {
           containerDimensions
         ]}
       >
-        {children.map(child => React.cloneElement(child, {
-          containerDimensions
-        }))}
+        { this.renderChildren(children, containerDimensions) }
       </div>
     );
   }

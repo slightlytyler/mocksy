@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import AspectContainer from 'components/AspectContainer';
-import Foreground from 'pods/template/components/Preview/Foreground';
+import Canvas from './Canvas';
 
 @Radium
 export default class TemplatePreview extends Component {
@@ -12,7 +12,14 @@ export default class TemplatePreview extends Component {
     backgroundPath: PropTypes.string.isRequired,
     dimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired
+      height: PropTypes.number.isRequired,
+
+      foreground: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number,
+        width: PropTypes.number,
+        height: PropTypes.number
+      })
     }),
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
@@ -36,16 +43,12 @@ export default class TemplatePreview extends Component {
         dimensions={dimensions}
         canvasDimensions={canvasDimensions}
       >
-        <img
-          src={backgroundPath}
-          style={styles.background}
-        />
-        <Foreground
-          backgroundDimensions={dimensions}
-          dimensions={dimensions.foreground}
+        <Canvas
+          backgroundPath={backgroundPath}
+          dimensions={dimensions}
         >
           {children}
-        </Foreground>
+        </Canvas>
       </AspectContainer>
     );
   }

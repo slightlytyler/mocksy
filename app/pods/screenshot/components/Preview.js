@@ -3,59 +3,56 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import openFile from 'api/open-file';
-import AddPrompt from 'pods/screenshot/components/AddPrompt';
+import { Pattern } from 'react-art';
+import Rectangle from 'react-art/shapes/rectangle';
 
 @Radium
 export default class ScreenshotPreview extends Component {
   static propTypes = {
     screenshot: PropTypes.string,
-    setCurrentScreenshot: PropTypes.func.isRequired,
+    dimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired
+    }),
     expectedDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    })
+    }),
+    setCurrentScreenshot: PropTypes.func.isRequired,
   };
 
   render() {
     const {
       screenshot,
+      dimensions,
       setCurrentScreenshot,
       expectedDimensions
     } = this.props;
+    const {
+      width,
+      height
+    } = dimensions;
     return (
-      <div style={styles.base}>
-        {
+      <Rectangle
+        width={width}
+        height={height}
+        fill={
           screenshot
-          ? (
-            <img
-              src={screenshot}
-              onClick={() => openFile(setCurrentScreenshot)}
-              style={styles.screenshot}
-            />
+          ? new Pattern(
+            screenshot,
+            width,
+            height,
+            0,
+            0
           )
           : (
-            <AddPrompt
-              handleClick={() => openFile(setCurrentScreenshot)}
-              expectedDimensions={expectedDimensions}
-            />
+            'rgba(0, 0, 0, 0)'
           )
         }
-      </div>
+      />
     );
   }
 }
 
 const styles = {
-  base: {
-  },
-
-  screenshot: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    minHeight: '100%',
-    cursor: 'pointer'
-  }
 };

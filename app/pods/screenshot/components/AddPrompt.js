@@ -2,52 +2,99 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
+import {
+  Group,
+  Text,
+  LinearGradient,
+  Pattern
+} from 'react-art';
+import Rectangle from 'react-art/shapes/rectangle';
 
+import openFile from 'api/open-file';
+import addIcon from 'assets/icons/add-white.svg';
 import colors from 'constants/colors';
-import Prompt from 'components/Prompt';
 
 @Radium
 export default class ScreenshotAddPrompt extends Component {
   static propTypes = {
-    handleClick: PropTypes.func.isRequired,
+    dimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired
+    }),
     expectedDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    })
-  };
+    }),
+    transparent: PropTypes.bool.isRequired,
+    setCurrentScreenshot: PropTypes.func.isRequired
+  }
+
+  handleClick = () => {
+    openFile(this.props.setCurrentScreenshot)
+  }
+
+  renderPrompt = () => {
+    const { dimensions } = this.props;
+
+    return (
+      <Group
+        x={dimensions.width / 2}
+        y={dimensions.height / 2}
+      >
+        <Rectangle
+          x={-75}
+          y={-200}
+          width={150}
+          height={150}
+          fill={
+            new Pattern(
+              addIcon,
+              150,
+              150,
+              0,
+              0
+            )
+          }
+        />
+        <Text
+          fill="white"
+          font='200 80px "Roboto"'
+          x={-310}
+          y={-80}
+        >
+          Add a screenshot
+        </Text>
+      </Group>
+    );
+  }
 
   render() {
     const {
-      handleClick,
-      expectedDimensions
+      dimensions,
+      expectedDimensions,
+      transparent
     } = this.props;
     return (
-      <div
-        onClick={handleClick}
-        style={styles.container}
+      <Group
+        onClick={this.handleClick}
       >
-        <Prompt text="Add a screesnhot">
-          <span ref="screenshotDimensions">
-            {`( ${expectedDimensions.width} x ${expectedDimensions.height} )`}
-          </span>
-        </Prompt>
-      </div>
+        <Rectangle
+          width={dimensions.width}
+          height={dimensions.height}
+          fill={
+            transparent
+            ? 'rgba(0, 0, 0, 0)'
+            : new LinearGradient([colors.pink, colors.orange])
+          }
+        />
+        {
+          !transparent
+          && this.renderPrompt()
+        }
+      </Group>
     );
   }
 }
 
 const styles = {
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    background: colors.featureGradient,
-    cursor: 'pointer',
-    overflow: 'hidden',
-  }
 };

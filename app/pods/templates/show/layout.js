@@ -16,6 +16,7 @@ import AspectContainer from 'components/AspectContainer';
 import TemplatePreview from 'pods/template/components/Preview';
 import { computeTemplateImages } from 'pods/templates/helpers';
 import ScreenshotPreview from 'pods/screenshot/components/Preview';
+import ScreenshotAddPrompt from 'pods/screenshot/components/AddPrompt';
 
 @Radium
 export default class TemplatesShowLayout extends Component {
@@ -89,8 +90,14 @@ export default class TemplatesShowLayout extends Component {
               >
                 <ScreenshotPreview
                   screenshot={currentScreenshot}
+                  dimensions={currentTemplate.dimensions.foreground}
                   setCurrentScreenshot={setCurrentScreenshot}
-                  expectedDimensions={currentTemplate.dimensions.foreground}
+                />
+                <ScreenshotAddPrompt
+                  dimensions={currentTemplate.dimensions.foreground}
+                  expectedDimensions={currentTemplate.dimensions}
+                  transparent={!!currentScreenshot}
+                  setCurrentScreenshot={setCurrentScreenshot}
                 />
               </TemplatePreview>
             )
