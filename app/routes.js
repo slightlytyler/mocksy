@@ -16,7 +16,7 @@ export default (store) => {
   return (
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRedirect to="templates/default" />
+        <IndexRedirect to="templates/show/default" />
         { TemplatesRoute(dispatch, getState) }
       </Route>
     </Router>

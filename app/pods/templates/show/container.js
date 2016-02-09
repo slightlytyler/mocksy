@@ -4,12 +4,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-  setCurrentTemplate
-} from 'pods/templates/actions';
+import { setCurrentTemplate } from 'pods/templates/actions';
 import {
   currentTemplateSelector,
-  currentTemplateSetIdSelector,
   currentTemplateSetSelector
 } from 'pods/templates/selectors';
 import { setCurrentScreenshot } from 'pods/screenshots/actions';
@@ -20,7 +17,7 @@ import {
   updateSize
 } from 'pods/sizes/actions';
 import { sizesRecordsSelector } from 'pods/sizes/selectors';
-import MockupBuilder from 'pods/mockup/Builder/component';;
+import Layout from './layout';
 
 function mapStateToProps(state) {
   const { present } = state;
@@ -28,7 +25,6 @@ function mapStateToProps(state) {
   return {
     templates: currentTemplateSetSelector(present),
     currentTemplate: currentTemplateSelector(present),
-    currentTemplateSetId: currentTemplateSetIdSelector(present),
     currentScreenshot: currentScreenshotSelector(present),
     sizes: sizesRecordsSelector(present)
   };
@@ -48,6 +44,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   return Object.assign({}, stateProps, {
     actions: {
       ...dispatchProps
+    },
+    components: {
+      SidebarContent: ownProps.SidebarContent
     }
   })
 }
@@ -56,4 +55,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(MockupBuilder);
+)(Layout);

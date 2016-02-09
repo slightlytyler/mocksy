@@ -1,8 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router';
 
-import Container from './container';
+import Layout from './layout';
 
 export default (dispatch, getState) => (
-  <Route path="default" component={Container} />
+  <Route path="user" components={{
+    SidebarContent: Layout
+  }} />
 );

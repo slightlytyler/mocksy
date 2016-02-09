@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
@@ -7,7 +9,6 @@ import Spinner from 'components/Spinner';
 import Sidebar from 'components/Sidebar';
 import TemplateList from 'pods/template/components/List';
 import TemplateTabs from 'pods/template/components/Tabs';
-import TemplateNewButton from 'pods/template/components/NewButton';
 import ExportPanel from 'components/ExportPanel';
 
 import PreviewArea from 'components/PreviewArea';
@@ -17,11 +18,10 @@ import { computeTemplateImages } from 'pods/templates/helpers';
 import ScreenshotPreview from 'pods/screenshot/components/Preview';
 
 @Radium
-export default class MockupBuilder extends Component {
+export default class TemplatesShowLayout extends Component {
   static propTypes = {
     templates: PropTypes.object,
     currentTemplate: PropTypes.object,
-    currentTemplateSetId: PropTypes.string.isRequired,
     currentScreenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     actions: PropTypes.shape({
@@ -30,6 +30,9 @@ export default class MockupBuilder extends Component {
       addSize: PropTypes.func.isRequired,
       removeSize: PropTypes.func.isRequired,
       updateSize: PropTypes.func.isRequired
+    }),
+    components: PropTypes.shape({
+      SidebarContent: PropTypes.object
     })
   };
 
@@ -37,10 +40,10 @@ export default class MockupBuilder extends Component {
     const {
       templates,
       currentTemplate,
-      currentTemplateSetId,
       currentScreenshot,
       sizes,
-      actions
+      actions,
+      components
     } = this.props;
     const {
       setCurrentTemplate,
@@ -49,27 +52,18 @@ export default class MockupBuilder extends Component {
       removeSize,
       updateSize
     } = actions;
-    const isUserTemplateSet = currentTemplateSetId === 'user';
+    const { SidebarContent } = components;
 
     return (
-      <div
-        className="index"
-        style={styles.base}
-      >
+      <div style={styles.base}>
         <Sidebar>
           <TemplateTabs />
-
-          {
-            isUserTemplateSet
-            && <TemplateNewButton />
-          }
-
+          { SidebarContent }
           <TemplateList
             templates={templates}
             currentTemplate={currentTemplate}
             setCurrentTemplate={setCurrentTemplate}
           />
-
           <ExportPanel
             currentTemplate={currentTemplate}
             screenshot={currentScreenshot}
@@ -113,9 +107,9 @@ export default class MockupBuilder extends Component {
   }
 }
 
-const styles={
+const styles = {
   base: {
     display: 'flex',
     overflow: 'hidden'
-  },
-}
+  }
+};
