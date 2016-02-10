@@ -10,14 +10,14 @@ import Button from 'components/Form/Button';
 @Radium
 export default class ExportPanelExportButton extends Component {
   static propTypes = {
-    currentTemplate: PropTypes.object,
+    template: PropTypes.object,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired
   };
 
   render() {
     const {
-      currentTemplate,
+      template,
       screenshot,
       sizes
     } = this.props;
@@ -25,7 +25,7 @@ export default class ExportPanelExportButton extends Component {
     return (
       <Button
         ref="exportButton"
-        onClick={() => exportAssets(currentTemplate, screenshot, sizes)}
+        onClick={() => exportAssets(template, screenshot, sizes)}
         color={colors.pink}
         disabled={!screenshot}
       >

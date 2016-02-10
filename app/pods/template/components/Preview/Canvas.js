@@ -36,18 +36,18 @@ export default class TemplatePreviewCanvas extends Component {
       containerDimensions,
       children
     } = this.props;
-    const fullDimensions = containerDimensions;
+    const onScreenDimensions = containerDimensions;
 
     return (
       <Surface
-        width={fullDimensions.width}
-        height={fullDimensions.height}
+        width={onScreenDimensions.width}
+        height={onScreenDimensions.height}
       >
         <Group
           x={0}
           y={0}
-          scaleX={fullDimensions.width / dimensions.width}
-          scaleY={fullDimensions.height / dimensions.height}
+          scaleX={onScreenDimensions.width / dimensions.width}
+          scaleY={onScreenDimensions.height / dimensions.height}
         >
           <Background
             imagePath={backgroundPath}

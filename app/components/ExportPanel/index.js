@@ -11,7 +11,7 @@ import ExportButton from './ExportButton';
 @Radium
 export default class ExportPanel extends Component {
   static propTypes = {
-    currentTemplate: PropTypes.object,
+    template: PropTypes.object,
     screenshot: PropTypes.string,
     sizes: PropTypes.object.isRequired,
     addSize: PropTypes.func.isRequired,
@@ -21,7 +21,7 @@ export default class ExportPanel extends Component {
 
   render() {
     const {
-      currentTemplate,
+      template,
       screenshot,
       sizes,
       addSize,
@@ -51,7 +51,7 @@ export default class ExportPanel extends Component {
           ]}
         >
           <ExportButton
-            currentTemplate={currentTemplate}
+            template={template}
             screenshot={screenshot}
             sizes={sizes}
           />

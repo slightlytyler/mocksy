@@ -21,10 +21,6 @@ export default class ScreenshotAddPrompt extends Component {
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
-    expectedDimensions: PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired
-    }),
     transparent: PropTypes.bool.isRequired,
     setCurrentScreenshot: PropTypes.func.isRequired
   }
@@ -64,6 +60,14 @@ export default class ScreenshotAddPrompt extends Component {
         >
           Add a screenshot
         </Text>
+        <Text
+          fill="white"
+          font='200 50px "Roboto"'
+          x={-146}
+          y={0}
+        >
+          {`(${dimensions.width} x ${dimensions.height})`}
+        </Text>
       </Group>
     );
   }
@@ -71,7 +75,6 @@ export default class ScreenshotAddPrompt extends Component {
   render() {
     const {
       dimensions,
-      expectedDimensions,
       transparent
     } = this.props;
     return (

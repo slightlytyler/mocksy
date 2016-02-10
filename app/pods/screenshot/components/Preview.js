@@ -13,20 +13,13 @@ export default class ScreenshotPreview extends Component {
     dimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    }),
-    expectedDimensions: PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired
-    }),
-    setCurrentScreenshot: PropTypes.func.isRequired,
+    })
   };
 
   render() {
     const {
       screenshot,
-      dimensions,
-      setCurrentScreenshot,
-      expectedDimensions
+      dimensions
     } = this.props;
     const {
       width,

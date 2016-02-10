@@ -66,7 +66,7 @@ export default class TemplatesShowLayout extends Component {
             setCurrentTemplate={setCurrentTemplate}
           />
           <ExportPanel
-            currentTemplate={currentTemplate}
+            template={currentTemplate}
             screenshot={currentScreenshot}
             sizes={sizes}
             addSize={addSize}
@@ -80,22 +80,19 @@ export default class TemplatesShowLayout extends Component {
             currentTemplate
             ? (
               <TemplatePreview
-                dimensions={currentTemplate.dimensions}
                 backgroundPath={computeTemplateImages(
                   currentTemplate.id,
                   currentTemplate.set,
                   currentTemplate.format
                 ).full}
-                {...currentTemplate}
+                dimensions={currentTemplate.dimensions}
               >
                 <ScreenshotPreview
                   screenshot={currentScreenshot}
                   dimensions={currentTemplate.dimensions.foreground}
-                  setCurrentScreenshot={setCurrentScreenshot}
                 />
                 <ScreenshotAddPrompt
                   dimensions={currentTemplate.dimensions.foreground}
-                  expectedDimensions={currentTemplate.dimensions}
                   transparent={!!currentScreenshot}
                   setCurrentScreenshot={setCurrentScreenshot}
                 />
