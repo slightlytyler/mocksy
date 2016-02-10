@@ -45,9 +45,7 @@ export default class ScreenshotPreview extends Component {
             0,
             0
           )
-          : (
-            'rgba(0, 0, 0, 0)'
-          )
+          : 'rgba(0, 0, 0, 0)'
         }
       />
     );
