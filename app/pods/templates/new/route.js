@@ -17,8 +17,8 @@ function onLeave(dispatch) {
 export default (dispatch, getState) => (
   <Route path="new" component={TemplatesNew} onLeave={() => onLeave(dispatch)}>
     <Route path="background" components={{
-      content: TemplateBuilderBackgroundContent,
-      sidebar: TemplateBuilderBackgroundSidebar
+      SidebarContent: TemplateBuilderBackgroundSidebar,
+      PreviewContent: TemplateBuilderBackgroundContent
     }} />
     <Route path="foreground" components={{
       content: TemplateBuilderForegroundContent,

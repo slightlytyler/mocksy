@@ -8,7 +8,7 @@ import pathModule from 'path';
 import { assign, mapValues } from 'lodash';
 
 import * as actions from 'pods/templates/actions';
-import Component from 'pods/template/components/Builder';
+import Layout from './layout';
 
 function mapStateToProps(state) {
   const {
@@ -62,7 +62,7 @@ function mapDispatchToProps(dispatch) {
     },
     setTemplateDetails: (props) => {
       addTemplate(() =>
-        transition('templates/user')
+        transition('templates/show/user')
       );
     },
     updateTemplateEditor,
@@ -71,12 +71,17 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { content, sidebar } = ownProps;
+  const {
+    SidebarContent,
+    PreviewContent
+  } = ownProps;
 
   return assign({}, stateProps, {
-    content,
-    sidebar,
-    actions: dispatchProps
+    actions: dispatchProps,
+    components: {
+      SidebarContent,
+      PreviewContent
+    }
   });
 }
 
@@ -84,4 +89,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(Component);
+)(Layout);

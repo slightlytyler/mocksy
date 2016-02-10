@@ -24,19 +24,20 @@ module.exports = {
   },
   resolve: {
     alias: {
-      app: path.join(__dirname, "app"),
-      config: path.join(__dirname, "app/config.js"),
-      pods: path.join(__dirname, "app/pods"),
-      store: path.join(__dirname, "app/store"),
-      containers: path.join(__dirname, "app/containers"),
-      components: path.join(__dirname, "app/components"),
-      reducers: path.join(__dirname, "app/reducers"),
-      constants: path.join(__dirname, "app/constants"),
-      selectors: path.join(__dirname, "app/selectors"),
-      api: path.join(__dirname, "app/api"),
-      utils: path.join(__dirname, "app/utils"),
-      styles: path.join(__dirname, "app/styles"),
-      assets: path.join(__dirname, "app/assets")
+      app: path.join(__dirname, 'app'),
+      config: path.join(__dirname, 'app/config.js'),
+      store: path.join(__dirname, 'app/store'),
+      pods: path.join(__dirname, 'app/pods'),
+      containers: path.join(__dirname, 'app/containers'),
+      components: path.join(__dirname, 'app/components'),
+      layouts: path.join(__dirname, 'app/layouts'),
+      selectors: path.join(__dirname, 'app/selectors'),
+      constants: path.join(__dirname, 'app/constants'),
+      reducers: path.join(__dirname, 'app/reducers'),
+      utils: path.join(__dirname, 'app/utils'),
+      styles: path.join(__dirname, 'app/styles'),
+      assets: path.join(__dirname, 'app/assets'),
+      api: path.join(__dirname, 'app/api')
     },
     extensions: ['', '.js', '.jsx'],
     packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']

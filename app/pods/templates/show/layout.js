@@ -6,15 +6,14 @@ import Radium from 'radium';
 import colors from 'constants/colors';
 import Spinner from 'components/Spinner';
 
-import Sidebar from 'components/Sidebar';
+import BuilderLayout from 'layouts/Builder';
+
 import TemplateList from 'pods/template/components/List';
 import TemplateTabs from 'pods/template/components/Tabs';
 import ExportPanel from 'components/ExportPanel';
 
-import PreviewArea from 'components/PreviewArea';
-import AspectContainer from 'components/AspectContainer';
-import TemplatePreview from 'pods/template/components/Preview';
 import { computeTemplateImages } from 'pods/templates/helpers';
+import TemplatePreview from 'pods/template/components/Preview';
 import ScreenshotPreview from 'pods/screenshot/components/Preview';
 import ScreenshotAddPrompt from 'pods/screenshot/components/AddPrompt';
 
@@ -35,9 +34,9 @@ export default class TemplatesShowLayout extends Component {
     components: PropTypes.shape({
       SidebarContent: PropTypes.object
     })
-  };
+  }
 
-  render() {
+  renderSidebar = () => {
     const {
       templates,
       currentTemplate,
@@ -48,7 +47,6 @@ export default class TemplatesShowLayout extends Component {
     } = this.props;
     const {
       setCurrentTemplate,
-      setCurrentScreenshot,
       addSize,
       removeSize,
       updateSize
@@ -56,64 +54,77 @@ export default class TemplatesShowLayout extends Component {
     const { SidebarContent } = components;
 
     return (
-      <div style={styles.base}>
-        <Sidebar>
-          <TemplateTabs />
-          { SidebarContent }
-          <TemplateList
-            templates={templates}
-            currentTemplate={currentTemplate}
-            setCurrentTemplate={setCurrentTemplate}
-          />
-          <ExportPanel
-            template={currentTemplate}
-            screenshot={currentScreenshot}
-            sizes={sizes}
-            addSize={addSize}
-            removeSize={removeSize}
-            updateSize={updateSize}
-          />
-        </Sidebar>
-
-        <PreviewArea>
-          {
-            currentTemplate
-            ? (
-              <TemplatePreview
-                backgroundPath={computeTemplateImages(
-                  currentTemplate.id,
-                  currentTemplate.set,
-                  currentTemplate.format
-                ).full}
-                dimensions={currentTemplate.dimensions}
-              >
-                <ScreenshotPreview
-                  screenshot={currentScreenshot}
-                  dimensions={currentTemplate.dimensions.foreground}
-                />
-                <ScreenshotAddPrompt
-                  dimensions={currentTemplate.dimensions.foreground}
-                  transparent={!!currentScreenshot}
-                  setCurrentScreenshot={setCurrentScreenshot}
-                />
-              </TemplatePreview>
-            )
-            : (
-              <Spinner
-                text="Loading Template..."
-                color={colors.pink}
-              />
-            )
-          }
-        </PreviewArea>
+      <div>
+        <TemplateTabs />
+        { SidebarContent }
+        <TemplateList
+          templates={templates}
+          currentTemplate={currentTemplate}
+          setCurrentTemplate={setCurrentTemplate}
+        />
+        <ExportPanel
+          template={currentTemplate}
+          screenshot={currentScreenshot}
+          sizes={sizes}
+          addSize={addSize}
+          removeSize={removeSize}
+          updateSize={updateSize}
+        />
       </div>
+    );
+  }
+
+  renderPreview = () => {
+    const {
+      currentTemplate,
+      currentScreenshot,
+      actions,
+    } = this.props;
+    const {
+      setCurrentScreenshot,
+    } = actions;
+
+    if (currentTemplate) {
+      return (
+        <TemplatePreview
+          backgroundPath={computeTemplateImages(
+            currentTemplate.id,
+            currentTemplate.set,
+            currentTemplate.format
+          ).full}
+          dimensions={currentTemplate.dimensions}
+        >
+          <ScreenshotPreview
+            screenshot={currentScreenshot}
+            dimensions={currentTemplate.dimensions.foreground}
+          />
+          <ScreenshotAddPrompt
+            dimensions={currentTemplate.dimensions.foreground}
+            transparent={!!currentScreenshot}
+            setCurrentScreenshot={setCurrentScreenshot}
+          />
+        </TemplatePreview>
+      );
+    }
+    else {
+      return (
+        <Spinner
+          text="Loading Template..."
+          color={colors.pink}
+        />
+      );
+    }
+  }
+
+  render() {
+    return (
+      <BuilderLayout
+        SidebarContent={this.renderSidebar()}
+        PreviewContent={this.renderPreview()}
+      />
     );
   }
 }
 
 const styles = {
-  base: {
-    display: 'flex',
-    overflow: 'hidden'
-  }
 };

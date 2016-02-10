@@ -11,7 +11,22 @@ export default class Sidebar extends Component {
       PropTypes.array,
       PropTypes.object
     ])
-  };
+  }
+
+  renderChildren = () => {
+    const { children } = this.props;
+    const manyChildren = Array.isArray(children);
+
+    if (children) {
+      return (
+        manyChildren
+        ? children
+        : React.cloneElement(children, {
+          style: styles.base
+        })
+      );
+    }
+  }
 
   render() {
     return (
@@ -19,7 +34,7 @@ export default class Sidebar extends Component {
         className="sidebar"
         style={styles.base}
       >
-        {this.props.children}
+        {this.renderChildren()}
       </section>
     );
   }
