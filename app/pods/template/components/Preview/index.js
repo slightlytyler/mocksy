@@ -25,6 +25,8 @@ export default class TemplatePreview extends Component {
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
+    cursor: PropTypes.string,
+    handleClick: PropTypes.func,
     children: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.array
@@ -35,6 +37,8 @@ export default class TemplatePreview extends Component {
       backgroundPath,
       dimensions,
       canvasDimensions,
+      cursor,
+      handleClick,
       children
     } = this.props;
 
@@ -46,6 +50,8 @@ export default class TemplatePreview extends Component {
         <Canvas
           backgroundPath={backgroundPath}
           dimensions={dimensions}
+          cursor={cursor}
+          handleClick={handleClick}
         >
           {children}
         </Canvas>

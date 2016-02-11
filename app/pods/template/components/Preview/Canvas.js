@@ -26,7 +26,9 @@ export default class TemplatePreviewCanvas extends Component {
     containerDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    })
+    }),
+    cursor: PropTypes.string,
+    handleClick: PropTypes.func
   };
 
   render() {
@@ -34,6 +36,8 @@ export default class TemplatePreviewCanvas extends Component {
       backgroundPath,
       dimensions,
       containerDimensions,
+      cursor,
+      handleClick,
       children
     } = this.props;
     const onScreenDimensions = containerDimensions;
@@ -48,6 +52,8 @@ export default class TemplatePreviewCanvas extends Component {
           y={0}
           scaleX={onScreenDimensions.width / dimensions.width}
           scaleY={onScreenDimensions.height / dimensions.height}
+          cursor={cursor || 'default'}
+          onClick={handleClick}
         >
           <Background
             imagePath={backgroundPath}

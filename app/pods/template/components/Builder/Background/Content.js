@@ -42,6 +42,8 @@ export default class TemplateBuilderBackgroundContent extends Component {
           }
         }}
         canvasDimensions={canvasDimensions}
+        cursor="pointer"
+        handleClick={() => console.log('test')}
       >
         <Prompt
           text="Add a background"
