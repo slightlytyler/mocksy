@@ -38,8 +38,9 @@ export default class ScreenshotPreview extends Component {
             0,
             0
           )
-          : 'rgba(0, 0, 0, 0)'
+          : 'white'
         }
+        opacity={screenshot ? 1 : 0}
         cursor="pointer"
       />
     );
