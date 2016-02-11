@@ -23,23 +23,31 @@ export default class Prompt extends Component {
 
   defaultColor = 'white';
 
-  renderIcon = () => {
-    const {
-      fontSize,
-      icon,
-      containerDimensions
-    } = this.props;
+  iconSize = (containerDimensions) => {
     const {
       width,
       height
     } = containerDimensions;
     const containerMin = width >= height ? width : height;
-    const iconSize = containerMin / 8;
+
+    return containerMin / 8;
+  }
+
+  verticalSpacing = this.props.fontSize / 4;
+
+  renderIcon = () => {
+    const { verticalSpacing } = this;
+    const {
+      fontSize,
+      icon,
+      containerDimensions
+    } = this.props;
+    const iconSize = this.iconSize(containerDimensions);
 
     return (
       <Rectangle
         x={-(iconSize / 2)}
-        y={-(iconSize / 2) - (fontSize * 1.3) - (iconSize / 4)}
+        y={-iconSize - (fontSize / 2) - verticalSpacing}
         width={iconSize}
         height={iconSize}
         fill={
@@ -55,21 +63,45 @@ export default class Prompt extends Component {
     );
   }
 
+  renderNote = () => {
+    const { defaultColor } = this;
+    const {
+      note,
+      fontSize,
+      color
+    } = this.props;
+
+    return (
+      <Text
+        fill={color || defaultColor}
+        font={`200 ${fontSize / 2}px "Roboto"`}
+        x={0}
+        y={fontSize}
+        alignment="center"
+      >
+        {note}
+      </Text>
+    );
+  }
+
   render() {
     const {
+      defaultColor,
+      verticalSpacing
+    } = this;
+    const {
       text,
+      note,
       fontSize,
       icon,
       color,
       containerDimensions,
-      children
     } = this.props;
-
-    const { defaultColor } = this;
     const {
       width,
       height
     } = containerDimensions;
+    const iconSize = this.iconSize(containerDimensions);
 
     return (
       <Group
@@ -78,7 +110,7 @@ export default class Prompt extends Component {
       >
         <Group
           x={containerDimensions.width / 2}
-          y={containerDimensions.height / 2}
+          y={(containerDimensions.height / 2) + (iconSize / 2) + (verticalSpacing / 2)}
         >
           {
             icon
@@ -88,12 +120,15 @@ export default class Prompt extends Component {
             fill={color || defaultColor}
             font={`200 ${fontSize}px "Roboto"`}
             x={0}
-            y={-fontSize * .5}
+            y={-fontSize / 2}
             alignment="center"
           >
             {text}
           </Text>
-          {children}
+          {
+            note
+            && this.renderNote()
+          }
         </Group>
         <Rectangle
           x={0}

@@ -35,20 +35,11 @@ export default class ScreenshotAddPrompt extends Component {
     return (
       <Prompt
         text="Add a screenshot"
+        note={`(${dimensions.width} x ${dimensions.height})`}
         fontSize={80}
         icon={addIcon}
         containerDimensions={dimensions}
-      >
-        <Text
-          fill="white"
-          font='200 50px "Roboto"'
-          x={0}
-          y={50}
-          alignment="center"
-        >
-          {`(${dimensions.width} x ${dimensions.height})`}
-        </Text>
-      </Prompt>
+      />
     );
   }
 
