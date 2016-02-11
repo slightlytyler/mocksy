@@ -59,6 +59,7 @@ export default class Prompt extends Component {
     const {
       text,
       fontSize,
+      icon,
       color,
       containerDimensions,
       children
@@ -79,7 +80,10 @@ export default class Prompt extends Component {
           x={containerDimensions.width / 2}
           y={containerDimensions.height / 2}
         >
-          {this.renderIcon()}
+          {
+            icon
+            && this.renderIcon()
+          }
           <Text
             fill={color || defaultColor}
             font={`200 ${fontSize}px "Roboto"`}

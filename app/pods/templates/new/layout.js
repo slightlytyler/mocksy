@@ -12,7 +12,7 @@ export default class TemplatesNewLayout extends Component {
     record: PropTypes.object.isRequired,
     editor: PropTypes.object.isRequired,
     actions: PropTypes.shape({
-      setTemplateBackground: PropTypes.func.isRequired,
+      addTemplateBackground: PropTypes.func.isRequired,
       updateTemplateForeground: PropTypes.func.isRequired,
       setTemplateForeground: PropTypes.func.isRequired,
       updateTemplateDetails: PropTypes.func.isRequired,
@@ -34,7 +34,7 @@ export default class TemplatesNewLayout extends Component {
       components
     } = this.props;
     const {
-      setTemplateBackground,
+      addTemplateBackground,
       updateTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
@@ -64,7 +64,7 @@ export default class TemplatesNewLayout extends Component {
           {React.cloneElement(SidebarContent, {
             record,
             editor,
-            setTemplateBackground,
+            addTemplateBackground,
             updateTemplateForeground,
             setTemplateForeground,
             updateTemplateDetails,
@@ -84,7 +84,7 @@ export default class TemplatesNewLayout extends Component {
       components
     } = this.props;
     const {
-      setTemplateBackground,
+      addTemplateBackground,
       updateTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
@@ -99,7 +99,7 @@ export default class TemplatesNewLayout extends Component {
     return React.cloneElement(PreviewContent, {
       record,
       editor,
-      setTemplateBackground,
+      addTemplateBackground,
       updateTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,

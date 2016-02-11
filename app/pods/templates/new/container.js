@@ -7,6 +7,7 @@ import { routeActions } from 'react-router-redux';
 import pathModule from 'path';
 import { assign, mapValues } from 'lodash';
 
+import openFile from 'api/open-file';
 import * as actions from 'pods/templates/actions';
 import Layout from './layout';
 
@@ -41,10 +42,11 @@ function mapDispatchToProps(dispatch) {
   } = boundActions;
 
   return {
-    setTemplateBackground: (path, loadingCb) => {
-      loadingCb();
-      updateNewTemplateBackground(path, () =>
-        transition('templates/new/foreground')
+    addTemplateBackground: () => {
+      openFile(path =>
+        updateNewTemplateBackground(path, () =>
+          transition('templates/new/foreground')
+        )
       );
     },
     updateTemplateForeground: (props) => {
