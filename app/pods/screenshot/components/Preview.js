@@ -40,6 +40,7 @@ export default class ScreenshotPreview extends Component {
           )
           : 'rgba(0, 0, 0, 0)'
         }
+        cursor="pointer"
       />
     );
   }

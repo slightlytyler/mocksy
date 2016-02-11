@@ -4,6 +4,7 @@
   "description": "Application for easily creating device mockups.",
   "main": "main.js",
   "scripts": {
+    "install": "npm-git-install",
     "test": "NODE_PATH=./app NODE_ENV=test mocha --compilers js:babel/register --recursive --require ./test/setup.js $(find test -name '*.spec.js')",
     "test-watch": "npm test -- --watch",
     "test-e2e:crdv": "chromedriver",
@@ -69,6 +70,7 @@
     "mocha": "^2.3.0",
     "mockery": "^1.4.0",
     "node-libs-browser": ">= 0.4.0 <=0.6.0",
+    "npm-git-install": "^0.1.2",
     "postcss": "^5.0.11",
     "postcss-modules-extract-imports": "^1.0.0",
     "postcss-modules-local-by-default": "^1.0.0",
@@ -106,7 +108,6 @@
     "radium": "^0.15.3",
     "react": "^0.14.2",
     "react-addons-update": "^0.14.6",
-    "react-art": "^0.14.0",
     "react-dom": "^0.14.2",
     "react-file-input": "^0.2.5",
     "react-onclickoutside": "^4.5.0",
@@ -121,6 +122,9 @@
     "redux-undo": "^0.6.0",
     "reselect": "^2.0.1",
     "shortid": "^2.2.4"
+  },
+  "gitDependencies": {
+    "react-art": "https://github.com/slightlytyler/react-art.git#svg"
   },
   "devEngines": {
     "node": "4.x"

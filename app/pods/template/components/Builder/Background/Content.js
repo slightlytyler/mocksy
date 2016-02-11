@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 import openFile from 'api/open-file';
+import addIcon from 'assets/icons/add-pink.svg';
 import colors from 'constants/colors';
 import TemplatePreview from 'pods/template/components/Preview';
 import wireframe from './assets/wireframe.svg';
@@ -34,14 +35,24 @@ export default class TemplateBuilderBackgroundContent extends Component {
           height: 512,
 
           foreground: {
-            width: 204,
-            height: 372,
-            left: 25,
-            top: 70
+            x: 25,
+            y: 70,
+            width: 203,
+            height: 371
           }
         }}
         canvasDimensions={canvasDimensions}
       >
+        <Prompt
+          text="Add a background"
+          fontSize={20}
+          icon={addIcon}
+          color={colors.pink}
+          containerDimensions={{
+            width: 203,
+            height: 371
+          }}
+        />
       </TemplatePreview>
     );
   }

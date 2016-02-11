@@ -5,14 +5,14 @@ import Radium from 'radium';
 import {
   Group,
   Text,
-  LinearGradient,
-  Pattern
+  LinearGradient
 } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
 
 import openFile from 'api/open-file';
 import addIcon from 'assets/icons/add-white.svg';
 import colors from 'constants/colors';
+import Prompt from 'components/Prompt';
 
 @Radium
 export default class ScreenshotAddPrompt extends Component {
@@ -33,42 +33,22 @@ export default class ScreenshotAddPrompt extends Component {
     const { dimensions } = this.props;
 
     return (
-      <Group
-        x={dimensions.width / 2}
-        y={dimensions.height / 2}
+      <Prompt
+        text="Add a screenshot"
+        fontSize={80}
+        icon={addIcon}
+        containerDimensions={dimensions}
       >
-        <Rectangle
-          x={-75}
-          y={-200}
-          width={150}
-          height={150}
-          fill={
-            new Pattern(
-              addIcon,
-              150,
-              150,
-              0,
-              0
-            )
-          }
-        />
-        <Text
-          fill="white"
-          font='200 80px "Roboto"'
-          x={-310}
-          y={-80}
-        >
-          Add a screenshot
-        </Text>
         <Text
           fill="white"
           font='200 50px "Roboto"'
-          x={-146}
-          y={0}
+          x={0}
+          y={50}
+          alignment="center"
         >
           {`(${dimensions.width} x ${dimensions.height})`}
         </Text>
-      </Group>
+      </Prompt>
     );
   }
 
