@@ -17,7 +17,6 @@ export default class TemplatesNewAddDetailsSidebarContent extends Component {
     setTemplateDetails: PropTypes.func
   };
 
-
   render() {
     const {
       record,

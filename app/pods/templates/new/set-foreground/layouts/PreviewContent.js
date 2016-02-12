@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Editor from 'pods/template/components/Builder/Foreground/Editor';
+import Editor from '../components/Editor';
 
 @Radium
 export default class TemplatesNewSetForegroundPreviewContent extends Component {
@@ -17,7 +17,6 @@ export default class TemplatesNewSetForegroundPreviewContent extends Component {
       height: PropTypes.number
     })
   };
-
 
   render() {
     const {
