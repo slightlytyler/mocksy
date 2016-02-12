@@ -27,11 +27,13 @@ export default class TemplatePreview extends Component {
     }),
     cursor: PropTypes.string,
     handleClick: PropTypes.func,
+    overlay: PropTypes.object,
     children: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.array
     ])
   };
+
   render() {
     const {
       backgroundPath,
@@ -39,6 +41,7 @@ export default class TemplatePreview extends Component {
       canvasDimensions,
       cursor,
       handleClick,
+      overlay,
       children
     } = this.props;
 
@@ -52,6 +55,7 @@ export default class TemplatePreview extends Component {
           dimensions={dimensions}
           cursor={cursor}
           handleClick={handleClick}
+          overlay={overlay}
         >
           {children}
         </Canvas>

@@ -43,7 +43,6 @@ function mapDispatchToProps(dispatch) {
 
   return {
     addTemplateBackground: () => {
-      console.log('test');
       openFile(path =>
         updateNewTemplateBackground(path, () =>
           transition('templates/new/foreground')
@@ -53,7 +52,7 @@ function mapDispatchToProps(dispatch) {
     updateTemplateForeground: (props) => {
       updateNewTemplate({
         dimensions: {
-          foreground: props
+          foreground: mapValues(props, val => Math.round(val))
         }
       });
     },

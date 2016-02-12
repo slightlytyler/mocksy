@@ -28,16 +28,68 @@ export default class TemplatePreviewCanvas extends Component {
       height: PropTypes.number.isRequired
     }),
     cursor: PropTypes.string,
-    handleClick: PropTypes.func
-  };
+    handleClick: PropTypes.func,
+    overlay: PropTypes.object,
+    children: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array
+    ])
+  }
+
+  realToScreenScale = () => {
+    const {
+      containerDimensions,
+      dimensions
+    } = this.props;
+
+    return containerDimensions.width / dimensions.width;
+  }
+
+  renderOverlay = () => {
+    const realToScreenScale = this.realToScreenScale();
+    const { overlay } = this.props;
+
+    if (overlay) {
+      return React.cloneElement(overlay, {
+        realToScreenScale
+      });
+    }
+    else {
+      return undefined;
+    }
+  }
+
+  renderChildren = () => {
+    const realToScreenScale = this.realToScreenScale();
+    const { children } = this.props;
+    const manyChildren = Array.isArray(children);
+
+    if (children) {
+      if (manyChildren) {
+        return children.map(child => React.cloneElement(child, {
+          realToScreenScale
+        }));
+      }
+      else {
+        return React.cloneElement(children, {
+          realToScreenScale
+        });
+      }
+    }
+    else {
+      return undefined;
+    }
+  }
 
   render() {
+    const realToScreenScale = this.realToScreenScale();
     const {
       backgroundPath,
       dimensions,
       containerDimensions,
       cursor,
       handleClick,
+      overlay,
       children
     } = this.props;
     const onScreenDimensions = containerDimensions;
@@ -50,8 +102,8 @@ export default class TemplatePreviewCanvas extends Component {
         <Group
           x={0}
           y={0}
-          scaleX={onScreenDimensions.width / dimensions.width}
-          scaleY={onScreenDimensions.height / dimensions.height}
+          scaleX={realToScreenScale}
+          scaleY={realToScreenScale}
           cursor={cursor || 'default'}
           onClick={handleClick}
         >
@@ -59,8 +111,9 @@ export default class TemplatePreviewCanvas extends Component {
             imagePath={backgroundPath}
             dimensions={dimensions}
           />
+          {this.renderOverlay()}
           <Foreground dimensions={dimensions.foreground}>
-            {children}
+            {this.renderChildren()}
           </Foreground>
         </Group>
       </Surface>

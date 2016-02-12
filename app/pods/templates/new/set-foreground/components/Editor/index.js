@@ -2,65 +2,57 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import { merge, mapValues } from 'lodash';
+import { mapValues } from 'lodash';
+import { Group } from 'react-art';
 
-import colors from 'constants/colors';
-import AspectContainer from 'components/AspectContainer';
-import Canvas from './Canvas';
-import TemplatePreview from 'pods/template/components/Preview';
+import Foreground from './Foreground';
 
 @Radium
-export default class TemplateBuilderForegroundEditor extends Component {
+export default class TemplatesNewSetForegroundEditor extends Component {
   static propTypes = {
-    editorState: PropTypes.object.isRequired,
-    foregroundDimensions: PropTypes.object.isRequired,
-    backgroundDimensions: PropTypes.object.isRequired,
-    canvasDimensions: PropTypes.object.isRequired,
-    backgroundImagePath: PropTypes.string.isRequired,
-    updateTemplateForeground: PropTypes.func.isRequired,
-    updateTemplateEditor: PropTypes.func.isRequired
+    realToScreenScale: PropTypes.number,
+    dimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired,
+
+      foreground: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number,
+        width: PropTypes.number,
+        height: PropTypes.number
+      })
+    }),
+    updateTemplateForeground: PropTypes.func.isRequired
   }
 
-  updateTemplateForeground = props => {
-    this.props.updateTemplateForeground(
-      mapValues(props, prop => Math.round(prop))
-    );
+  scaleToReal = val => {
+    const { realToScreenScale } = this.props;
+
+    return val / realToScreenScale;
+  }
+
+  updateForegroundDimensions = diff => {
+    const { foreground } = this.props.dimensions;
+
+    this.props.updateTemplateForeground(mapValues(diff, (val, key) =>
+      (foreground[key] || 0) + this.scaleToReal(val)
+    ));
   }
 
   render() {
-    const { updateTemplateForeground } = this;
-    const {
-      editorState,
-      foregroundDimensions,
-      backgroundDimensions,
-      canvasDimensions,
-      backgroundImagePath,
-      updateTemplateEditor
-    } = this.props;
+    const { updateForegroundDimensions } = this;
+    const { dimensions } = this.props;
 
     return (
-      <div>
-        <div style={styles.border} />
-        <TemplatePreview
-          backgroundPath={backgroundImagePath}
-          dimensions={backgroundDimensions}
-          canvasDimensions={canvasDimensions}
-          cursor="crosshair"
-        >
-        </TemplatePreview>
-      </div>
-    )
+      <Group>
+        <Foreground
+          dimensions={dimensions.foreground}
+          updateDimensions={updateForegroundDimensions}
+        />
+      </Group>
+    );
   }
 }
 
 const styles = {
-  border: {
-    boxSizing: 'content-box',
-    position: 'absolute',
-    left: '-2px',
-    top: '-2px',
-    width: '100%',
-    height: '100%',
-    border: `2px solid ${colors.gray}`,
-  }
 };
