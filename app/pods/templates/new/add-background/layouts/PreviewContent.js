@@ -6,12 +6,12 @@ import Radium from 'radium';
 import addIcon from 'assets/icons/add-pink.svg';
 import colors from 'constants/colors';
 import TemplatePreview from 'pods/template/components/Preview';
-import wireframe from './assets/wireframe.svg';
+import wireframe from '../assets/wireframe.svg';
 import Prompt from 'components/Prompt';
 import Spinner from 'components/Spinner';
 
 @Radium
-export default class TemplateBuilderBackgroundContent extends Component {
+export default class TemplatesNewAddBackgroundPreviewContent extends Component {
   static propTypes = {
     addTemplateBackground: PropTypes.func,
     canvasDimensions: PropTypes.shape({
@@ -22,7 +22,7 @@ export default class TemplateBuilderBackgroundContent extends Component {
 
   render() {
     const {
-      setTemplateBackground,
+      addTemplateBackground,
       canvasDimensions
     } = this.props;
 
@@ -42,7 +42,7 @@ export default class TemplateBuilderBackgroundContent extends Component {
         }}
         canvasDimensions={canvasDimensions}
         cursor="pointer"
-        handleClick={setTemplateBackground}
+        handleClick={addTemplateBackground}
       >
         <Prompt
           text="Add a background"

@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
 @Radium
-export default class TemplateBuilderDetailsContent extends Component {
+export default class TemplatesNewAddDetailsPreviewContent extends Component {
   static propTypes = {
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number,

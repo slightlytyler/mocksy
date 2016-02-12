@@ -43,6 +43,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     addTemplateBackground: () => {
+      console.log('test');
       openFile(path =>
         updateNewTemplateBackground(path, () =>
           transition('templates/new/foreground')

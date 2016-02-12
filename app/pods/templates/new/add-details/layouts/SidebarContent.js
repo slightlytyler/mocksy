@@ -10,7 +10,7 @@ import Input from 'components/Form/Input';
 import Button from 'components/Form/Button'
 
 @Radium
-export default class TemplateBuilderDetailsSidebar extends Component {
+export default class TemplatesNewAddDetailsSidebarContent extends Component {
   static propTypes = {
     record: PropTypes.object,
     updateTemplateDetails: PropTypes.func,

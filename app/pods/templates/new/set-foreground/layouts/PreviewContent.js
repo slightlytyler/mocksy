@@ -6,7 +6,7 @@ import Radium from 'radium';
 import Editor from 'pods/template/components/Builder/Foreground/Editor';
 
 @Radium
-export default class TemplateBuilderForegroundContent extends Component {
+export default class TemplatesNewSetForegroundPreviewContent extends Component {
   static propTypes = {
     record: PropTypes.object,
     editor: PropTypes.object,

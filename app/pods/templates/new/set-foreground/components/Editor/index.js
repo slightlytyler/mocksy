@@ -7,6 +7,7 @@ import { merge, mapValues } from 'lodash';
 import colors from 'constants/colors';
 import AspectContainer from 'components/AspectContainer';
 import Canvas from './Canvas';
+import TemplatePreview from 'pods/template/components/Preview';
 
 @Radium
 export default class TemplateBuilderForegroundEditor extends Component {
@@ -38,20 +39,16 @@ export default class TemplateBuilderForegroundEditor extends Component {
     } = this.props;
 
     return (
-      <AspectContainer
-        dimensions={backgroundDimensions}
-        canvasDimensions={canvasDimensions}
-      >
+      <div>
         <div style={styles.border} />
-        <Canvas
-          editorState={editorState}
-          updateEditorState={updateTemplateEditor}
-          foregroundDimensions={foregroundDimensions}
-          backgroundDimensions={backgroundDimensions}
+        <TemplatePreview
           backgroundPath={backgroundImagePath}
-          updateTemplateForeground={updateTemplateForeground}
-        />
-      </AspectContainer>
+          dimensions={backgroundDimensions}
+          canvasDimensions={canvasDimensions}
+          cursor="crosshair"
+        >
+        </TemplatePreview>
+      </div>
     )
   }
 }
@@ -60,8 +57,8 @@ const styles = {
   border: {
     boxSizing: 'content-box',
     position: 'absolute',
-    left: 'calc(0% - 2px)',
-    top: 'calc(0% - 2px)',
+    left: '-2px',
+    top: '-2px',
     width: '100%',
     height: '100%',
     border: `2px solid ${colors.gray}`,

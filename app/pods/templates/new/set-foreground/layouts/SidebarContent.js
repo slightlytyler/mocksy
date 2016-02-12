@@ -11,7 +11,7 @@ import InputNumber from 'components/Form/Input/Number';
 import Button from 'components/Form/Button'
 
 @Radium
-export default class TemplateBuilderForegroundSidebar extends Component {
+export default class TemplatesNewSetForegroundSidebarContent extends Component {
   static propTypes = {
     record: PropTypes.object,
     editor: PropTypes.object,
