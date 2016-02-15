@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import { mapValues } from 'lodash';
+import { mapValues, capitalize } from 'lodash';
 import { Group } from 'react-art';
 
 import Foreground from './Foreground';
@@ -25,29 +25,101 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     updateTemplateForeground: PropTypes.func.isRequired
   }
 
-  scaleToReal = val => {
-    const { realToScreenScale } = this.props;
+  state = {
+    transformType: 'none',
+    transformXDiff: 0,
+    transformYDiff: 0,
+    transformWidthDiff: 0,
+    transformHeightDiff: 0,
+    mouseDownCoords: {}
+  };
 
-    return val / realToScreenScale;
+  componentWillReceiveProps(newProps) {
+    if (newProps.dimensions !== this.props.dimensions) {
+      this.setState({
+        transformXDiff: 0,
+        transformYDiff: 0,
+        transformWidthDiff: 0,
+        transformHeightDiff: 0
+      });
+    }
   }
 
-  updateForegroundDimensions = diff => {
-    const { foreground } = this.props.dimensions;
+  scaleToReal = val => val / this.props.realToScreenScale;
 
-    this.props.updateTemplateForeground(mapValues(diff, (val, key) =>
-      (foreground[key] || 0) + this.scaleToReal(val)
-    ));
+  startTransform = (transformType, event) => {
+    const mouseDownCoords = {
+      x: event.offsetX,
+      y: event.offsetY
+    };
+
+    this.setState({
+      transformType,
+      mouseDownCoords
+    });
+  }
+
+  endTransform = () => {
+    const {
+      transformXDiff,
+      transformYDiff,
+      transformWidthDiff,
+      transformHeightDiff
+    } = this.state;
+
+    if (transformXDiff + transformYDiff + transformWidthDiff + transformHeightDiff !== 0) {
+      this.props.updateTemplateForeground({
+        x: transformXDiff,
+        y: transformYDiff,
+        width: transformWidthDiff,
+        height: transformHeightDiff
+      });
+    }
+
+    this.setState({
+      transformType: 'none'
+    });
+  }
+
+  updateTransformDiff = diff => {
+    Object.keys(diff).forEach(key =>
+      this.setState({
+        [`transform${capitalize(key)}Diff`]: this.scaleToReal(diff[key])
+      })
+    );
   }
 
   render() {
-    const { updateForegroundDimensions } = this;
+    const {
+      startTransform,
+      endTransform,
+      updateTransformDiff
+    } = this;
+    const {
+      transformType,
+      transformXDiff,
+      transformYDiff,
+      transformWidthDiff,
+      transformHeightDiff,
+      mouseDownCoords
+    } = this.state;
     const { dimensions } = this.props;
 
     return (
       <Group>
         <Foreground
           dimensions={dimensions.foreground}
-          updateDimensions={updateForegroundDimensions}
+          transformType={transformType}
+          transformDiff={{
+            x: transformXDiff,
+            y: transformYDiff,
+            width: transformWidthDiff,
+            height: transformHeightDiff
+          }}
+          startTransform={startTransform}
+          endTransform={endTransform}
+          updateTransformDiff={updateTransformDiff}
+          mouseDownCoords={mouseDownCoords}
         />
       </Group>
     );

@@ -28,6 +28,7 @@ function mapDispatchToProps(dispatch) {
     addTemplate: actions.addTemplate,
     updateNewTemplate: actions.updateNewTemplate,
     updateNewTemplateBackground: actions.updateNewTemplateBackground,
+    updateNewTemplateForeground: actions.updateNewTemplateForeground,
     updateTemplateEditor: actions.updateTemplateEditor,
     transition: routeActions.push,
     goBack: routeActions.goBack
@@ -36,6 +37,7 @@ function mapDispatchToProps(dispatch) {
     addTemplate,
     updateNewTemplate,
     updateNewTemplateBackground,
+    updateNewTemplateForeground,
     updateTemplateEditor,
     transition,
     goBack
@@ -49,12 +51,8 @@ function mapDispatchToProps(dispatch) {
         )
       );
     },
-    updateTemplateForeground: (props) => {
-      updateNewTemplate({
-        dimensions: {
-          foreground: mapValues(props, val => Math.round(val))
-        }
-      });
+    updateTemplateForeground: (diff) => {
+      updateNewTemplateForeground(diff);
     },
     setTemplateForeground: () => {
       transition('templates/new/details')

@@ -2,6 +2,7 @@
 
 import { routeActions } from 'react-router-redux';
 import shortId from 'shortid';
+import { mapValues } from 'lodash';
 
 import createTemplateFiles from 'api/create-template-files';
 import indentifyImage from 'api/indentify-image';
@@ -12,6 +13,7 @@ const {
   UPDATE_TEMPLATE,
   REMOVE_TEMPLATE,
   UPDATE_NEW_TEMPLATE,
+  UPDATE_NEW_TEMPLATE_FOREGROUND,
   CLEAR_NEW_TEMPLATE,
   SET_CURRENT_TEMPLATE,
   UPDATE_TEMPLATE_EDITOR
@@ -56,6 +58,21 @@ export function removeTemplate(id) {
 
 export function updateNewTemplate(props) {
   return { type: UPDATE_NEW_TEMPLATE, props };
+}
+
+export function updateNewTemplateForeground(diff) {
+  return (dispatch, getState) => {
+    const { foreground } = getState().present.templates.newRecord.dimensions;
+    const newForeground = mapValues(diff, (val, key) =>
+      Math.round(val + foreground[key])
+    );
+
+    return dispatch(updateNewTemplate({
+      dimensions: {
+        foreground: newForeground
+      }
+    }));
+  }
 }
 
 export function updateNewTemplateBackground(path, callback) {

@@ -21,18 +21,20 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
       width: PropTypes.number,
       height: PropTypes.number
     }),
-    updateDimensions: PropTypes.func.isRequired
+    transformType: PropTypes.string.isRequired,
+    transformDiff: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+      width: PropTypes.number,
+      height: PropTypes.number
+    }),
+    updateTransformDiff: PropTypes.func.isRequired,
+    mouseDownCoords: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
+    })
   }
 
-  state = {
-    transform: 'none',
-    mouseCoords: {
-      down: {
-      },
-      logged: {
-      }
-    }
-  }
 
   componentDidMount() {
     document.addEventListener('mousemove', this.handleMouseMove, false);
@@ -43,30 +45,17 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
   }
 
   handleMouseDown = e => {
-    const mouseDownCoords = {
-      x: e.offsetX,
-      y: e.offsetY
-    };
-
-    this.setState({
-      transform: 'drag',
-      mouseCoords: {
-        down: mouseDownCoords,
-        logged: mouseDownCoords
-      }
-    });
+    this.props.startTransform('drag', e);
   }
 
   handleMouseUp = e => {
-    this.setState({
-      transform: 'none'
-    });
+    this.props.endTransform();
   }
 
   handleMouseMove = e => {
-    const { transform } = this.state;
+    const { transformType } = this.props;
 
-    switch (transform) {
+    switch (transformType) {
       case 'drag':
         return this.handleDrag(e);
 
@@ -80,16 +69,14 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
       x: e.offsetX,
       y: e.offsetY
     };
-    const loggedMouseCoords = this.state.mouseCoords.logged;
-    const xDiff = currentMouseCoords.x - loggedMouseCoords.x;
-    const yDiff = currentMouseCoords.y - loggedMouseCoords.y;
+    const { mouseDownCoords } = this.props;
+    const xDiff = currentMouseCoords.x - mouseDownCoords.x;
+    const yDiff = currentMouseCoords.y - mouseDownCoords.y;
 
-    this.props.updateDimensions({
+    this.props.updateTransformDiff({
       x: xDiff,
       y: yDiff
     });
-
-    this.updateLoggedMouseCoords(currentMouseCoords);
   }
 
   handleScale = e => {
@@ -108,7 +95,8 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
       handleMouseUp
     } = this;
     const {
-      dimensions
+      dimensions,
+      transformDiff
     } = this.props;
     const {
       x,
@@ -118,8 +106,8 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
     } = dimensions;
     return (
       <Group
-        x={x}
-        y={y}
+        x={x + transformDiff.x}
+        y={y + transformDiff.y}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         cursor="move"
