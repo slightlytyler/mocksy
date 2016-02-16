@@ -6,6 +6,7 @@ import { Group } from 'react-art';
 
 import colors from 'constants/colors';
 import Edge from './Edge';
+import Corner from './Corner'
 
 @Radium
 export default class TemplatesNewSetForegroundEditorForegroundBorder extends Component {
@@ -24,8 +25,8 @@ export default class TemplatesNewSetForegroundEditorForegroundBorder extends Com
 
   edges = [
     'left',
-    'right',
     'top',
+    'right',
     'bottom'
   ];
 
@@ -53,6 +54,26 @@ export default class TemplatesNewSetForegroundEditorForegroundBorder extends Com
               handleMouseUp={handleMouseUp}
             />
           )
+        }
+        {
+          edges.map((edge, i) => {
+            const nextEdge = i === edges.length - 1
+              ? edges[0]
+              : edges[i + 1]
+            ;
+            const cornerEdges = [edge, nextEdge];
+
+            return (
+              <Corner
+                key={cornerEdges.reduce((a, b) => `${a}-${b}`)}
+                edges={cornerEdges}
+                edgeWidth={edgeWidth}
+                dimensions={dimensions}
+                handleMouseDown={(e) => handleMouseDown(e, cornerEdges)}
+                handleMouseUp={handleMouseUp}
+              />
+            );
+          })
         }
       </Group>
     );

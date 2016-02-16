@@ -72,6 +72,12 @@ export default class TemplatesNewSetForegroundEditor extends Component {
       transformHeightDiff
     } = this.state;
 
+    this.setState({
+      transform: {
+        type: 'none'
+      }
+    });
+
     if ((transformXDiff !== 0) || (transformYDiff !== 0) || (transformWidthDiff !== 0) || (transformHeightDiff !== 0)) {
       this.props.updateTemplateForeground({
         x: transformXDiff,
@@ -80,12 +86,6 @@ export default class TemplatesNewSetForegroundEditor extends Component {
         height: transformHeightDiff
       });
     }
-
-    this.setState({
-      transform: {
-        type: 'none'
-      }
-    });
   }
 
   updateTransformDiff = diff => {

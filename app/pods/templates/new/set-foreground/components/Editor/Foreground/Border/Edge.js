@@ -14,6 +14,7 @@ import colors from 'constants/colors';
 @Radium
 export default class TemplatesNewSetForegroundEditorForegroundBorderEdge extends Component {
   static propTypes = {
+    edge: PropTypes.string.isRequired,
     edgeWidth: PropTypes.number.isRequired,
     dimensions: PropTypes.shape({
       x: PropTypes.number,
@@ -99,7 +100,7 @@ export default class TemplatesNewSetForegroundEditorForegroundBorderEdge extends
     return (
       <Group
         cursor={cursor}
-        onMouseDown={(e) => handleMouseDown(e, [edge])}
+        onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
       >
         <Shape
