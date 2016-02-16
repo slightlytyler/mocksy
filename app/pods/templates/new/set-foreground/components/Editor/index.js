@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
-import { mapValues, capitalize } from 'lodash';
+import { mapValues, capitalize, values } from 'lodash';
 import { Group } from 'react-art';
 
 import Foreground from './Foreground';
@@ -35,6 +35,14 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     transformHeightDiff: 0,
     mouseDownCoords: {}
   };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleMoveWithArrow, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleMoveWithArrow);
+  }
 
   componentWillReceiveProps(newProps) {
     if (newProps.dimensions !== this.props.dimensions) {
@@ -96,6 +104,56 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     );
   }
 
+  handleMoveWithArrow = e => {
+    const {
+      keyCode,
+      shiftKey
+    } = e;
+    const step = shiftKey ? 10 : 1;
+    const arrows = {
+      left: 37,
+      right: 39,
+      top: 38,
+      bottom: 40
+    };
+
+    if (values(arrows).indexOf(keyCode) !== -1) {
+      e.stopPropagation();
+
+      const {
+        transformXDiff,
+        transformYDiff
+      } = this.state;
+      const update = (diff, dimension) => {
+        this.props.updateTemplateForeground({
+          [dimension]: diff
+        });
+      };
+
+      switch (keyCode) {
+        case arrows.left:
+          update(transformXDiff - step, 'x');
+          break;
+
+        case arrows.right:
+          update(transformXDiff + step, 'x');
+          break;
+
+        case arrows.top:
+          update(transformYDiff - step, 'y');
+          break;
+
+        case arrows.bottom:
+          update(transformYDiff + step, 'y');
+          break;
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
   render() {
     const {
       startTransform,
@@ -113,7 +171,9 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     const { dimensions } = this.props;
 
     return (
-      <Group>
+      <Group
+
+      >
         <Foreground
           dimensions={dimensions.foreground}
           transform={transform}
