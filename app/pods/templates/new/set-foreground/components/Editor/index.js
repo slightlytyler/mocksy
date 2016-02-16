@@ -26,7 +26,9 @@ export default class TemplatesNewSetForegroundEditor extends Component {
   }
 
   state = {
-    transformType: 'none',
+    transform: {
+      type: 'none'
+    },
     transformXDiff: 0,
     transformYDiff: 0,
     transformWidthDiff: 0,
@@ -47,14 +49,17 @@ export default class TemplatesNewSetForegroundEditor extends Component {
 
   scaleToReal = val => val / this.props.realToScreenScale;
 
-  startTransform = (transformType, event) => {
+  startTransform = (event, type, args) => {
     const mouseDownCoords = {
       x: event.offsetX,
       y: event.offsetY
     };
 
     this.setState({
-      transformType,
+      transform: {
+        type,
+        args
+      },
       mouseDownCoords
     });
   }
@@ -67,7 +72,7 @@ export default class TemplatesNewSetForegroundEditor extends Component {
       transformHeightDiff
     } = this.state;
 
-    if (transformXDiff + transformYDiff + transformWidthDiff + transformHeightDiff !== 0) {
+    if ((transformXDiff !== 0) || (transformYDiff !== 0) || (transformWidthDiff !== 0) || (transformHeightDiff !== 0)) {
       this.props.updateTemplateForeground({
         x: transformXDiff,
         y: transformYDiff,
@@ -77,7 +82,9 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     }
 
     this.setState({
-      transformType: 'none'
+      transform: {
+        type: 'none'
+      }
     });
   }
 
@@ -96,7 +103,7 @@ export default class TemplatesNewSetForegroundEditor extends Component {
       updateTransformDiff
     } = this;
     const {
-      transformType,
+      transform,
       transformXDiff,
       transformYDiff,
       transformWidthDiff,
@@ -109,7 +116,7 @@ export default class TemplatesNewSetForegroundEditor extends Component {
       <Group>
         <Foreground
           dimensions={dimensions.foreground}
-          transformType={transformType}
+          transform={transform}
           transformDiff={{
             x: transformXDiff,
             y: transformYDiff,

@@ -63,9 +63,19 @@ export function updateNewTemplate(props) {
 export function updateNewTemplateForeground(diff) {
   return (dispatch, getState) => {
     const { foreground } = getState().present.templates.newRecord.dimensions;
-    const newForeground = mapValues(diff, (val, key) =>
+    let newForeground = mapValues(diff, (val, key) =>
       Math.round(val + foreground[key])
     );
+
+    if (newForeground.width < 0) {
+      newForeground.width = Math.abs(newForeground.width);
+      newForeground.x = newForeground.x - newForeground.width;
+    }
+
+    if (newForeground.height < 0) {
+      newForeground.height = Math.abs(newForeground.height);
+      newForeground.y = newForeground.y - newForeground.height;
+    }
 
     return dispatch(updateNewTemplate({
       dimensions: {

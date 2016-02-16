@@ -9,8 +9,10 @@ import {
 } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
 import immutable from 'object-path-immutable';
+import { mapValues } from 'lodash';
 
 import colors from 'constants/colors';
+import Border from './Border';
 
 @Radium
 export default class TemplatesNewSetForegroundEditorForeground extends Component {
@@ -21,13 +23,18 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
       width: PropTypes.number,
       height: PropTypes.number
     }),
-    transformType: PropTypes.string.isRequired,
+    transform: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      args: PropTypes.array
+    }),
     transformDiff: PropTypes.shape({
       x: PropTypes.number,
       y: PropTypes.number,
       width: PropTypes.number,
       height: PropTypes.number
     }),
+    startTransform: PropTypes.func.isRequired,
+    endTransform: PropTypes.func.isRequired,
     updateTransformDiff: PropTypes.func.isRequired,
     mouseDownCoords: PropTypes.shape({
       x: PropTypes.number,
@@ -44,18 +51,22 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
     document.removeEventListener('mousemove', this.handleMouseMove);
   }
 
-  handleMouseDown = e => {
-    this.props.startTransform('drag', e);
+  startDrag = e => {
+    this.props.startTransform(e, 'drag');
   }
 
-  handleMouseUp = e => {
+  startScale = (e, args) => {
+    this.props.startTransform(e, 'scale', args);
+  }
+
+  endTransform = e => {
     this.props.endTransform();
   }
 
   handleMouseMove = e => {
-    const { transformType } = this.props;
+    const { transform } = this.props;
 
-    switch (transformType) {
+    switch (transform.type) {
       case 'drag':
         return this.handleDrag(e);
 
@@ -80,54 +91,88 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
   }
 
   handleScale = e => {
-    console.log('scaling');
-  }
+    const currentMouseCoords = {
+      x: e.offsetX,
+      y: e.offsetY
+    };
+    const {
+      dimensions,
+      transform,
+      mouseDownCoords
+    } = this.props;
+    const edges = transform.args;
+    const xDiff = currentMouseCoords.x - mouseDownCoords.x;
+    const yDiff = currentMouseCoords.y - mouseDownCoords.y;
 
-  updateLoggedMouseCoords = coords => {
-    this.setState({
-      mouseCoords: immutable.set(this.state.mouseCoords, 'logged', coords)
-    });
+    if (edges.indexOf('left') !== -1) {
+      this.props.updateTransformDiff({
+        x: xDiff,
+        width: -xDiff
+      });
+    }
+
+    if (edges.indexOf('right') !== -1) {
+      this.props.updateTransformDiff({
+        width: xDiff
+      });
+    }
+
+    if (edges.indexOf('top') !== -1) {
+      this.props.updateTransformDiff({
+        y: yDiff,
+        height: -yDiff
+      });
+    }
+
+    if (edges.indexOf('bottom') !== -1) {
+      this.props.updateTransformDiff({
+        height: yDiff
+      });
+    }
   }
 
   render() {
     const {
-      handleMouseDown,
-      handleMouseUp
+      startDrag,
+      startScale,
+      finishTransform,
+      endTransform
     } = this;
     const {
       dimensions,
       transformDiff
     } = this.props;
-    const {
-      x,
-      y,
-      width,
-      height
-    } = dimensions;
+    const adjustedDimensions = mapValues(dimensions, (val, key) =>
+      val + transformDiff[key]
+    );
+
     return (
       <Group
-        x={x + transformDiff.x}
-        y={y + transformDiff.y}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        cursor="move"
+        x={adjustedDimensions.x}
+        y={adjustedDimensions.y}
       >
         <ClippingRectangle
           x={0}
           y={0}
-          width={width}
-          height={width}
+          width={adjustedDimensions.width}
+          height={adjustedDimensions.height}
+          strokeCap="square"
         >
           <Rectangle
+            ref="foreground"
             x={0}
             y={0}
-            width={width}
-            height={height}
+            width={adjustedDimensions.width}
+            height={adjustedDimensions.height}
             fill={new LinearGradient([colors.pink, colors.orange])}
-            stroke={colors.white}
-            strokeWidth={4}
-            strokeDash={[9, 10]}
-            strokeCap="square"
+            cursor="move"
+            onMouseDown={startDrag}
+            onMouseUp={endTransform}
+          />
+          <Border
+            dimensions={adjustedDimensions}
+            handleMouseDown={startScale}
+            handleMouseUp={endTransform}
           />
         </ClippingRectangle>
       </Group>
