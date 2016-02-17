@@ -54,6 +54,18 @@ function mapDispatchToProps(dispatch) {
     updateTemplateForeground: (diff) => {
       updateNewTemplateForeground(diff);
     },
+    resetTemplateForeground: () => {
+      updateNewTemplate({
+        dimensions: {
+          foreground: {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+          }
+        }
+      });
+    },
     setTemplateForeground: () => {
       transition('templates/new/details')
     },

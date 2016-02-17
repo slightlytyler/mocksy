@@ -151,30 +151,38 @@ export default class TemplatesNewSetForegroundEditorForeground extends Component
         x={adjustedDimensions.x}
         y={adjustedDimensions.y}
       >
-        <ClippingRectangle
-          x={0}
-          y={0}
-          width={adjustedDimensions.width}
-          height={adjustedDimensions.height}
-          strokeCap="square"
-        >
-          <Rectangle
-            ref="foreground"
-            x={0}
-            y={0}
-            width={adjustedDimensions.width}
-            height={adjustedDimensions.height}
-            fill={new LinearGradient([colors.pink, colors.orange])}
-            cursor="move"
-            onMouseDown={startDrag}
-            onMouseUp={endTransform}
-          />
-          <Border
-            dimensions={adjustedDimensions}
-            handleMouseDown={startScale}
-            handleMouseUp={endTransform}
-          />
-        </ClippingRectangle>
+        {
+          (adjustedDimensions.x && adjustedDimensions.y && adjustedDimensions.width && adjustedDimensions.height)
+          ? (
+            <ClippingRectangle
+              x={0}
+              y={0}
+              width={adjustedDimensions.width}
+              height={adjustedDimensions.height}
+              strokeCap="square"
+            >
+              <Rectangle
+                ref="foreground"
+                x={0}
+                y={0}
+                width={adjustedDimensions.width}
+                height={adjustedDimensions.height}
+                fill={new LinearGradient([colors.pink, colors.orange])}
+                cursor="move"
+                onMouseDown={startDrag}
+                onMouseUp={endTransform}
+              />
+              <Border
+                dimensions={adjustedDimensions}
+                handleMouseDown={startScale}
+                handleMouseUp={endTransform}
+              />
+            </ClippingRectangle>
+          )
+          : (
+            <Group />
+          )
+        }
       </Group>
     );
   }

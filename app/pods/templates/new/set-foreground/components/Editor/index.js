@@ -5,6 +5,7 @@ import Radium from 'radium';
 import { mapValues, capitalize, values } from 'lodash';
 import { Group } from 'react-art';
 
+import MarqueeArea from './MarqueeArea';
 import Foreground from './Foreground';
 
 @Radium
@@ -22,7 +23,8 @@ export default class TemplatesNewSetForegroundEditor extends Component {
         height: PropTypes.number
       })
     }),
-    updateTemplateForeground: PropTypes.func.isRequired
+    updateTemplateForeground: PropTypes.func.isRequired,
+    resetTemplateForeground: PropTypes.func.isRequired
   }
 
   state = {
@@ -168,12 +170,22 @@ export default class TemplatesNewSetForegroundEditor extends Component {
       transformHeightDiff,
       mouseDownCoords
     } = this.state;
-    const { dimensions } = this.props;
+    const {
+      dimensions,
+      resetTemplateForeground
+    } = this.props;
 
     return (
-      <Group
-
-      >
+      <Group>
+        <MarqueeArea
+          dimensions={dimensions}
+          transform={transform}
+          startTransform={startTransform}
+          endTransform={endTransform}
+          updateTransformDiff={updateTransformDiff}
+          resetDimensions={resetTemplateForeground}
+          mouseDownCoords={mouseDownCoords}
+        />
         <Foreground
           dimensions={dimensions.foreground}
           transform={transform}

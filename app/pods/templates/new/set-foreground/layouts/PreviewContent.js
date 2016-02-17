@@ -13,6 +13,7 @@ export default class TemplatesNewSetForegroundPreviewContent extends Component {
     record: PropTypes.object,
     editor: PropTypes.object,
     updateTemplateForeground: PropTypes.func,
+    resetTemplateForeground: PropTypes.func,
     updateTemplateEditor: PropTypes.func,
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number,
@@ -25,6 +26,7 @@ export default class TemplatesNewSetForegroundPreviewContent extends Component {
       record,
       editor,
       updateTemplateForeground,
+      resetTemplateForeground,
       updateTemplateEditor,
       canvasDimensions
     } = this.props;
@@ -41,11 +43,11 @@ export default class TemplatesNewSetForegroundPreviewContent extends Component {
             backgroundPath={backgroundPath}
             dimensions={dimensions}
             canvasDimensions={canvasDimensions}
-            cursor="crosshair"
             overlay={(
               <Editor
                 dimensions={dimensions}
                 updateTemplateForeground={updateTemplateForeground}
+                resetTemplateForeground={resetTemplateForeground}
               />
             )}
           />

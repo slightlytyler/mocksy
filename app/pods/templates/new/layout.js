@@ -14,6 +14,7 @@ export default class TemplatesNewLayout extends Component {
     actions: PropTypes.shape({
       addTemplateBackground: PropTypes.func.isRequired,
       updateTemplateForeground: PropTypes.func.isRequired,
+      resetTemplateForeground: PropTypes.func.isRequired,
       setTemplateForeground: PropTypes.func.isRequired,
       updateTemplateDetails: PropTypes.func.isRequired,
       setTemplateDetails: PropTypes.func.isRequired,
@@ -36,6 +37,7 @@ export default class TemplatesNewLayout extends Component {
     const {
       addTemplateBackground,
       updateTemplateForeground,
+      resetTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
       setTemplateDetails,
@@ -66,6 +68,7 @@ export default class TemplatesNewLayout extends Component {
             editor,
             addTemplateBackground,
             updateTemplateForeground,
+            resetTemplateForeground,
             setTemplateForeground,
             updateTemplateDetails,
             setTemplateDetails,
@@ -86,6 +89,7 @@ export default class TemplatesNewLayout extends Component {
     const {
       addTemplateBackground,
       updateTemplateForeground,
+      resetTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
       setTemplateDetails,
@@ -101,6 +105,7 @@ export default class TemplatesNewLayout extends Component {
       editor,
       addTemplateBackground,
       updateTemplateForeground,
+      resetTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
       setTemplateDetails,
