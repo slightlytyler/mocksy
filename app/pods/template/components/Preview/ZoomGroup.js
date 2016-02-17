@@ -12,8 +12,7 @@ export default class TemplatePreviewZoomGroup extends Component {
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     }),
-    updateZoomScale: PropTypes.func.isRequired,
-    updateZoomOffset: PropTypes.func.isRequired
+    updateZoomScale: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -21,7 +20,7 @@ export default class TemplatePreviewZoomGroup extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleZoom, false);
+    document.removeEventListener('keydown', this.handleZoom);
   }
 
   handleZoom = e => {

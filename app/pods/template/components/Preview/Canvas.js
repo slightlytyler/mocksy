@@ -45,6 +45,14 @@ export default class TemplatePreviewCanvas extends Component {
     }
   };
 
+  componentDidMount() {
+    document.addEventListener('mousewheel', this.handleSwipe, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousewheel', this.handleSwipe);
+  }
+
   updateZoomScale = increment => {
     const offset = this.state.zoomOffset;
     const { dimensions } = this.props;
@@ -60,10 +68,22 @@ export default class TemplatePreviewCanvas extends Component {
 
   updateZoomOffset = diff => {
     const { x, y } = this.state.zoomOffset;
+    const { dimensions } = this.props;
+    const xDiff = x + diff.x;
+    const yDiff = y + diff.y;
+    const maxOffset = .75;
+    const maxWidth = dimensions.width * maxOffset;
+    const maxHeight = dimensions.height * maxOffset;
 
     this.setState({
-      x: x + diff.x,
-      y: y + diff.y
+      zoomOffset: {
+        x: Math.abs(xDiff) > maxWidth
+          ? (xDiff / Math.abs(xDiff)) * maxWidth
+          : xDiff,
+        y: Math.abs(yDiff) > maxHeight
+          ? (yDiff / Math.abs(yDiff)) * maxHeight
+          : yDiff
+      }
     });
   }
 
@@ -74,6 +94,29 @@ export default class TemplatePreviewCanvas extends Component {
     } = this.props;
 
     return containerDimensions.width / dimensions.width;
+  }
+
+  checkSurfaceSwipe = e => {
+    const mouseCoords = {
+      x: e.clientX,
+      y: e.clientY
+    };
+    const surfaceDimensions = this.refs.surface.domNode.getBoundingClientRect();
+    const withinX = mouseCoords.x >= surfaceDimensions.left && mouseCoords.x <= surfaceDimensions.right;
+    const withinY = mouseCoords.y >= surfaceDimensions.top && mouseCoords.y <= surfaceDimensions.bottom;
+
+    return withinX && withinY;
+  }
+
+  handleSwipe = e => {
+    if (this.checkSurfaceSwipe(e)) {
+      const offset = {
+        x: e.wheelDeltaX,
+        y: e.wheelDeltaY
+      };
+
+      this.updateZoomOffset(offset);
+    }
   }
 
   renderOverlay = () => {
@@ -119,10 +162,7 @@ export default class TemplatePreviewCanvas extends Component {
 
   render() {
     const realToScreenScale = this.realToScreenScale();
-    const {
-      updateZoomScale,
-      updateZoomOffset
-    } = this;
+    const { updateZoomScale } = this;
     const {
       zoomScale,
       zoomOffset
@@ -140,6 +180,7 @@ export default class TemplatePreviewCanvas extends Component {
 
     return (
       <Surface
+        ref="surface"
         width={onScreenDimensions.width}
         height={onScreenDimensions.height}
       >
@@ -153,9 +194,8 @@ export default class TemplatePreviewCanvas extends Component {
         >
           <ZoomGroup
             scale={zoomScale}
-            updateZoomScale={updateZoomScale}
             offset={zoomOffset}
-            updateZoomOffset={updateZoomOffset}
+            updateZoomScale={updateZoomScale}
           >
             <Background
               imagePath={backgroundPath}
