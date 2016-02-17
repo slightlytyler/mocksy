@@ -34,19 +34,27 @@ export default class TemplatesNewSetForegroundEditorForegroundBorderEdge extends
       handleMouseDown,
       handleMouseUp
     } = this.props;
-    const strokePath = new Path();
     const containerThickness = edgeWidth * 2;
+
+    const negativeWidth = dimensions.width < 0;
+    const negativeHeight = dimensions.height < 0;
+    const strokeXOffset = (negativeWidth ? -1 : 1) * edgeWidth / 2;
+    const strokeYOffset = (negativeHeight ? -1 : 1) * edgeWidth / 2;
+    const containerXOffset = negativeWidth ? -containerThickness : 0;
+    const containerYOffset = negativeHeight ? -containerThickness : 0;
+
+    const strokePath = new Path();
     let containerDimensions;
     let cursor;
 
     switch (edge) {
       case 'left':
         strokePath
-          .move(edgeWidth / 2, edgeWidth / 2)
-          .line(0, dimensions.height - edgeWidth)
+          .move(strokeXOffset, strokeYOffset)
+          .line(0, dimensions.height - (2 * strokeYOffset))
         ;
         containerDimensions = {
-          x: 0,
+          x: containerXOffset,
           y: 0,
           width: containerThickness,
           height: dimensions.height
@@ -56,11 +64,11 @@ export default class TemplatesNewSetForegroundEditorForegroundBorderEdge extends
 
       case 'right':
         strokePath
-          .move(dimensions.width - (edgeWidth / 2), edgeWidth / 2)
-          .line(0, dimensions.height - edgeWidth )
+          .move(dimensions.width - strokeXOffset, strokeYOffset)
+          .line(0, dimensions.height - (2 * strokeYOffset))
         ;
         containerDimensions = {
-          x: dimensions.width - containerThickness,
+          x: dimensions.width - (containerThickness + containerXOffset),
           y: 0,
           width: containerThickness,
           height: dimensions.height
@@ -70,12 +78,12 @@ export default class TemplatesNewSetForegroundEditorForegroundBorderEdge extends
 
       case 'top':
         strokePath
-          .move(edgeWidth / 2, edgeWidth / 2)
-          .line(dimensions.width - edgeWidth, 0)
+          .move(strokeXOffset, strokeYOffset)
+          .line(dimensions.width - (2 * strokeXOffset), 0)
         ;
         containerDimensions = {
           x: 0,
-          y: 0,
+          y: containerYOffset,
           width: dimensions.width,
           height: containerThickness
         };
@@ -84,12 +92,12 @@ export default class TemplatesNewSetForegroundEditorForegroundBorderEdge extends
 
       case 'bottom':
         strokePath
-          .move(edgeWidth / 2, dimensions.height - (edgeWidth / 2))
-          .line(dimensions.width - edgeWidth, 0)
+          .move(strokeXOffset, dimensions.height - strokeYOffset)
+          .line(dimensions.width - (2 * strokeXOffset), 0)
         ;
         containerDimensions = {
           x: 0,
-          y: dimensions.height - containerThickness,
+          y: dimensions.height - (containerThickness + containerYOffset),
           width: dimensions.width,
           height: containerThickness
         };
