@@ -12,6 +12,7 @@ import Foreground from './Foreground';
 export default class TemplatesNewSetForegroundEditor extends Component {
   static propTypes = {
     realToScreenScale: PropTypes.number,
+    zoomScale: PropTypes.number,
     dimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired,
@@ -57,7 +58,7 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     }
   }
 
-  scaleToReal = val => val / this.props.realToScreenScale;
+  scaleToReal = val => val / this.props.realToScreenScale / this.props.zoomScale;
 
   startTransform = (event, type, args) => {
     const mouseDownCoords = {
