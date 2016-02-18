@@ -13,7 +13,11 @@ function onLeave(dispatch) {
 }
 
 export default (dispatch, getState) => (
-  <Route path="new" component={Container} onLeave={() => onLeave(dispatch)}>
+  <Route
+    path="new"
+    component={Container}
+    onLeave={() => onLeave(dispatch)}
+  >
     {addBackgroundRoute(dispatch, getState)}
     {setForegroundRoute(dispatch, getState)}
     {addDetailsRoute(dispatch, getState)}

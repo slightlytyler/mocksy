@@ -11,10 +11,8 @@ import Editor from '../components/Editor';
 export default class TemplatesNewSetForegroundPreviewContent extends Component {
   static propTypes = {
     record: PropTypes.object,
-    editor: PropTypes.object,
-    updateTemplateForeground: PropTypes.func,
+    incrementTemplateForeground: PropTypes.func,
     resetTemplateForeground: PropTypes.func,
-    updateTemplateEditor: PropTypes.func,
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
@@ -24,10 +22,8 @@ export default class TemplatesNewSetForegroundPreviewContent extends Component {
   render() {
     const {
       record,
-      editor,
-      updateTemplateForeground,
+      incrementTemplateForeground,
       resetTemplateForeground,
-      updateTemplateEditor,
       canvasDimensions
     } = this.props;
     const {
@@ -46,7 +42,7 @@ export default class TemplatesNewSetForegroundPreviewContent extends Component {
             overlay={(
               <Editor
                 dimensions={dimensions}
-                updateTemplateForeground={updateTemplateForeground}
+                incrementTemplateForeground={incrementTemplateForeground}
                 resetTemplateForeground={resetTemplateForeground}
               />
             )}

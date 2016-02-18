@@ -4,17 +4,6 @@ export const initialState = {
   templates: {
     records: {
       ...baseTemplates
-    },
-    editor: {
-      mode: 'transform',
-      currentTransform: false,
-      zoom: {
-        scale: 1,
-        offset: {
-          x: 0,
-          y: 0
-        }
-      }
     }
   },
 

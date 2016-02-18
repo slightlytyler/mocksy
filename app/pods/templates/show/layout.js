@@ -107,12 +107,7 @@ export default class TemplatesShowLayout extends Component {
       );
     }
     else {
-      return (
-        <Spinner
-          text="Loading Template..."
-          color={colors.pink}
-        />
-      );
+      return undefined;
     }
   }
 

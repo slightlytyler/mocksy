@@ -11,15 +11,13 @@ const {
   REMOVE_TEMPLATE,
   UPDATE_NEW_TEMPLATE,
   CLEAR_NEW_TEMPLATE,
-  SET_CURRENT_TEMPLATE,
-  UPDATE_TEMPLATE_EDITOR
+  SET_CURRENT_TEMPLATE
 } = actionTypes;
 
 const templatesReducer = combineReducers({
   records: recordsReducer,
   newRecord: newRecordReducer,
-  condition: conditionReducer,
-  editor: editorReducer
+  condition: conditionReducer
 });
 
 function recordsReducer(state={}, action) {
@@ -78,15 +76,6 @@ function setCurrentTemplate(state, id) {
   return assign({}, state, {
     currentTemplateId: id
   });
-}
-
-function editorReducer(state={}, action) {
-  switch (action.type) {
-    case UPDATE_TEMPLATE_EDITOR:
-      return merge({}, state, action.props);
-  }
-
-  return state;
 }
 
 export default templatesReducer;

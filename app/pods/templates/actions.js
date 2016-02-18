@@ -15,8 +15,7 @@ const {
   UPDATE_NEW_TEMPLATE,
   UPDATE_NEW_TEMPLATE_FOREGROUND,
   CLEAR_NEW_TEMPLATE,
-  SET_CURRENT_TEMPLATE,
-  UPDATE_TEMPLATE_EDITOR
+  SET_CURRENT_TEMPLATE
 } = actionTypes;
 
 export function addTemplate(callback) {
@@ -60,10 +59,18 @@ export function updateNewTemplate(props) {
   return { type: UPDATE_NEW_TEMPLATE, props };
 }
 
-export function updateNewTemplateForeground(diff) {
+export function updateNewTemplateForeground(dimensions) {
+  return updateNewTemplate({
+    dimensions: {
+      foreground: dimensions
+    }
+  })
+}
+
+export function incrementNewTemplateForeground(increment) {
   return (dispatch, getState) => {
     const { foreground } = getState().present.templates.newRecord.dimensions;
-    let newForeground = mapValues(diff, (val, key) =>
+    let newForeground = mapValues(increment, (val, key) =>
       Math.round(val + foreground[key])
     );
 
@@ -77,11 +84,7 @@ export function updateNewTemplateForeground(diff) {
       newForeground.y = newForeground.y - newForeground.height;
     }
 
-    return dispatch(updateNewTemplate({
-      dimensions: {
-        foreground: newForeground
-      }
-    }));
+    return dispatch(updateNewTemplateForeground(newForeground));
   }
 }
 
@@ -115,8 +118,4 @@ export function clearNewTemplate() {
 
 export function setCurrentTemplate(id) {
   return { type: SET_CURRENT_TEMPLATE, id };
-}
-
-export function updateTemplateEditor(props) {
-  return { type: UPDATE_TEMPLATE_EDITOR, props };
 }

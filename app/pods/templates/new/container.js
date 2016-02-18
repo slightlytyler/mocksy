@@ -13,13 +13,11 @@ import Layout from './layout';
 
 function mapStateToProps(state) {
   const {
-    newRecord,
-    editor
+    newRecord
   } = state.present.templates;
 
   return {
-    record: newRecord,
-    editor
+    record: newRecord
   };
 }
 
@@ -29,7 +27,7 @@ function mapDispatchToProps(dispatch) {
     updateNewTemplate: actions.updateNewTemplate,
     updateNewTemplateBackground: actions.updateNewTemplateBackground,
     updateNewTemplateForeground: actions.updateNewTemplateForeground,
-    updateTemplateEditor: actions.updateTemplateEditor,
+    incrementNewTemplateForeground: actions.incrementNewTemplateForeground,
     transition: routeActions.push,
     goBack: routeActions.goBack
   }, dispatch);
@@ -38,21 +36,25 @@ function mapDispatchToProps(dispatch) {
     updateNewTemplate,
     updateNewTemplateBackground,
     updateNewTemplateForeground,
-    updateTemplateEditor,
+    incrementNewTemplateForeground,
     transition,
     goBack
   } = boundActions;
 
   return {
-    addTemplateBackground: () => {
-      openFile(path =>
-        updateNewTemplateBackground(path, () =>
+    addTemplateBackground: error => {
+      openFile(
+        path => updateNewTemplateBackground(path, () =>
           transition('templates/new/foreground')
-        )
+        ),
+        error
       );
     },
-    updateTemplateForeground: (diff) => {
-      updateNewTemplateForeground(diff);
+    updateTemplateForeground: dimensions => {
+      updateNewTemplateForeground(dimensions);
+    },
+    incrementTemplateForeground: increment => {
+      incrementNewTemplateForeground (increment);
     },
     resetTemplateForeground: () => {
       updateNewTemplate({
@@ -69,15 +71,14 @@ function mapDispatchToProps(dispatch) {
     setTemplateForeground: () => {
       transition('templates/new/details')
     },
-    updateTemplateDetails: (props) => {
+    updateTemplateDetails: props => {
       updateNewTemplate(props)
     },
-    setTemplateDetails: (props) => {
+    setTemplateDetails: props => {
       addTemplate(() =>
         transition('templates/show/user')
       );
     },
-    updateTemplateEditor,
     goBack
   };
 }

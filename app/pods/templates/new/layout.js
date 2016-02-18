@@ -10,15 +10,14 @@ import BuilderLayout from 'layouts/Builder';
 export default class TemplatesNewLayout extends Component {
   static propTypes = {
     record: PropTypes.object.isRequired,
-    editor: PropTypes.object.isRequired,
     actions: PropTypes.shape({
       addTemplateBackground: PropTypes.func.isRequired,
       updateTemplateForeground: PropTypes.func.isRequired,
+      incrementTemplateForeground: PropTypes.func.isRequired,
       resetTemplateForeground: PropTypes.func.isRequired,
       setTemplateForeground: PropTypes.func.isRequired,
       updateTemplateDetails: PropTypes.func.isRequired,
       setTemplateDetails: PropTypes.func.isRequired,
-      updateTemplateEditor: PropTypes.func.isRequired,
       goBack: PropTypes.func.isRequired
     }),
     components: PropTypes.shape({
@@ -30,18 +29,17 @@ export default class TemplatesNewLayout extends Component {
   renderSidebar = () => {
     const {
       record,
-      editor,
       actions,
       components
     } = this.props;
     const {
       addTemplateBackground,
       updateTemplateForeground,
+      incrementTemplateForeground,
       resetTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
       setTemplateDetails,
-      updateTemplateEditor,
       goBack
     } = actions;
     const {
@@ -65,14 +63,13 @@ export default class TemplatesNewLayout extends Component {
         <section>
           {React.cloneElement(SidebarContent, {
             record,
-            editor,
             addTemplateBackground,
             updateTemplateForeground,
+            incrementTemplateForeground,
             resetTemplateForeground,
             setTemplateForeground,
             updateTemplateDetails,
-            setTemplateDetails,
-            updateTemplateEditor
+            setTemplateDetails
           })}
         </section>
       </div>
@@ -82,18 +79,17 @@ export default class TemplatesNewLayout extends Component {
   renderPreview = () => {
     const {
       record,
-      editor,
       actions,
       components
     } = this.props;
     const {
       addTemplateBackground,
       updateTemplateForeground,
+      incrementTemplateForeground,
       resetTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
       setTemplateDetails,
-      updateTemplateEditor,
       goBack
     } = actions;
     const {
@@ -102,14 +98,13 @@ export default class TemplatesNewLayout extends Component {
 
     return React.cloneElement(PreviewContent, {
       record,
-      editor,
       addTemplateBackground,
       updateTemplateForeground,
+      incrementTemplateForeground,
       resetTemplateForeground,
       setTemplateForeground,
       updateTemplateDetails,
-      setTemplateDetails,
-      updateTemplateEditor
+      setTemplateDetails
     });
   }
 

@@ -33,16 +33,18 @@ export default class TemplatePreviewZoomGroup extends Component {
   }
 
   handleZoom = e => {
-    const step = .15;
-    const zoomIn = e.keyCode === 187
-    const zoomOut = e.keyCode === 189
+    if (document.activeElement === document.body) {
+      const step = .15;
+      const zoomIn = e.keyCode === 187
+      const zoomOut = e.keyCode === 189
 
-    if (zoomIn || zoomOut) {
-      e.preventDefault();
+      if (zoomIn || zoomOut) {
+        e.preventDefault();
 
-      const increment = zoomIn ? step : -step;
+        const increment = zoomIn ? step : -step;
 
-      this.props.updateZoomScale(increment);
+        this.props.updateZoomScale(increment);
+      }
     }
   }
 

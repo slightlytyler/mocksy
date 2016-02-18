@@ -20,6 +20,24 @@ export default class TemplatesNewAddBackgroundPreviewContent extends Component {
     })
   };
 
+  state = {
+    loading: false
+  };
+
+  handleClick = () => {
+    if (!this.state.loading) {
+      this.setState({
+        loading: true
+      });
+
+      this.props.addTemplateBackground(() =>
+        this.setState({
+          loading: false
+        })
+      );
+    }
+  }
+
   render() {
     const {
       addTemplateBackground,
@@ -42,10 +60,10 @@ export default class TemplatesNewAddBackgroundPreviewContent extends Component {
         }}
         canvasDimensions={canvasDimensions}
         cursor="pointer"
-        handleClick={addTemplateBackground}
+        handleClick={this.handleClick}
       >
         <Prompt
-          text="Add a background"
+          text={this.state.loading ? 'Loading...' : 'Add a background'}
           fontSize={20}
           icon={addIcon}
           color={colors.pink}

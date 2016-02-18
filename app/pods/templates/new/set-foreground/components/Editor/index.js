@@ -28,7 +28,7 @@ export default class TemplatesNewSetForegroundEditor extends Component {
         height: PropTypes.number
       })
     }),
-    updateTemplateForeground: PropTypes.func.isRequired,
+    incrementTemplateForeground: PropTypes.func.isRequired,
     resetTemplateForeground: PropTypes.func.isRequired
   }
 
@@ -98,7 +98,7 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     });
 
     if ((transformXDiff !== 0) || (transformYDiff !== 0) || (transformWidthDiff !== 0) || (transformHeightDiff !== 0)) {
-      this.props.updateTemplateForeground({
+      this.props.incrementTemplateForeground({
         x: transformXDiff,
         y: transformYDiff,
         width: transformWidthDiff,
@@ -116,53 +116,55 @@ export default class TemplatesNewSetForegroundEditor extends Component {
   }
 
   handleMoveWithArrow = e => {
-    const {
-      keyCode,
-      shiftKey
-    } = e;
-    const step = shiftKey ? 10 : 1;
-    const arrows = {
-      left: 37,
-      right: 39,
-      top: 38,
-      bottom: 40
-    };
-
-    if (values(arrows).indexOf(keyCode) !== -1) {
-      e.stopPropagation();
-
+    if (document.activeElement === document.body) {
       const {
-        transformXDiff,
-        transformYDiff
-      } = this.state;
-      const update = (diff, dimension) => {
-        this.props.updateTemplateForeground({
-          [dimension]: diff
-        });
+        keyCode,
+        shiftKey
+      } = e;
+      const step = shiftKey ? 10 : 1;
+      const arrows = {
+        left: 37,
+        right: 39,
+        top: 38,
+        bottom: 40
       };
 
-      switch (keyCode) {
-        case arrows.left:
-          update(transformXDiff - step, 'x');
-          break;
+      if (values(arrows).indexOf(keyCode) !== -1) {
+        e.stopPropagation();
 
-        case arrows.right:
-          update(transformXDiff + step, 'x');
-          break;
+        const {
+          transformXDiff,
+          transformYDiff
+        } = this.state;
+        const update = (diff, dimension) => {
+          this.props.incrementTemplateForeground({
+            [dimension]: diff
+          });
+        };
 
-        case arrows.top:
-          update(transformYDiff - step, 'y');
-          break;
+        switch (keyCode) {
+          case arrows.left:
+            update(transformXDiff - step, 'x');
+            break;
 
-        case arrows.bottom:
-          update(transformYDiff + step, 'y');
-          break;
+          case arrows.right:
+            update(transformXDiff + step, 'x');
+            break;
+
+          case arrows.top:
+            update(transformYDiff - step, 'y');
+            break;
+
+          case arrows.bottom:
+            update(transformYDiff + step, 'y');
+            break;
+        }
+
+        return false;
       }
 
-      return false;
+      return true;
     }
-
-    return true;
   }
 
   render() {
