@@ -57,10 +57,10 @@ export default class TemplatePreviewCanvas extends Component {
     const scale = this.state.zoomScale;
     const offset = this.state.zoomOffset;
     const { dimensions } = this.props;
-    const newScale = (scale + increment).toFixed(2) > 4 ? 4 : (scale + increment).toFixed(2);
+    const newScale = Number((scale + increment).toFixed(2)) > 4 ? 4 : Number((scale + increment).toFixed(2));
 
     this.setState({
-      zoomScale: Number(newScale),
+      zoomScale: newScale,
       zoomOffset: {
         x: offset.x - ((dimensions.width * increment) / 2),
         y: offset.y - ((dimensions.height * increment) / 2),
@@ -82,23 +82,33 @@ export default class TemplatePreviewCanvas extends Component {
     const xMultiplier = xDiff / Math.abs(xDiff);
     const yMultiplier = yDiff / Math.abs(yDiff);
 
-    const maxOffsetRatio = .5 * zoomScale;
+    const maxOffsetRatio = zoomScale - 1;
     const maxWidth = dimensions.width * maxOffsetRatio;
     const maxHeight = dimensions.height * maxOffsetRatio;
 
     const offsetXLimit = maxWidth - (xMultiplier * (zoomDifference.x / 2));
     const offsetYLimit = maxHeight - (yMultiplier * (zoomDifference.y / 2));
 
-    this.setState({
-      zoomOffset: {
-        x: Math.abs(xDiff) > offsetXLimit
-          ? xMultiplier * offsetXLimit
-          : xDiff,
-        y: Math.abs(yDiff) > offsetYLimit
-          ? yMultiplier * offsetYLimit
-          : yDiff
-      }
-    });
+    if (zoomScale < 1) {
+      this.setState({
+        zoomOffset: {
+          x: (dimensions.width / 2) * (1 - zoomScale),
+          y: (dimensions.height / 2) * (1 - zoomScale)
+        }
+      });
+    }
+    else {
+      this.setState({
+        zoomOffset: {
+          x: Math.abs(xDiff) > offsetXLimit
+            ? xMultiplier * offsetXLimit
+            : xDiff,
+          y: Math.abs(yDiff) > offsetYLimit
+            ? yMultiplier * offsetYLimit
+            : yDiff
+        }
+      });
+    }
   }
 
   realToScreenScale = () => {
