@@ -1,6 +1,7 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import Radium from 'radium';
 import { Surface, Group } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
@@ -42,23 +43,24 @@ export default class TemplatePreviewCanvas extends Component {
     zoomOffset: {
       x: 0,
       y: 0
-    }
+    },
+    surfaceDimensions: {}
   };
 
   componentDidMount() {
-    document.addEventListener('mousewheel', this.handleSwipe, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousewheel', this.handleSwipe);
+    this.setState({
+      surfaceDimensions: findDOMNode(this.refs.surface).getBoundingClientRect()
+    });
   }
 
   updateZoomScale = increment => {
+    const scale = this.state.zoomScale;
     const offset = this.state.zoomOffset;
     const { dimensions } = this.props;
+    const newScale = (scale + increment).toFixed(2) > 4 ? 4 : (scale + increment).toFixed(2);
 
     this.setState({
-      zoomScale: this.state.zoomScale + increment,
+      zoomScale: Number(newScale),
       zoomOffset: {
         x: offset.x - ((dimensions.width * increment) / 2),
         y: offset.y - ((dimensions.height * increment) / 2),
@@ -67,21 +69,33 @@ export default class TemplatePreviewCanvas extends Component {
   }
 
   updateZoomOffset = diff => {
-    const { x, y } = this.state.zoomOffset;
+    const { zoomScale, zoomOffset } = this.state;
     const { dimensions } = this.props;
-    const xDiff = x + diff.x;
-    const yDiff = y + diff.y;
-    const maxOffset = .75;
-    const maxWidth = dimensions.width * maxOffset;
-    const maxHeight = dimensions.height * maxOffset;
+
+    const zoomDifference = {
+      x: (dimensions.width * zoomScale) - dimensions.width,
+      y: (dimensions.height * zoomScale) - dimensions.height
+    };
+
+    const xDiff = zoomOffset.x + diff.x;
+    const yDiff = zoomOffset.y + diff.y;
+    const xMultiplier = xDiff / Math.abs(xDiff);
+    const yMultiplier = yDiff / Math.abs(yDiff);
+
+    const maxOffsetRatio = .5 * zoomScale;
+    const maxWidth = dimensions.width * maxOffsetRatio;
+    const maxHeight = dimensions.height * maxOffsetRatio;
+
+    const offsetXLimit = maxWidth - (xMultiplier * (zoomDifference.x / 2));
+    const offsetYLimit = maxHeight - (yMultiplier * (zoomDifference.y / 2));
 
     this.setState({
       zoomOffset: {
-        x: Math.abs(xDiff) > maxWidth
-          ? (xDiff / Math.abs(xDiff)) * maxWidth
+        x: Math.abs(xDiff) > offsetXLimit
+          ? xMultiplier * offsetXLimit
           : xDiff,
-        y: Math.abs(yDiff) > maxHeight
-          ? (yDiff / Math.abs(yDiff)) * maxHeight
+        y: Math.abs(yDiff) > offsetYLimit
+          ? yMultiplier * offsetYLimit
           : yDiff
       }
     });
@@ -96,38 +110,19 @@ export default class TemplatePreviewCanvas extends Component {
     return containerDimensions.width / dimensions.width;
   }
 
-  checkSurfaceSwipe = e => {
-    const mouseCoords = {
-      x: e.clientX,
-      y: e.clientY
-    };
-    const surfaceDimensions = this.refs.surface.domNode.getBoundingClientRect();
-    const withinX = mouseCoords.x >= surfaceDimensions.left && mouseCoords.x <= surfaceDimensions.right;
-    const withinY = mouseCoords.y >= surfaceDimensions.top && mouseCoords.y <= surfaceDimensions.bottom;
-
-    return withinX && withinY;
-  }
-
-  handleSwipe = e => {
-    if (this.checkSurfaceSwipe(e)) {
-      const offset = {
-        x: e.wheelDeltaX,
-        y: e.wheelDeltaY
-      };
-
-      this.updateZoomOffset(offset);
-    }
-  }
-
   renderOverlay = () => {
     const realToScreenScale = this.realToScreenScale();
-    const { zoomScale } = this.state;
+    const {
+      zoomScale,
+      zoomOffset
+    } = this.state;
     const { overlay } = this.props;
 
     if (overlay) {
       return React.cloneElement(overlay, {
         realToScreenScale,
-        zoomScale
+        zoomScale,
+        zoomOffset
       });
     }
     else {
@@ -137,7 +132,10 @@ export default class TemplatePreviewCanvas extends Component {
 
   renderChildren = () => {
     const realToScreenScale = this.realToScreenScale();
-    const { zoomScale } = this.state;
+    const {
+      zoomScale,
+      zoomOffset
+    } = this.state;
     const { children } = this.props;
     const manyChildren = Array.isArray(children);
 
@@ -145,13 +143,15 @@ export default class TemplatePreviewCanvas extends Component {
       if (manyChildren) {
         return children.map(child => React.cloneElement(child, {
           realToScreenScale,
-          zoomScale
+          zoomScale,
+          zoomOffset
         }));
       }
       else {
         return React.cloneElement(children, {
           realToScreenScale,
-          zoomScale
+          zoomScale,
+          zoomOffset
         });
       }
     }
@@ -162,10 +162,14 @@ export default class TemplatePreviewCanvas extends Component {
 
   render() {
     const realToScreenScale = this.realToScreenScale();
-    const { updateZoomScale } = this;
+    const {
+      updateZoomScale,
+      updateZoomOffset
+    } = this;
     const {
       zoomScale,
-      zoomOffset
+      zoomOffset,
+      surfaceDimensions
     } = this.state;
     const {
       backgroundPath,
@@ -196,6 +200,8 @@ export default class TemplatePreviewCanvas extends Component {
             scale={zoomScale}
             offset={zoomOffset}
             updateZoomScale={updateZoomScale}
+            updateZoomOffset={updateZoomOffset}
+            surfaceDimensions={surfaceDimensions}
           >
             <Background
               imagePath={backgroundPath}

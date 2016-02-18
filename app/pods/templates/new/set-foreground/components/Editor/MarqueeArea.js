@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 import { Group } from 'react-art';
 import Rectangle from 'react-art/shapes/rectangle';
+import { mapValues } from 'lodash';
 
 @Radium
 export default class TemplateBuilderForegroundEditorMarqueeArea extends Component {
@@ -19,11 +20,15 @@ export default class TemplateBuilderForegroundEditorMarqueeArea extends Componen
     startTransform: PropTypes.func.isRequired,
     endTransform: PropTypes.func.isRequired,
     updateTransformDiff: PropTypes.func.isRequired,
-    resetDimensions: PropTypes.func.isRequired,
     mouseDownCoords: PropTypes.shape({
       x: PropTypes.number,
       y: PropTypes.number
-    })
+    }),
+    zoomOffset: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired
+    }),
+    realToScreenScale: PropTypes.number.isRequired
   };
 
   componentDidMount() {
@@ -39,9 +44,15 @@ export default class TemplateBuilderForegroundEditorMarqueeArea extends Componen
       x: e.offsetX,
       y: e.offsetY
     };
-    this.props.resetDimensions();
+    const {
+      zoomOffset,
+      realToScreenScale
+    } = this.props;
+
     this.props.startTransform(e, 'marquee');
-    this.props.updateTransformDiff(currentMouseCoords);
+    this.props.updateTransformDiff(mapValues(currentMouseCoords, (coord, key) =>
+      coord - (zoomOffset[key] * realToScreenScale)
+    ));
   }
 
   endMarquee = () => {

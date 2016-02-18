@@ -13,6 +13,10 @@ export default class TemplatesNewSetForegroundEditor extends Component {
   static propTypes = {
     realToScreenScale: PropTypes.number,
     zoomScale: PropTypes.number,
+    zoomOffset: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
+    }),
     dimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired,
@@ -65,6 +69,10 @@ export default class TemplatesNewSetForegroundEditor extends Component {
       x: event.offsetX,
       y: event.offsetY
     };
+
+    if (type === 'marquee') {
+      this.props.resetTemplateForeground();
+    }
 
     this.setState({
       transform: {
@@ -173,7 +181,9 @@ export default class TemplatesNewSetForegroundEditor extends Component {
     } = this.state;
     const {
       dimensions,
-      resetTemplateForeground
+      zoomScale,
+      zoomOffset,
+      realToScreenScale
     } = this.props;
 
     return (
@@ -184,8 +194,10 @@ export default class TemplatesNewSetForegroundEditor extends Component {
           startTransform={startTransform}
           endTransform={endTransform}
           updateTransformDiff={updateTransformDiff}
-          resetDimensions={resetTemplateForeground}
           mouseDownCoords={mouseDownCoords}
+          zoomScale={zoomScale}
+          zoomOffset={zoomOffset}
+          realToScreenScale={realToScreenScale}
         />
         <Foreground
           dimensions={dimensions.foreground}

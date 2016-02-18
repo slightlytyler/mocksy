@@ -12,15 +12,24 @@ export default class TemplatePreviewZoomGroup extends Component {
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     }),
-    updateZoomScale: PropTypes.func.isRequired
+    updateZoomScale: PropTypes.func.isRequired,
+    updateZoomOffset: PropTypes.func.isRequired,
+    surfaceDimensions: PropTypes.shape({
+      left: PropTypes.number,
+      right: PropTypes.number,
+      top: PropTypes.number,
+      bottom: PropTypes.number
+    })
   };
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleZoom, false);
+    document.addEventListener('mousewheel', this.handleSwipe, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleZoom);
+    document.removeEventListener('mousewheel', this.handleSwipe);
   }
 
   handleZoom = e => {
@@ -34,6 +43,35 @@ export default class TemplatePreviewZoomGroup extends Component {
       const increment = zoomIn ? step : -step;
 
       this.props.updateZoomScale(increment);
+    }
+  }
+
+  handleSwipe = e => {
+    if (this.checkSurfaceSwipe(e)) {
+      const offset = {
+        x: e.wheelDeltaX,
+        y: e.wheelDeltaY
+      };
+
+      this.props.updateZoomOffset(offset);
+    }
+  }
+
+  checkSurfaceSwipe = e => {
+    const mouseCoords = {
+      x: e.clientX,
+      y: e.clientY
+    };
+    const { surfaceDimensions } = this.props;
+
+    if (surfaceDimensions) {
+      const withinX = mouseCoords.x >= surfaceDimensions.left && mouseCoords.x <= surfaceDimensions.right;
+      const withinY = mouseCoords.y >= surfaceDimensions.top && mouseCoords.y <= surfaceDimensions.bottom;
+
+      return withinX && withinY;
+    }
+    else {
+      return false;
     }
   }
 
