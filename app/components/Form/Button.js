@@ -20,6 +20,11 @@ export default class FormButton extends Component {
     fluid: PropTypes.bool
   };
 
+  static defaultProps = {
+    color: 'white',
+    style: {}
+  };
+
   render() {
     const {
       children,
@@ -27,6 +32,7 @@ export default class FormButton extends Component {
       active,
       disabled,
       color,
+      altColor,
       fluid
     } = this.props;
 
@@ -35,17 +41,21 @@ export default class FormButton extends Component {
         onClick={onClick}
         style={[
           styles.base,
-          active && styles.active,
-          disabled && styles.disabled,
-          color && {
+          {
             color,
             borderColor: color,
 
             ':hover': {
-              color: 'white',
+              color: altColor || color,
               backgroundColor: color
             }
           },
+          active && styles.active,
+          active && {
+            color: altColor || color,
+            backgroundColor: color
+          },
+          disabled && styles.disabled,
           fluid && {
             width: '100%'
           }
@@ -59,6 +69,9 @@ export default class FormButton extends Component {
 
 const styles = {
   base: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
     color: 'white',
     borderWidth: '1px',
@@ -75,8 +88,6 @@ const styles = {
   },
 
   active: {
-    color: colors.pink,
-    backgroundColor: 'white',
     pointerEvents: 'none'
   },
 

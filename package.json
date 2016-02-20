@@ -116,6 +116,7 @@
     "react-router": "2.0.0-rc5",
     "react-router-redux": "^2.1.0",
     "react-select": "^0.9.1",
+    "react-svgcon": "^0.3.0",
     "redux": "^3.0.4",
     "redux-promise": "^0.5.0",
     "redux-storage": "^2.0.0",

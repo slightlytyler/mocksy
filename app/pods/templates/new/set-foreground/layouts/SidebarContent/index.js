@@ -8,7 +8,10 @@ import colors from 'constants/colors';
 import Row from 'components/Form/Row';
 import Field from 'components/Form/Field';
 import InputNumber from 'components/Form/Input/Number';
-import Button from 'components/Form/Button'
+import Button from 'components/Form/Button';
+import marqueeIcon from './assets/marquee-icon.svg';
+import navigateIcon from './assets/navigate-icon.svg';
+import Icon from 'react-svgcon';
 
 @Radium
 export default class TemplatesNewSetForegroundSidebarContent extends Component {
@@ -44,18 +47,33 @@ export default class TemplatesNewSetForegroundSidebarContent extends Component {
             <label style={styles.options.item.label}>Mode</label>
             <div style={{flex: 1, marginRight: '1.5em'}}>
               <Button
-                fluid={true}
                 active={true}
+                fluid={true}
+                color={colors.white}
+                altColor={colors.pink}
               >
-                Transform
+                <Icon
+                  path={marqueeIcon}
+                  width="1.5em"
+                  color="currentColor"
+                  style={{
+                    color: 'currentColor'
+                  }}
+                />
               </Button>
             </div>
             <div style={{flex: 1}}>
               <Button
                 fluid={true}
                 active={false}
+                color={colors.white}
+                altColor={colors.pink}
               >
-                Move
+                <Icon
+                  path={navigateIcon}
+                  width="1.5em"
+                  color="currentColor"
+                />
               </Button>
             </div>
           </Row>
