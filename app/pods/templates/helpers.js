@@ -1,14 +1,18 @@
 import path from 'path';
 import { app } from 'remote';
 
-export function computeTemplateImages(id, format) {
-  const userDataPath = app.getPath('userData');
-  const templatesPath = path.join(userDataPath, 'templates');
+export function computeTemplateImages(id, set="default", format='PNG') {
+  const basePath =
+    set === 'default'
+    ? path.join(app.getAppPath(), 'app/assets')
+    : app.getPath('userData')
+  ;
+  const templatesPath = path.join(basePath, 'templates');
   const templateDir = path.join(templatesPath, id);
   const lowerCaseFormat = format.toLowerCase();
 
   return {
-    background: path.format({
+    full: path.format({
       root : `/`,
       dir : templateDir,
       base : `template.${lowerCaseFormat === 'jpeg' ? 'jpg' : lowerCaseFormat}`

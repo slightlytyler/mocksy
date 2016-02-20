@@ -36,11 +36,7 @@ export default class TemplateItem extends Component {
         <div style={styles.preview.container}>
           <img
             ref="thumbnail"
-            src={
-              set === 'user' ?
-              computeTemplateImages(id, format).thumbnail :
-              `assets/base-templates/${id}/thumbnail.png`
-            }
+            src={computeTemplateImages(id, set, format).thumbnail}
             style={styles.preview.image}
           />
         </div>

@@ -3,111 +3,66 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-import Foreground from './Foreground';
-import { computeTemplateImages } from 'pods/templates/helpers';
+import AspectContainer from 'components/AspectContainer';
+import Canvas from './Canvas';
 
 @Radium
 export default class TemplatePreview extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
-    dimensions: PropTypes.object.isRequired,
+    backgroundPath: PropTypes.string.isRequired,
+    dimensions: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired,
+
+      foreground: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number,
+        width: PropTypes.number,
+        height: PropTypes.number
+      })
+    }),
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
     }),
-    screenshot: PropTypes.string,
-    setCurrentScreenshot: PropTypes.func.isRequired
+    cursor: PropTypes.string,
+    handleClick: PropTypes.func,
+    overlay: PropTypes.object,
+    children: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array
+    ])
   };
-
-  // To prevent sub pixel aliasing we attempt to
-  // resize, while maintaining aspect ratio, and
-  // preferring whole number dimensions
-
-  getPixelValues(targetWidth, targetAspect) {
-    const maxWidth = Math.floor(targetWidth);
-    const maxHeight = Math.round(maxWidth / targetAspect);
-    let width = maxWidth,
-        height = maxHeight,
-        i = maxWidth;
-
-    while (i >= (maxWidth - 20)) {
-      if (Number.isInteger(i / targetAspect)) {
-        width = i;
-        height = i / targetAspect;
-        break;
-      } else {
-        i--;
-      }
-    }
-
-    return {
-      width,
-      height
-    };
-  }
 
   render() {
     const {
-      id,
-      set,
-      format,
+      backgroundPath,
       dimensions,
       canvasDimensions,
-      screenshot,
-      setCurrentScreenshot
+      cursor,
+      handleClick,
+      overlay,
+      children
     } = this.props;
-    const { foreground } = dimensions;
-    const backgroundAspect = dimensions.width / dimensions.height;
-    const canvasWidth = Math.floor(canvasDimensions.width);
-    const canvasHeight = Math.floor(canvasDimensions.height);
-    const canvasAspect = canvasWidth / canvasHeight;
-    const aspectDifference = backgroundAspect / canvasAspect;
-    const isHigherAspect = backgroundAspect >= canvasAspect;
-    const targetWidth = isHigherAspect ? canvasWidth : (canvasWidth * aspectDifference);
-
-    const {
-      width,
-      height,
-    } = this.getPixelValues(targetWidth, backgroundAspect);
-
-    const backgroundImage =
-        set !== 'user' ?
-        `assets/base-templates/${id.toLowerCase()}/template.png` :
-        computeTemplateImages(id, format).background;
 
     return (
-      <div
-        ref="background"
-        className="template"
-        style={[
-          styles.base,
-          { backgroundImage: `url("${backgroundImage}")` },
-          {
-            width,
-            height
-          }
-        ]}
+      <AspectContainer
+        dimensions={dimensions}
+        canvasDimensions={canvasDimensions}
       >
-        <Foreground
-          ref="foreground"
-          screenshot={screenshot}
-          setCurrentScreenshot={setCurrentScreenshot}
-          foregroundDimensions={foreground}
-          containerDimensions={{
-            width: dimensions.width,
-            height: dimensions.height
-          }}
-        />
-      </div>
+        <Canvas
+          backgroundPath={backgroundPath}
+          dimensions={dimensions}
+          cursor={cursor}
+          handleClick={handleClick}
+          overlay={overlay}
+        >
+          {children}
+        </Canvas>
+      </AspectContainer>
     );
   }
 }
 
 const styles = {
-  base: {
-    position: 'relative',
-    backgroundSize: '100%',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
-  }
 };

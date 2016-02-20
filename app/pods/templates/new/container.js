@@ -1,70 +1,99 @@
 'use strict'
 
-import pathModule from 'path';
 import React from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux';
+import pathModule from 'path';
+import { assign, mapValues } from 'lodash';
 
-import {
-  addTemplate,
-  updateNewTemplate,
-  updateNewTemplateBackground
-} from 'pods/templates/actions';
-
-import Component from 'pods/template/components/Builder';
+import openFile from 'api/open-file';
+import * as actions from 'pods/templates/actions';
+import Layout from './layout';
 
 function mapStateToProps(state) {
+  const {
+    newRecord
+  } = state.present.templates;
+
   return {
+    record: newRecord
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    addTemplate,
-    updateNewTemplate,
-    updateNewTemplateBackground,
+  const boundActions = bindActionCreators({
+    addTemplate: actions.addTemplate,
+    updateNewTemplate: actions.updateNewTemplate,
+    updateNewTemplateBackground: actions.updateNewTemplateBackground,
+    updateNewTemplateForeground: actions.updateNewTemplateForeground,
+    incrementNewTemplateForeground: actions.incrementNewTemplateForeground,
     transition: routeActions.push,
     goBack: routeActions.goBack
   }, dispatch);
-}
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { currentStep } = stateProps;
   const {
     addTemplate,
     updateNewTemplate,
     updateNewTemplateBackground,
+    updateNewTemplateForeground,
+    incrementNewTemplateForeground,
     transition,
-    goBack,
-  } = dispatchProps;
-  const { content, sidebar } = ownProps;
+    goBack
+  } = boundActions;
 
-  return Object.assign({}, stateProps, {
-    content,
-    sidebar,
-
-    actions: {
-      setTemplateBackground: path => updateNewTemplateBackground(path, () => transition('templates/new/foreground')),
-      setTemplateForeground: (width, height, left, top) => {
-        updateNewTemplate({
-          dimensions: {
-            foreground: {
-              width: Number(width),
-              height: Number(height),
-              left: Number(left),
-              top: Number(top)
-            }
+  return {
+    addTemplateBackground: error => {
+      openFile(
+        path => updateNewTemplateBackground(path, () =>
+          transition('templates/new/foreground')
+        ),
+        error
+      );
+    },
+    updateTemplateForeground: dimensions => {
+      updateNewTemplateForeground(dimensions);
+    },
+    incrementTemplateForeground: increment => {
+      incrementNewTemplateForeground (increment);
+    },
+    resetTemplateForeground: () => {
+      updateNewTemplate({
+        dimensions: {
+          foreground: {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
           }
-        });
+        }
+      });
+    },
+    setTemplateForeground: () => {
+      transition('templates/new/details')
+    },
+    updateTemplateDetails: props => {
+      updateNewTemplate(props)
+    },
+    setTemplateDetails: props => {
+      addTemplate(() =>
+        transition('templates/show/user')
+      );
+    },
+    goBack
+  };
+}
 
-        transition('templates/new/details')
-      },
-      setTemplateDetails: (props) => {
-        updateNewTemplate(props);
-        addTemplate(() => transition('templates/user'));
-      },
-      goBack
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  const {
+    SidebarContent,
+    PreviewContent
+  } = ownProps;
+
+  return assign({}, stateProps, {
+    actions: dispatchProps,
+    components: {
+      SidebarContent,
+      PreviewContent
     }
   });
 }
@@ -73,4 +102,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(Component);
+)(Layout);

@@ -13,18 +13,18 @@ export default class AspectContainer extends Component {
     canvasDimensions: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired
-    }),
-    handleClick: PropTypes.func
+    })
   };
 
   width(dimensions, canvasDimensions) {
     const { width, height } = dimensions;
     const aspectRatio = width / height;
+
     if (aspectRatio > (canvasDimensions.width / canvasDimensions.height)) {
-      return '100%';
+      return canvasDimensions.width;
     }
     else {
-      return `${(aspectRatio * canvasDimensions.height) / canvasDimensions.width * 100}%`;
+      return aspectRatio * canvasDimensions.height;
     }
   }
 
@@ -32,11 +32,32 @@ export default class AspectContainer extends Component {
     const { width, height } = dimensions;
     const aspectRatio = height / width;
 
-    if (aspectRatio / (canvasDimensions.height / canvasDimensions.width)) {
-      return '100%';
+    if (aspectRatio > (canvasDimensions.height / canvasDimensions.width)) {
+      return canvasDimensions.height;
     }
     else {
-      return `${(aspectRatio * canvasDimensions.width) / canvasDimensions.height * 100}%`;
+      return aspectRatio * canvasDimensions.width;
+    }
+  }
+
+  containerDimensions(dimensions, canvasDimensions) {
+    return {
+      width: this.width(dimensions, canvasDimensions),
+      height: this.height(dimensions, canvasDimensions)
+    }
+  }
+
+  renderChildren(children, containerDimensions) {
+    const manyChildren = Array.isArray(children);
+
+    if (manyChildren) {
+      return children.map(child => React.cloneElement(child, {
+        containerDimensions
+      }));
+    } else {
+      return React.cloneElement(children, {
+        containerDimensions
+      })
     }
   }
 
@@ -44,21 +65,20 @@ export default class AspectContainer extends Component {
     const {
       dimensions,
       canvasDimensions,
-      handleClick
+      children
     } = this.props;
+    const containerDimensions = this.containerDimensions(dimensions, canvasDimensions);
 
     return(
       <div
-        onClick={handleClick}
+        ref="node"
         style={[
           styles.base,
-          {
-            width: this.width(dimensions, canvasDimensions),
-            height: this.height(dimensions, canvasDimensions)
-          }
+          this.props.style,
+          containerDimensions
         ]}
       >
-        {this.props.children}
+        { this.renderChildren(children, containerDimensions) }
       </div>
     );
   }
@@ -66,6 +86,7 @@ export default class AspectContainer extends Component {
 
 const styles = {
   base: {
-    position: 'relative'
+    position: 'relative',
+    boxSizing: 'content-box'
   }
 };

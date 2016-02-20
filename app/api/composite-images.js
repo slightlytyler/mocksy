@@ -12,7 +12,7 @@ export default function (template, templateSize, screenshot, screenshotDimension
     .in(template)
     .in('-geometry',`${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}^`)
     .in('-crop', `${screenshotDimensions.width * multiplier}x${screenshotDimensions.height * multiplier}+0+0`)
-    .in('-page', `+${screenshotDimensions.left * multiplier}+${screenshotDimensions.top * multiplier}`)
+    .in('-page', `+${screenshotDimensions.x * multiplier}+${screenshotDimensions.y * multiplier}`)
     .in(screenshot)
     .mosaic()
     .in('-background', format === 'png' ? 'transparent' : 'white');

@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { hashHistory as history } from 'react-router'
-import { syncHistory, UPDATE_LOCATION } from 'react-router-redux'
+import { syncHistory, UPDATE_LOCATION, TRANSITION } from 'react-router-redux'
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import * as storage from 'redux-storage'
@@ -18,20 +18,22 @@ const reduxRouterMiddleware = syncHistory(history)
 const reducer = storage.reducer(rootReducer);
 const engineComposers = [
   (engine) => storage.decorators.filter(engine, [
-    ['present', 'templates', 'records']
+    ['present', 'templates', 'records'],
+    ['present', 'templates', 'newRecord']
   ])
 ];
 const engine = compose(...engineComposers)(createEngine('mocksy'));
 const storageMiddleware = storage.createMiddleware(engine, [
-  UPDATE_LOCATION
+  UPDATE_LOCATION,
+  TRANSITION
 ]);
 const load = storage.createLoader(engine);
 
 const finalCreateStore = compose(
   applyMiddleware(thunk),
+  applyMiddleware(reduxRouterMiddleware),
   applyMiddleware(storageMiddleware),
   applyMiddleware(undoRedoMenuState),
-  applyMiddleware(reduxRouterMiddleware),
   DevTools.instrument(),
   persistState(
     window.location.href.match(

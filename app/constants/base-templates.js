@@ -9,10 +9,10 @@ export default {
       height: 1947,
 
       foreground: {
+        x: 166,
+        y: 221,
         width: 750,
-        height: 1334,
-        left: 166,
-        top: 221
+        height: 1334
       }
     },
   },
@@ -27,10 +27,10 @@ export default {
       height: 2679,
 
       foreground: {
+        x: 179,
+        y: 292,
         width: 1080,
-        height: 1920,
-        left: 179,
-        top: 292
+        height: 1920
       }
     }
   },
@@ -45,10 +45,10 @@ export default {
       height: 1211,
 
       foreground: {
+        x: 373,
+        y: 81,
         width: 1440,
-        height: 900,
-        left: 373,
-        top: 81
+        height: 900
       }
     },
   },
@@ -63,10 +63,10 @@ export default {
       height: 1133,
 
       foreground: {
+        x: 229,
+        y: 63,
         width: 1440,
-        height: 900,
-        left: 229,
-        top: 63
+        height: 900
       }
     },
   },
@@ -81,10 +81,10 @@ export default {
       height: 1298,
 
       foreground: {
+        x: 231,
+        y: 74,
         width: 1440,
-        height: 900,
-        left: 231,
-        top: 74
+        height: 900
       }
     },
   },
@@ -99,10 +99,10 @@ export default {
       height: 3019,
 
       foreground: {
+        x: 78,
+        y: 247,
         width: 1440,
-        height: 2560,
-        left: 78,
-        top: 247
+        height: 2560
       }
     }
   },
@@ -117,10 +117,10 @@ export default {
       height: 2500,
 
       foreground: {
+        x: 153,
+        y: 274,
         width: 1200,
-        height: 1920,
-        left: 153,
-        top: 274
+        height: 1920
       }
     }
   },
@@ -135,10 +135,10 @@ export default {
       height: 2343,
 
       foreground: {
+        x: 51,
+        y: 194,
         width: 1080,
-        height: 1920,
-        left: 51,
-        top: 194
+        height: 1920
       }
     }
   },
@@ -153,10 +153,10 @@ export default {
       height: 1777,
 
       foreground: {
+        x: 201,
+        y: 173,
         width: 2160,
-        height: 1440,
-        left: 201,
-        top: 173
+        height: 1440
       }
     }
   },

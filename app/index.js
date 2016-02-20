@@ -14,7 +14,7 @@ const store = configureStore({
 
 render(
   <Provider store={store}>
-    { routes }
+    { routes(store) }
   </Provider>,
   document.getElementById('root')
 );

@@ -20,15 +20,16 @@ const engineComposers = [
 ];
 const engine = compose(...engineComposers)(createEngine('mocksy'));
 const storageMiddleware = storage.createMiddleware(engine, [
-  UPDATE_LOCATION
+  UPDATE_LOCATION,
+  TRANSITION
 ]);
 const load = storage.createLoader(engine);
 
 const finalCreateStore = compose(
   applyMiddleware(thunk),
+  applyMiddleware(reduxRouterMiddleware),
   applyMiddleware(storageMiddleware),
-  applyMiddleware(undoRedoMenuState),
-  applyMiddleware(reduxRouterMiddleware)
+  applyMiddleware(undoRedoMenuState)
 )(createStore);
 
 export default function configureStore(initialState) {
