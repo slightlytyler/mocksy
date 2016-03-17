@@ -86,7 +86,8 @@ function mapDispatchToProps(dispatch) {
 function mergeProps(stateProps, dispatchProps, ownProps) {
   const {
     SidebarContent,
-    PreviewContent
+    PreviewContent,
+    children
   } = ownProps;
 
   return assign({}, stateProps, {
@@ -94,7 +95,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     components: {
       SidebarContent,
       PreviewContent
-    }
+    },
+    children
   });
 }
 

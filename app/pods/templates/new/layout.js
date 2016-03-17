@@ -21,9 +21,10 @@ export default class TemplatesNewLayout extends Component {
       goBack: PropTypes.func.isRequired
     }),
     components: PropTypes.shape({
-      SidebarContent: PropTypes.object.isRequired,
-      PreviewContent: PropTypes.object.isRequired
-    })
+      SidebarContent: PropTypes.element,
+      PreviewContent: PropTypes.element
+    }),
+    children: PropTypes.element,
   }
 
   renderSidebar = () => {
@@ -110,19 +111,48 @@ export default class TemplatesNewLayout extends Component {
 
   render() {
     const {
-      components
+      children,
+      components,
     } = this.props;
     const {
       SidebarContent,
       PreviewContent
     } = components;
 
-    return (
-      <BuilderLayout
-        SidebarContent={this.renderSidebar()}
-        PreviewContent={this.renderPreview()}
-      />
-    );
+    if (SidebarContent && PreviewContent) {
+      return (
+        <BuilderLayout
+          SidebarContent={this.renderSidebar()}
+          PreviewContent={this.renderPreview()}
+        />
+      );
+    } else {
+      const {
+        record,
+        actions
+      } = this.props;
+      const {
+        addTemplateBackground,
+        updateTemplateForeground,
+        incrementTemplateForeground,
+        resetTemplateForeground,
+        setTemplateForeground,
+        updateTemplateDetails,
+        setTemplateDetails,
+        goBack
+      } = actions;
+
+      return React.cloneElement(children, {
+        record,
+        addTemplateBackground,
+        updateTemplateForeground,
+        incrementTemplateForeground,
+        resetTemplateForeground,
+        setTemplateForeground,
+        updateTemplateDetails,
+        setTemplateDetails
+      });
+    }
   }
 }
 

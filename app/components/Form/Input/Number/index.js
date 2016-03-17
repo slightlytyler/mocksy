@@ -18,12 +18,7 @@ export default class FormInputNumber extends Component {
     document.addEventListener('keydown', this.handleKeydown, false);
   }
 
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleZoom);
-  }
-
   handleChange = e => {
-    console.log(e);
     const { value } = this.props;
     if (e.target.value || e.target.value === '') {
       if (!isNaN(e.target.value) && e.target.value !== value) {
@@ -37,27 +32,30 @@ export default class FormInputNumber extends Component {
 
   handleKeydown = e => {
     if (document.activeElement === findDOMNode(this.refs.input)) {
-      e.preventDefault();
-
       const { keyCode, shiftKey } = e;
       const upArrow = 38;
       const downArrow = 40;
-      const increment = shiftKey ? 10 : 1;
-      const { value, handleChange } = this.props;
 
-      switch (keyCode) {
-        case upArrow:
-          handleChange(value + increment);
-          break;
+      if (keyCode === upArrow || keyCode === downArrow) {
+        e.preventDefault();
 
-        case downArrow:
-          if (value !== 0) {
-            value - increment < 0
-              ? handleChange(0)
-              : handleChange(value - increment)
-            ;
-          }
-          break;
+        const increment = shiftKey ? 10 : 1;
+        const { value, handleChange } = this.props;
+
+        switch (keyCode) {
+          case upArrow:
+            handleChange(value + increment);
+            break;
+
+          case downArrow:
+            if (value !== 0) {
+              value - increment < 0
+                ? handleChange(0)
+                : handleChange(value - increment)
+              ;
+            }
+            break;
+        }
       }
     }
   }

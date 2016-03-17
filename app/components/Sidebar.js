@@ -8,9 +8,9 @@ import colors from 'constants/colors';
 export default class Sidebar extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.object
-    ])
+      PropTypes.element,
+      PropTypes.arrayOf(PropTypes.element),
+    ]),
   }
 
   renderChildren = () => {

@@ -1,12 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router';
 
-import PreviewContent from './layouts/PreviewContent';
-import SidebarContent from './layouts/SidebarContent';
+import Layout from './layout';
 
 export default (dispatch, getState) => (
-  <Route path="foreground" components={{
-    PreviewContent,
-    SidebarContent
-  }} />
+  <Route path="foreground" component={Layout} />
 );
